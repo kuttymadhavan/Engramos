@@ -1404,15 +1404,15 @@ body.auth-screen #main {
 <div class="card hero"><span class="introKicker">Step 1 of 2</span><h1>Ask for access</h1><p>Tell us who you are and who is giving consent. Your organiser will review the request and email you an invite code.</p></div>
 <div class="card form" id="rqForm">
 <div class="requestGrid">
-<div><label for="rqName">Student name</label><input type="text" id="rqName" autocomplete="name" placeholder="your full name"></div>
+<div><label for="rqName">Student name</label><input type="text" id="rqName" autocomplete="name" autocapitalize="words" placeholder="your full name"></div>
 <div><label for="rqEmail">Student email</label><input type="email" id="rqEmail" autocomplete="email" placeholder="name@example.com"></div>
-<div><label for="rqPhone">Student phone</label><input type="tel" id="rqPhone" autocomplete="tel" placeholder="mobile number"></div>
+<div><label for="rqPhone">Student phone</label><input type="tel" id="rqPhone" inputmode="numeric" pattern="[0-9]*" autocomplete="tel" placeholder="mobile number"></div>
 <div><label for="rqCls">Class / Standard</label><select id="rqCls"></select></div>
-<div><label for="rqSch">School / College</label><input type="text" id="rqSch" autocomplete="organization"></div>
+<div><label for="rqSch">School / College</label><input type="text" id="rqSch" autocomplete="organization" autocapitalize="words" placeholder="school / college name"></div>
 <div><label for="rqBoard">Board / curriculum</label><select id="rqBoard"></select></div>
-<div><label for="rqGName">Parent / guardian name</label><input type="text" id="rqGName" autocomplete="name" placeholder="who is giving consent"></div>
+<div><label for="rqGName">Parent / guardian name</label><input type="text" id="rqGName" autocomplete="name" autocapitalize="words" placeholder="who is giving consent"></div>
 <div><label for="rqGEmail">Parent / guardian email</label><input type="email" id="rqGEmail" autocomplete="email" placeholder="name@example.com"></div>
-<div><label for="rqGPhone">Parent / guardian phone</label><input type="tel" id="rqGPhone" autocomplete="tel" placeholder="mobile number"></div>
+<div><label for="rqGPhone">Parent / guardian phone</label><input type="tel" id="rqGPhone" inputmode="numeric" pattern="[0-9]*" autocomplete="tel" placeholder="mobile number"></div>
 <div class="full"><label for="rqNote">Anything you want to tell the organiser? (optional)</label><input type="text" id="rqNote" placeholder="for example, the class or group you are joining"></div>
 <div class="full"><label class="consent"><input type="checkbox" id="rqConsent"><span>I am the parent or guardian and I agree that the organiser may collect the details above plus usage time, screens used and error reports, to improve ENGRAMOS. Data is kept for 12 months and can be deleted on request. Contact neelareader@gmail.com.</span></label></div>
 </div>
@@ -1456,9 +1456,9 @@ body.auth-screen #main {
 <div id="authWho" class="authWho hidden"><span class="authAvatar" id="authInitial">S</span><div><b id="authWhoName">Student</b><span id="authWhoMeta">Class</span></div></div>
 <h2 id="createTitle" style="margin-top:0">Make it yours</h2>
 <p id="createSub" class="status">Just your name, city, a username and a password. Your books and notes stay on this device.</p>
-<label for="oName">Your name</label><input type="text" id="oName" autocomplete="name" placeholder="what should I call you?">
+<label for="oName">Your name</label><input type="text" id="oName" autocomplete="name" autocapitalize="words" placeholder="what should I call you?">
 <label for="oUser">Username (how you log in)</label><input type="text" id="oUser" autocapitalize="none" spellcheck="false" autocomplete="username" placeholder="letters and numbers, no spaces">
-<label for="oFrom">Your city</label><input type="text" id="oFrom" placeholder="city / town" autocomplete="address-level2">
+<label for="oFrom">Your city</label><input type="text" id="oFrom" placeholder="city / town" autocomplete="address-level2" autocapitalize="words">
 <label for="oLang">Language you prefer</label><select id="oLang"></select>
 <div id="pilotFields">
 <div id="pilotCodeWrap">
@@ -1466,9 +1466,9 @@ body.auth-screen #main {
 <p class="status" id="oCodeHint">Use the code your organiser gave you. It sets how long your access lasts.</p>
 </div>
 <label for="oBoard">Board / curriculum</label><select id="oBoard"></select>
-<label for="oGName">Parent / guardian name</label><input type="text" id="oGName" autocomplete="name" placeholder="who is giving consent">
+<label for="oGName">Parent / guardian name</label><input type="text" id="oGName" autocomplete="name" autocapitalize="words" placeholder="who is giving consent">
 <label for="oGEmail">Parent / guardian email</label><input type="email" id="oGEmail" autocomplete="email" placeholder="name@example.com">
-<label for="oGPhone">Parent / guardian phone</label><input type="tel" id="oGPhone" autocomplete="tel" placeholder="mobile number">
+<label for="oGPhone">Parent / guardian phone</label><input type="tel" id="oGPhone" inputmode="numeric" pattern="[0-9]*" autocomplete="tel" placeholder="mobile number">
 <label class="consent"><input type="checkbox" id="oConsent"><span>I am the parent or guardian and I agree that the organiser may collect the details above plus usage time, screens used and error reports, to improve ENGRAMOS. Data is kept for 12 months and can be deleted on request. Contact neelareader@gmail.com.</span></label>
 <p class="status" id="oConsentHint">Required for students under 18.</p>
 </div>
@@ -1991,6 +1991,54 @@ function initTheme(){
   }
 }
 
+/* ---------- Text & Name Formatting (Title Case & Input Auto-Capitalize) ---------- */
+function toTitleCase(str){
+  if(!str) return "";
+  return String(str).replace(/(?:^|\s|-)\S/g, function(c){ return c.toUpperCase(); });
+}
+function attachTitleCaseInput(el){
+  if(!el) return;
+  el.addEventListener("blur", function(){
+    if(this.value) this.value = toTitleCase(this.value.trim());
+  });
+  el.addEventListener("input", function(){
+    var val = this.value;
+    if(val && val.length === 1){
+      this.value = val.toUpperCase();
+    } else if(val && val.length > 1 && (val.charAt(val.length - 2) === " " || val.charAt(val.length - 2) === "-")){
+      var lastChar = val.charAt(val.length - 1);
+      if(/[a-z]/.test(lastChar)){
+        this.value = val.slice(0, -1) + lastChar.toUpperCase();
+      }
+    }
+  });
+}
+
+/* ---------- Groq Cloud Guide Modal (14,400 requests/day) ---------- */
+function groqGuideModal(){
+  var h = "<div class='card hero' style='margin:0 0 12px;background:var(--accbg);border-color:var(--acc);text-align:center;padding:16px 12px'>" +
+    "<h2 style='margin:0 0 4px;font-size:1.25rem'>⚡ Get Your Free Groq API Key</h2>" +
+    "<p style='margin:0;font-size:13px;color:var(--mute)'>14,400 Requests / Day · 100% Free · No credit card · 60 seconds</p>" +
+    "</div>" +
+    "<div style='display:flex;flex-direction:column;gap:12px;margin-bottom:16px'>" +
+    "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>" +
+    "<b style='color:var(--acc);display:block;margin-bottom:4px'>Step 1: Open Groq Console</b>" +
+    "<p style='margin:0 0 8px;font-size:13px'>Go to Groq Console and sign in with your email or Google account.</p>" +
+    "<a href='https://console.groq.com/keys' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:7px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px'>🔗 Open Groq Console ↗</a>" +
+    "</div>" +
+    "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>" +
+    "<b style='color:var(--acc);display:block;margin-bottom:4px'>Step 2: Create your free API key</b>" +
+    "<p style='margin:0;font-size:13px'>In the left menu, click <b>“API Keys”</b> &rarr; <b>“+ Create API Key”</b>. Type any name (e.g. “Engramos”) and click <b>“Submit”</b>. Click <b>“Copy”</b>. Your key starts with <code>gsk_…</code>.</p>" +
+    "</div>" +
+    "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>" +
+    "<b style='color:var(--acc);display:block;margin-bottom:4px'>Step 3: Paste into ENGRAMOS</b>" +
+    "<p style='margin:0;font-size:13px'>Paste your key into the Groq box and click <b>“Connect”</b>. Your dedicated 14,400 daily requests are active immediately!</p>" +
+    "</div>" +
+    "</div>" +
+    "<div class='row' style='justify-content:flex-end'><button class='primary' data-close>Got it, let’s connect</button></div>";
+  popup(h);
+}
+
 /* ---------- Google Gemini Flash Guide Modal ---------- */
 function geminiGuideModal(){
   var h = "<div class='card hero' style='margin:0 0 12px;background:var(--accbg);border-color:var(--acc);text-align:center;padding:16px 12px'>" +
@@ -2207,8 +2255,8 @@ function persona(){ return "You are the ENGRAMOS study companion, a warm older-s
 function base(q){ var c = cur(); q = q || EXQ; EXQ = ""; var ct = q ? excerpt(q, 4) : c.text; return persona() + "Stay faithful to the textbook text below; never contradict it. Use its wording and examples where they help. If the text does not contain the answer, say briefly what the chapter does cover instead of guessing.\n\nBOOK: " + c.book + "\nCHAPTER: " + c.name + "\nCHAPTER TEXT:\n" + ct + "\n\nTASK:\n"; }
 /* ---------- AI providers: free models, email sign-in, or your own key ---------- */
 var AI_PROVIDERS = {
-  gemini: {name:"Google Gemini", tag:"Recommended · 1,500/day free", desc:"Google Gemini 2.0 Flash: ultra-fast, handles entire 40-page chapters, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.0-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-flash-latest"]},
-  groq: {name:"Groq", tag:"Ultra-fast · 14,400/day free", desc:"Lightning-fast open models (Llama 3.3 70B). Up to 14,400 requests/day free with email.", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.3-70b-versatile", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"]},
+  groq: {name:"Groq", tag:"Default · 14,400/day free", desc:"Lightning-fast open models (Llama 3.3 70B). Pre-configured out of the box so you can start studying right away. Optional: add your own free key for dedicated 14,400 requests/day.", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.3-70b-versatile", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"]},
+  gemini: {name:"Google Gemini", tag:"1M Context · 1,500/day free", desc:"Google Gemini 2.0 Flash: ultra-fast, handles entire 40-page chapters at once, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.0-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-flash-latest"]},
   puter: {name:"Free AI (Puter)", tag:"Email sign-in · no key", desc:"Sign in with email for a shared monthly allowance. (Note: slower during peak hours).", model:"gpt-5.4-nano", free:true, link:"https://puter.com"},
   openrouter: {name:"OpenRouter", tag:"Free models · API key", desc:"One key opens many free models. Names ending in :free cost nothing.", api:"https://openrouter.ai/api/v1/chat/completions", kind:"openai", model:"nvidia/nemotron-3-ultra-550b-a55b:free", free:true, link:"https://openrouter.ai/keys", hint:"sk-or-…", models:["nvidia/nemotron-3-ultra-550b-a55b:free", "google/gemma-4-26b-a4b-it:free"]},
   anthropic: {name:"Claude", tag:"Paid · API key", desc:"Claude’s own models. Needs a paid API key from Anthropic Console.", api:"https://api.anthropic.com/v1/messages", kind:"anthropic", model:"claude-sonnet-5-5", free:false, link:"https://console.anthropic.com/settings/keys", hint:"sk-ant-…", models:["claude-sonnet-5-5", "claude-sonnet-4-5", "claude-opus-4-5", "claude-haiku-4-5"]}
@@ -2218,10 +2266,20 @@ function hostOf(u){ return String(u).replace(/^https?:\/\//, "").split("/")[0]; 
 function aiCfg(){
   if(DB.ai && DB.ai.provider && AI_PROVIDERS[DB.ai.provider]) return DB.ai;
   if(DB.key){ DB.ai = {provider:"anthropic", key:DB.key, email:"", model:DB.model || AI_PROVIDERS.anthropic.model}; DB.key = ""; DB.model = ""; return DB.ai; }
-  return null;
+  return {provider:"groq", key:(DB.groqKey || ""), email:"", model:"llama-3.3-70b-versatile", starter:true};
 }
 function aiName(c){ var P = c && AI_PROVIDERS[c.provider]; return P ? P.name : "AI"; }
-function refreshKeyBtn(){ var b = $("bKey"); if(!b) return; var c = aiCfg(); b.classList.toggle("hidden", HOSTED || !DB.profile); b.textContent = c ? "✦ " + aiName(c) + " connected ✓" : "✦ Connect AI"; if(typeof refreshBanner === "function") refreshBanner(); }
+function refreshKeyBtn(){
+  var b = $("bKey"); if(!b) return;
+  var c = aiCfg();
+  b.classList.toggle("hidden", HOSTED || !DB.profile);
+  if(c){
+    b.textContent = (c.starter && !c.key) ? "✦ Groq (Default) ✓" : "✦ " + aiName(c) + " connected ✓";
+  } else {
+    b.textContent = "✦ Connect AI";
+  }
+  if(typeof refreshBanner === "function") refreshBanner();
+}
 function useAI(cfg){ DB.ai = cfg; DB.key = ""; DB.model = ""; DB.engine = "ai"; sample = wrapSample(mkApi(cfg)); save(); refreshKeyBtn(); if($("engSel")) $("engSel").value = "ai"; }
 function dropAI(){ DB.ai = null; DB.key = ""; DB.model = ""; sample = null; if(DB.engine === "ai") DB.engine = "local"; save(); refreshKeyBtn(); if($("engSel")) $("engSel").value = DB.engine; }
 function aiErrText(code){
@@ -2445,15 +2503,15 @@ function bestPuterModel(list){
 function connectModal(){
   return new Promise(function(res){
     var o = document.createElement("div"); o.className = "modal";
-    var old = aiCfg(), filePage = location.protocol === "file:", pick = old ? old.provider : "gemini";
+    var old = aiCfg(), filePage = location.protocol === "file:", pick = old ? old.provider : "groq";
     var done = function(){ o.remove(); res(); };
     var msg = function(t){ var e = o.querySelector("#kMsg"); if(e) e.textContent = t || ""; };
     if(!filePage) loadPuter().catch(function(){});
     var intro = filePage
-      ? "AI makes questions, flashcards, tests and fun facts sharper. Everything still works offline."
-      : "AI makes questions, flashcards, tests and fun facts sharper. The free options work with just your email or a free key. Everything still works offline.";
+      ? "AI makes questions, flashcards, tests and fun facts sharper. Groq is pre-configured by default. Everything still works offline."
+      : "AI makes questions, flashcards, tests and fun facts sharper. Groq is pre-configured by default. Everything still works offline.";
     var fileNote = filePage
-      ? "<p class='status' style='font-size:.8rem;margin:0 0 8px'><b>Opened directly from a file.</b> Paste your free Google Gemini (recommended) or Groq key below in 60 seconds.</p>"
+      ? "<p class='status' style='font-size:.8rem;margin:0 0 8px'><b>Pre-configured with Groq.</b> You can use it right away, or paste your personal Groq (14,400 req/day) or Google Gemini Flash key below.</p>"
       : "";
     o.innerHTML = "<div><h3 style='margin-top:0'>Connect AI</h3><p class='status' style='margin-top:4px'>" + intro + "</p>" + fileNote + "<div class='row' id='pvTabs' style='margin-top:12px'></div><div id='pvBody'></div><div id='kMsg' class='status err' style='min-height:18px'></div><div class='row' style='margin-top:8px'><button class='primary' id='kOk'>Connect</button><button id='kNo'>Not now</button>" + (old ? "<button id='kOff'>Disconnect</button>" : "") + "</div><p class='status' style='font-size:.76rem;margin:10px 0 0'>Your key and sign-in stay only in this browser. Text goes only to the AI provider you choose.</p></div>";
     document.body.appendChild(o);
@@ -2483,30 +2541,31 @@ function connectModal(){
     var drawPanel = async function(){
       var myPick = pick, P = AI_PROVIDERS[pick], body = o.querySelector("#pvBody");
       var h = "<p style='margin:2px 0 10px'>" + esc(P.desc) + "</p>";
-      if(pick === "gemini"){
+      if(pick === "groq"){
         h += "<div style='background:var(--accbg);border:1px solid var(--acc);border-radius:12px;padding:12px;margin:0 0 12px'>" +
-          "<div style='font-size:13px;font-weight:700;color:var(--acc);margin-bottom:6px'>⚡ Why Google Gemini 2.0 Flash is recommended for students:</div>" +
+          "<div style='font-size:13px;font-weight:700;color:var(--acc);margin-bottom:6px'>⚡ Groq Cloud (Pre-Configured Default):</div>" +
           "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--ink)'>" +
-          "<div>• <b>Ultra-Fast:</b> 1.5–2.5s generation for full Smart Packs & questions.</div>" +
+          "<div>• <b>Pre-Configured Default:</b> Ready out-of-the-box — no sign-up or key needed.</div>" +
+          "<div>• <b>Near-Instant Speed:</b> ~1.2s response time powered by LPU inference engine.</div>" +
+          "<div>• <b>Dedicated 14,400 Requests / Day:</b> Sign up free in 60s and paste your key below for dedicated high-volume access.</div>" +
+          "</div>" +
+          "<div class='row' style='margin-top:10px;gap:8px;flex-wrap:wrap'>" +
+          "<button type='button' id='btnGroqGuide' class='primary' style='font-size:12px;padding:6px 12px'>📘 Step-by-Step Groq Guide</button>" +
+          "<a href='https://console.groq.com/keys' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Groq Console ↗</a>" +
+          "</div>" +
+          "</div>";
+      } else if(pick === "gemini"){
+        h += "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 12px'>" +
+          "<div style='font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px'>⚡ Google Gemini 2.0 Flash (Recommended for Big Books):</div>" +
+          "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--mute)'>" +
           "<div>• <b>1M Token Context:</b> Ingests entire 40-page textbook chapters without cutting.</div>" +
-          "<div>• <b>Top Indic Accuracy:</b> Superior Hindi & regional Indian exam comprehension.</div>" +
+          "<div>• <b>Top Indic Accuracy:</b> Superior Hindi, Tamil, Telugu, Marathi, Malayalam comprehension.</div>" +
           "<div>• <b>1,500 Requests / Day Free:</b> 100% free daily quota for every student forever.</div>" +
           "<div>• <b>No Credit Card Needed:</b> Sign in with regular Gmail & copy key in 60 seconds.</div>" +
           "</div>" +
           "<div class='row' style='margin-top:10px;gap:8px;flex-wrap:wrap'>" +
-          "<button type='button' id='btnGemGuide' class='primary' style='font-size:12px;padding:6px 12px'>📘 Step-by-Step Guide</button>" +
+          "<button type='button' id='btnGemGuide' class='primary' style='font-size:12px;padding:6px 12px'>📘 Step-by-Step Gemini Guide</button>" +
           "<a href='https://aistudio.google.com/apikey' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Google AI Studio ↗</a>" +
-          "</div>" +
-          "</div>";
-      } else if(pick === "groq"){
-        h += "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 12px'>" +
-          "<div style='font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px'>⚡ Groq Cloud (Llama 3.3 70B):</div>" +
-          "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--mute)'>" +
-          "<div>• <b>Near-Instant Speed:</b> ~1.2s response time powered by LPU inference engine.</div>" +
-          "<div>• <b>14,400 Requests / Day:</b> Dedicated free daily limit per student email.</div>" +
-          "</div>" +
-          "<div class='row' style='margin-top:10px'>" +
-          "<a href='https://console.groq.com/keys' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Groq Console ↗</a>" +
           "</div>" +
           "</div>";
       }
@@ -2524,6 +2583,10 @@ function connectModal(){
         h += "<p class='status' style='font-size:.8rem'>Get a" + (P.free ? " free" : "n") + " key at <a target='_blank' rel='noopener' href='" + P.link + "'>" + esc(hostOf(P.link)) + "</a>. " + (P.free ? "Free tiers have daily limits." : "Billed by Anthropic, separate from a Claude chat plan.") + "</p>";
       }
       body.innerHTML = h;
+      if(pick === "groq"){
+        var qBtn = o.querySelector("#btnGroqGuide");
+        if(qBtn) qBtn.onclick = function(){ groqGuideModal(); };
+      }
       if(pick === "gemini"){
         var gBtn = o.querySelector("#btnGemGuide");
         if(gBtn) gBtn.onclick = function(){ geminiGuideModal(); };
@@ -2586,6 +2649,10 @@ function connectModal(){
           cfg = {provider:"puter", key:"", email:userEmail(usr), model:(o.querySelector("#kMod") || {}).value || "gpt-5.4-nano"};
         } else {
           var key = (o.querySelector("#kKey") || {}).value.trim();
+          if(!key && pick === "groq"){
+            cfg = {provider:"groq", key:"", email:(o.querySelector("#kMail") || {}).value.trim(), model:(o.querySelector("#kMod") || {}).value.trim() || P.model, starter:true};
+            useAI(cfg); toast("Using pre-configured default Groq"); done(); return;
+          }
           if(!key){ ok.disabled = false; ok.textContent = btnOld; msg("Paste your " + P.name + " API key first."); return; }
           cfg = {provider:pick, key:key, email:(o.querySelector("#kMail") || {}).value.trim(), model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
         }
@@ -2995,7 +3062,7 @@ function shrinkPhoto(file, cb){
 }
 function onProfileGo(){
   var editing = !!(DB.profile && AUTH.session);
-  var v = {name: $("oName").value.trim(), cls: (DB.profile && DB.profile.cls) || "", age: (DB.profile && DB.profile.age) || "", lang: $("oLang").value, school: (DB.profile && DB.profile.school) || "", from: $("oFrom").value.trim(), band: (DB.profile && typeof DB.profile.band === "number") ? DB.profile.band : undefined, level: (DB.profile && typeof DB.profile.level === "number") ? DB.profile.level : undefined, pic: pendPic === null ? ((DB.profile && DB.profile.pic) || "") : pendPic};
+  var v = {name: toTitleCase($("oName").value.trim()), cls: (DB.profile && DB.profile.cls) || "", age: (DB.profile && DB.profile.age) || "", lang: $("oLang").value, school: toTitleCase((DB.profile && DB.profile.school) || ""), from: toTitleCase($("oFrom").value.trim()), band: (DB.profile && typeof DB.profile.band === "number") ? DB.profile.band : undefined, level: (DB.profile && typeof DB.profile.level === "number") ? DB.profile.level : undefined, pic: pendPic === null ? ((DB.profile && DB.profile.pic) || "") : pendPic};
   var uname = slugUser($("oUser").value);
   if(!v.name || !v.from){ authError("oMsg", "Please add your name and city."); return; }
   if(!uname){ authError("oMsg", "Please choose a username using letters and numbers, with no spaces."); return; }
@@ -3158,9 +3225,9 @@ RENDER.activate = function(){
 };
 function pilotRequestId(){ return "REQ-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 6).toUpperCase(); }
 function pilotSubmitRequest(){
-  var name = $("rqName").value.trim(), email = $("rqEmail").value.trim(), phone = $("rqPhone").value.trim();
-  var cls = $("rqCls").value, school = $("rqSch").value.trim(), board = $("rqBoard").value, note = $("rqNote").value.trim();
-  var gname = $("rqGName").value.trim(), gemail = $("rqGEmail").value.trim(), gphone = $("rqGPhone").value.trim();
+  var name = toTitleCase($("rqName").value.trim()), email = $("rqEmail").value.trim(), phone = $("rqPhone").value.trim();
+  var cls = $("rqCls").value, school = toTitleCase($("rqSch").value.trim()), board = $("rqBoard").value, note = $("rqNote").value.trim();
+  var gname = toTitleCase($("rqGName").value.trim()), gemail = $("rqGEmail").value.trim(), gphone = $("rqGPhone").value.trim();
   if(!name){ $("rqMsg").textContent = "Please add the student's name."; return; }
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $("rqMsg").textContent = "Please add a valid student email."; return; }
   if(String(phone).replace(/\D/g, "").length < 8){ $("rqMsg").textContent = "Please add a student phone number."; return; }
@@ -3524,19 +3591,20 @@ function askBookMeta(isChapter, cb){
   sems = uniq(sems.concat(["Term 1","Term 2","Annual","Unit 1","Unit 2"]));
   var meta = PENDMETA || {};
   var h = "<h3 style='margin-top:0'>Where does this belong?</h3><p class='status'>Tell me the subject, semester and book so I can keep your study organised subject-wise, semester-wise, book-wise and chapter-wise.</p>";
-  h += "<div class='row'><div style='flex:1;min-width:140px'><label for='mSubj'>Subject</label><input id='mSubj' list='mSubjList' value=\"" + esc(meta.subject || "") + "\" placeholder='e.g. Science'><datalist id='mSubjList'>" + subs.map(function(s){ return "<option value=\"" + esc(s) + "\">"; }).join("") + "</datalist></div>";
-  h += "<div style='flex:1;min-width:140px'><label for='mSem'>Semester</label><input id='mSem' list='mSemList' value=\"" + esc(meta.sem || "") + "\" placeholder='e.g. Semester 1'><datalist id='mSemList'>" + sems.map(function(s){ return "<option value=\"" + esc(s) + "\">"; }).join("") + "</datalist></div></div>";
-  h += "<div class='row'><div style='flex:1;min-width:140px'><label for='mBook'>Book</label><input id='mBook' value=\"" + esc(meta.book || "") + "\" placeholder='e.g. Curiosity'></div>";
-  h += "<div style='flex:1;min-width:140px'><label for='mChap'>Chapter (only for one chapter)</label><input id='mChap' value=\"" + esc(meta.chapter || "") + "\" placeholder='leave empty for a whole book'></div></div>";
+  h += "<div class='row'><div style='flex:1;min-width:140px'><label for='mSubj'>Subject</label><input id='mSubj' list='mSubjList' autocapitalize='words' value=\"" + esc(meta.subject || "") + "\" placeholder='e.g. Science'><datalist id='mSubjList'>" + subs.map(function(s){ return "<option value=\"" + esc(s) + "\">"; }).join("") + "</datalist></div>";
+  h += "<div style='flex:1;min-width:140px'><label for='mSem'>Semester</label><input id='mSem' list='mSemList' autocapitalize='words' value=\"" + esc(meta.sem || "") + "\" placeholder='e.g. Semester 1'><datalist id='mSemList'>" + sems.map(function(s){ return "<option value=\"" + esc(s) + "\">"; }).join("") + "</datalist></div></div>";
+  h += "<div class='row'><div style='flex:1;min-width:140px'><label for='mBook'>Book</label><input id='mBook' autocapitalize='words' value=\"" + esc(meta.book || "") + "\" placeholder='e.g. Curiosity'></div>";
+  h += "<div style='flex:1;min-width:140px'><label for='mChap'>Chapter (only for one chapter)</label><input id='mChap' autocapitalize='words' value=\"" + esc(meta.chapter || "") + "\" placeholder='leave empty for a whole book'></div></div>";
   h += "<p class='status' style='margin:6px 0 0'>Type a chapter name to upload a single chapter; leave it empty to split the whole book into chapters. I will place everything under the subject and semester you choose.</p>";
   h += "<div class='row' style='margin-top:12px'><button class='primary' id='mGo'>Choose file</button><button data-close>Cancel</button></div>";
   var m = popup(h);
+  m.el.querySelectorAll("#mSubj, #mSem, #mBook, #mChap").forEach(function(inp){ attachTitleCaseInput(inp); });
   m.el.querySelector("#mGo").onclick = function(){
     PENDMETA = {
-      subject: m.el.querySelector("#mSubj").value.trim() || "General",
-      sem: m.el.querySelector("#mSem").value.trim(),
-      book: m.el.querySelector("#mBook").value.trim(),
-      chapter: m.el.querySelector("#mChap").value.trim()
+      subject: toTitleCase(m.el.querySelector("#mSubj").value.trim()) || "General",
+      sem: toTitleCase(m.el.querySelector("#mSem").value.trim()),
+      book: toTitleCase(m.el.querySelector("#mBook").value.trim()),
+      chapter: toTitleCase(m.el.querySelector("#mChap").value.trim())
     };
     m.close(); cb(PENDMETA);
   };
@@ -4256,24 +4324,31 @@ function showSplit(){
   var SUBOPT = uniq(subjList().concat(["Maths","Science","Physics","Chemistry","Biology","English","Hindi","Social Science","History","Geography","Economics","Civics","Computer Science","Accountancy","Business Studies","EVS","General"])).sort();
   var SEMOPT = (function(){ var a = [], i; for(i = 1; i <= 8; i++) a.push("Semester " + i); return a.concat(["Term 1","Term 2","Annual"]); })();
   var h = "<h3 style='margin-top:0'>" + esc(pend.book) + " · " + n + " pages</h3><p class='status'>Tell me where this belongs. Everything will be grouped subject-wise, semester-wise and book-wise.</p>";
-  h += "<div class='row'><div style='flex:1;min-width:130px'><label for='spSubj'>Subject</label><input id='spSubj' value=\"" + esc(pend.subject) + "\" list='spSubjList'><datalist id='spSubjList'>" + SUBOPT.map(function(s){ return "<option value=\"" + esc(s) + "\">"; }).join("") + "</datalist></div>";
-  h += "<div style='flex:1;min-width:110px'><label for='spSem'>Semester</label><input id='spSem' value=\"" + esc(pend.sem) + "\" list='spSemList'><datalist id='spSemList'>" + SEMOPT.map(function(s){ return "<option value=\"" + esc(s) + "\">"; }).join("") + "</datalist></div></div>";
-  h += "<div class='row'><div style='flex:1;min-width:160px'><label for='spBook'>Book</label><input id='spBook' value=\"" + esc(pend.book) + "\"></div>";
-  if(pend.single || pend.rows.length === 1) h += "<div style='flex:1;min-width:160px'><label for='spChap'>Chapter name</label><input id='spChap' value=\"" + esc(pend.rows[0] ? pend.rows[0].name : "") + "\"></div>";
+  h += "<div class='row'><div style='flex:1;min-width:130px'><label for='spSubj'>Subject</label><input id='spSubj' autocapitalize='words' value=\"" + esc(pend.subject) + "\" list='spSubjList'><datalist id='spSubjList'>" + SUBOPT.map(function(s){ return "<option value=\"" + esc(s) + "\">"; }).join("") + "</datalist></div>";
+  h += "<div style='flex:1;min-width:110px'><label for='spSem'>Semester</label><input id='spSem' autocapitalize='words' value=\"" + esc(pend.sem) + "\" list='spSemList'><datalist id='spSemList'>" + SEMOPT.map(function(s){ return "<option value=\"" + esc(s) + "\">"; }).join("") + "</datalist></div></div>";
+  h += "<div class='row'><div style='flex:1;min-width:160px'><label for='spBook'>Book</label><input id='spBook' autocapitalize='words' value=\"" + esc(pend.book) + "\"></div>";
+  if(pend.single || pend.rows.length === 1) h += "<div style='flex:1;min-width:160px'><label for='spChap'>Chapter name</label><input id='spChap' autocapitalize='words' value=\"" + esc(pend.rows[0] ? pend.rows[0].name : "") + "\"></div>";
   h += "</div>";
   h += "<p class='status'>Check the chapter" + (pend.rows.length > 1 ? "s" : "") + " below. Fix any name or starting page, add or remove rows, then save.</p>";
   pend.rows.sort(function(a, b){return a.start - b.start});
   pend.rows.forEach(function(r, i){
     var end = i + 1 < pend.rows.length ? pend.rows[i+1].start - 1 : n;
-    h += "<div class='row'><input type='text' data-i='" + i + "' data-f='name' value='" + esc(r.name).replace(/'/g, "&#39;") + "'><span class='status'>from page</span><input type='number' min='1' max='" + n + "' data-i='" + i + "' data-f='start' value='" + r.start + "' style='width:76px;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit'><span class='status'>to " + end + "</span><button data-del='" + i + "'>✕</button></div>";
+    h += "<div class='row'><input type='text' autocapitalize='words' data-i='" + i + "' data-f='name' value='" + esc(r.name).replace(/'/g, "&#39;") + "'><span class='status'>from page</span><input type='number' inputmode='numeric' pattern='[0-9]*' min='1' max='" + n + "' data-i='" + i + "' data-f='start' value='" + r.start + "' style='width:76px;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit'><span class='status'>to " + end + "</span><button data-del='" + i + "'>✕</button></div>";
   });
   h += "<div class='splitActionsBar'><div class='row' style='margin:0 0 8px'><button id='spAdd'>＋ Add row</button><button id='spAi'> Detect chapters with AI</button></div><div class='row' style='margin:0'><button class='primary' id='spSave'>Save " + pend.rows.length + " chapter" + (pend.rows.length > 1 ? "s" : "") + "</button><button id='spCancel'>Cancel</button></div><div id='spMsg' class='status' style='margin-top:4px'></div></div>";
   el.innerHTML = h;
-  el.querySelectorAll("input[data-i]").forEach(function(inp){ inp.onchange = function(){ var r = pend.rows[+inp.dataset.i]; if(!r) return; r[inp.dataset.f] = inp.dataset.f === "start" ? Math.max(1, Math.min(n, +inp.value || 1)) : inp.value; showSplit(); }; });
-  $("spSubj").onchange = function(){ pend.subject = this.value.trim() || "General"; };
-  $("spSem").onchange = function(){ pend.sem = this.value.trim(); };
-  $("spBook").onchange = function(){ pend.book = this.value.trim() || pend.book; showSplit(); };
-  if($("spChap")) $("spChap").onchange = function(){ var v = this.value.trim() || "Chapter 1"; if(pend.rows[0]) pend.rows[0].name = v; };
+  el.querySelectorAll("input[data-i]").forEach(function(inp){
+    if(inp.dataset.f === "name") attachTitleCaseInput(inp);
+    inp.onchange = function(){
+      var r = pend.rows[+inp.dataset.i]; if(!r) return;
+      r[inp.dataset.f] = inp.dataset.f === "start" ? Math.max(1, Math.min(n, +inp.value || 1)) : toTitleCase(inp.value.trim());
+      showSplit();
+    };
+  });
+  $("spSubj").onchange = function(){ pend.subject = toTitleCase(this.value.trim()) || "General"; };
+  $("spSem").onchange = function(){ pend.sem = toTitleCase(this.value.trim()); };
+  $("spBook").onchange = function(){ pend.book = toTitleCase(this.value.trim()) || pend.book; showSplit(); };
+  if($("spChap")) $("spChap").onchange = function(){ var v = toTitleCase(this.value.trim()) || "Chapter 1"; if(pend.rows[0]) pend.rows[0].name = v; };
   el.querySelectorAll("[data-del]").forEach(function(b){ b.onclick = function(){ pend.rows.splice(+b.dataset.del, 1); showSplit(); }; });
   $("spAdd").onclick = function(){ var last = pend.rows.length ? pend.rows[pend.rows.length-1].start : 0; pend.rows.push({name: "New chapter", start: Math.min(n, last + 1)}); showSplit(); };
   $("spCancel").onclick = function(){ pend = null; el.classList.add("hidden"); $("v-study").classList.remove("split-mode"); setViewH(); fillSel(); };
@@ -10045,7 +10120,7 @@ function pilotFromForm(){
   var board = (req && req.board) || ($("oBoard") ? $("oBoard").value : "");
   if(!board) return {ok: false, msg: "Please choose your board or curriculum."};
   var g = (req && req.guardian) || {};
-  var gname = g.name || ($("oGName") ? $("oGName").value.trim() : "");
+  var gname = toTitleCase(g.name || ($("oGName") ? $("oGName").value.trim() : ""));
   var gemail = g.email || ($("oGEmail") ? $("oGEmail").value.trim() : "");
   var gphone = g.phone || ($("oGPhone") ? $("oGPhone").value.trim() : "");
   if(!gname) return {ok: false, msg: "Please add your parent or guardian’s name."};
@@ -10718,7 +10793,7 @@ function upgradeModal(reason, startTab, plan){
             "<div style='flex:1;min-width:190px'><p class='status' style='margin:0 0 8px'>Scan QR or send <b>₹" + amt + "</b> via GPay / PhonePe / Paytm to <code>" + esc(SUB_PLAN.upiId) + "</code></p>" +
             "<div class='row' style='margin:0'><a href='" + esc(upiHref) + "' style='text-decoration:none'><button type='button' class='primary'>Open UPI app (₹" + amt + ")</button></a><button type='button' id='upiCopyId'>Copy UPI ID</button></div></div></div>"
           : "<p class='status' style='margin:0 0 8px'>Enter the 12-digit UTR / UPI Transaction ID after paying <b>₹" + amt + "</b> to your organiser's UPI ID. Your ENGRAMOS Pro access unlocks as soon as the organiser confirms the payment.</p>") +
-        "<label style='margin-top:4px'>12-digit UTR / Transaction ID</label><input id='upiUtr' placeholder='e.g. 431612345678'>" +
+        "<label style='margin-top:4px'>12-digit UTR / Transaction ID</label><input id='upiUtr' inputmode='numeric' pattern='[0-9]*' placeholder='e.g. 431612345678'>" +
         "<label style='margin-top:6px'>Parent email (for receipt &amp; license key)</label><input id='upiMail' type='email' placeholder='parent@example.com' value='" + esc((DB.pilot && DB.pilot.guardian && DB.pilot.guardian.email) || "") + "'>" +
         "<div class='row' style='margin-top:10px'><button class='primary' id='upiSubBtn'>Submit UTR for verification</button></div></div>";
       if(m.el.querySelector("#upiCopyId")) m.el.querySelector("#upiCopyId").onclick = function(){ copyText(SUB_PLAN.upiId, "UPI ID copied"); };
@@ -11810,8 +11885,12 @@ else show("intro");
     };
   });
 
-  // Initialize theme and WhatsApp smart pack receiver
+  // Initialize theme, Title-Case listeners and WhatsApp smart pack receiver
   initTheme();
+  ["oName", "oFrom", "oGName", "rqName", "rqSch", "rqGName"].forEach(function(id){
+    var el = $(id);
+    if(el) attachTitleCaseInput(el);
+  });
   checkIncomingSharedPack();
   window.addEventListener("hashchange", checkIncomingSharedPack);
 </script>
