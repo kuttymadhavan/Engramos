@@ -43,8 +43,8 @@ input[type=text]{flex:1;min-width:150px}textarea{width:100%;min-height:90px}labe
 .big{font-size:2rem;font-weight:700;color:var(--acc);line-height:1.1}.stat{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.stat>div{flex:1;min-width:105px;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;background:var(--card)}
 .tag{font-size:.78rem;padding:2px 8px;border-radius:99px;margin-left:6px}.tag.s{background:var(--okbg);color:var(--ok)}.tag.w{background:var(--badbg);color:var(--bad)}.tag.a{background:var(--acc2bg);color:var(--acc2ink)}
 .chip{display:inline-block;font-size:.8rem;border:1px solid var(--line);border-radius:99px;padding:1px 9px;margin:2px;color:var(--mute)}.chip.on{background:var(--okbg);color:var(--ok);border-color:var(--ok)}
-.modal{position:fixed;inset:0;background:rgba(18,26,46,.42);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:20;display:flex;align-items:center;justify-content:center;padding:18px;animation:fade .2s}.modal>div{background:var(--card);border-radius:20px;max-width:430px;width:100%;padding:18px;max-height:85vh;overflow:auto;box-shadow:0 24px 70px rgba(15,24,48,.25);animation:pop .35s}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--acc);color:var(--onacc);padding:10px 18px;border-radius:99px;z-index:30;font-weight:600;box-shadow:var(--shadow);animation:slide .3s}
+.modal{position:fixed;inset:0;background:rgba(18,26,46,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:18px;animation:fade .2s;box-sizing:border-box}.modal>div{background:var(--card);border-radius:20px;max-width:440px;width:100%;padding:20px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 70px rgba(15,24,48,.3);animation:pop .35s;box-sizing:border-box;margin-bottom:calc(var(--safe-bottom) + 12px)}
+.toast{position:fixed;left:50%;bottom:calc(var(--bottom-dock-total) + 16px);transform:translateX(-50%);background:var(--acc);color:var(--onacc);padding:10px 18px;border-radius:99px;z-index:3000;font-weight:600;box-shadow:var(--shadow);animation:slide .3s;white-space:nowrap;max-width:90vw;text-align:center}
 .flip{min-height:160px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.15rem;padding:20px;cursor:pointer;border:2px solid var(--acc);border-radius:18px;background:var(--accbg);animation:pop .4s}
 .node{cursor:pointer;transform-box:fill-box;transform-origin:center;transition:transform .2s}.node:hover{transform:scale(1.1)}svg text{font-family:inherit}
 .fact{border-left:5px solid var(--acc2);padding:10px 12px;margin:10px 0;background:var(--acc2bg);border-radius:10px}
@@ -168,7 +168,7 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:8px 0 2px}
 .chips button{font-size:.8rem;padding:5px 10px;border-radius:999px}
 #oDanger{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
 body.method-open #v-study>h1{display:none}
-body.fit main{padding-bottom:78px}
+/* Note: body.fit main padding is consolidated below to respect --bottom-dock-total */
 @media (max-width:560px){.brandTag{display:none}}
 @media (max-width:620px){#scTitle{display:none!important}#bHome .lbl{display:none}#whoChip{max-width:30vw}.bar1{gap:6px}
  #bKey{display:none!important}
@@ -241,10 +241,18 @@ body.fit main{padding-bottom:78px}
 /* ---- one screen per section ---- */
 #v-study,#v-progress,#v-perf,#v-hist,#v-rep,#v-rec,#v-fun,#v-note,#v-mist,#v-tools,#v-play,#v-tips,#v-plan{
   display:flex;flex-direction:column;min-height:0;
-  height:var(--viewH,calc(100dvh - 132px));
+  height:var(--viewH,calc(100dvh - var(--bottom-dock-total) - 60px));
 }
-#pgIn,#pfIn,#hsIn,#rpIn,#rcIn,#fnIn,#nbIn,#miIn,#tlIn,#plIn,#tpIn,#spIn,#v-study>#stBody{
+#v-study:has(#split:not(.hidden)),
+#v-study:has(#upl:not(.hidden)),
+#v-study.split-mode {
+  height: auto !important;
+  min-height: var(--viewH, calc(100dvh - var(--bottom-dock-total) - 60px));
+}
+#pgIn,#pfIn,#hsIn,#rpIn,#rcIn,#fnIn,#nbIn,#miIn,#tlIn,#plIn,#tpIn,#spIn,#v-study>#stBody,#homeIn{
   flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;
+  padding-bottom: 32px !important;
+  box-sizing: border-box;
 }
 #v-study>#stBody{display:flex;flex-direction:column}
 #v-study>#stBody>#mp{flex:1;min-height:0;overflow:auto}
@@ -252,6 +260,8 @@ body:not(.method-open) #v-study>#stBody>#mp{flex:0 0 auto;padding:8px 12px}
 #v-study>#stBody>#mp>p.status:only-child{margin:0;padding:2px 0}
 #v-study>#stBody>#vidAsk:empty{display:none}
 #v-study>#chCard,#v-study>#upl,#v-study>#split{flex:none}
+#split{box-sizing:border-box;padding-bottom:24px!important;margin-bottom:calc(var(--bottom-dock-total) + 36px)!important}
+.splitActionsBar{position:sticky;bottom:var(--bottom-dock-total);background:var(--card);padding:12px 10px;border-top:1px solid var(--line);border-radius:0 0 16px 16px;margin-top:16px;z-index:50;box-shadow:0 -4px 16px rgba(0,0,0,0.08)}
 @media (min-width:621px){#v-study .methodsGrid{grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px}}
 #v-study .mth.tile{min-height:0;padding:8px 6px;gap:4px}
 #v-study .mth.tile .ic{width:32px;height:32px;padding:6px}
@@ -441,8 +451,9 @@ body:not(.method-open) #v-study>#stBody>#mp{flex:0 0 auto;padding:8px 12px}
   --shadow-sm: 0 4px 14px rgba(31, 39, 64, 0.06);
   --tab-bar-height: 58px;
   --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
   --bottom-dock-total: calc(var(--tab-bar-height) + var(--safe-bottom));
+  --viewH: calc(100dvh - var(--bottom-dock-total) - 60px);
   color-scheme: light;
 }
 
@@ -498,8 +509,8 @@ h1, h2, h3 {
 }
 
 /* Ensure #main always has bottom scroll padding so bottom menu never obscures anything */
-#main, main {
-  padding-bottom: calc(var(--bottom-dock-total) + 24px) !important;
+#main, main, body.fit main {
+  padding-bottom: calc(var(--bottom-dock-total) + 48px) !important;
   box-sizing: border-box;
 }
 
@@ -514,18 +525,20 @@ h1, h2, h3 {
   left: 0;
   right: 0;
   bottom: 0;
-  height: calc(56px + env(safe-area-inset-bottom, 0px));
-  min-height: 56px;
-  padding-top: 4px;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  min-height: 64px;
+  height: calc(58px + max(env(safe-area-inset-bottom, 0px), 16px));
+  padding-top: 6px;
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+  padding-left: max(env(safe-area-inset-left, 0px), 8px);
+  padding-right: max(env(safe-area-inset-right, 0px), 8px);
   box-sizing: border-box;
   background: var(--card);
   border-top: 1px solid var(--line);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  align-items: start;
+  align-items: center;
   z-index: 1000;
-  box-shadow: 0 -3px 16px rgba(31, 39, 64, 0.08);
+  box-shadow: 0 -3px 18px rgba(15, 21, 36, 0.12);
   user-select: none;
   -webkit-user-select: none;
 }
@@ -535,8 +548,9 @@ h1, h2, h3 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 48px;
-  padding: 2px 0;
+  height: 100%;
+  min-height: 44px;
+  padding: 3px 0;
   background: transparent;
   border: none;
   color: var(--mute);
@@ -560,11 +574,13 @@ h1, h2, h3 {
 }
 
 #bottomNav .navTab span {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
-  line-height: 1.1;
-  margin-top: 2px;
+  line-height: 1.2;
+  margin-top: 3px;
   display: block;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
 }
 
 #bottomNav .navTab.active {
@@ -3684,7 +3700,7 @@ function fixSplitWords(pages){
 var pend = null, LIM = 300000;
 $("file").onchange = async function(){
   var f = this.files[0]; this.value = ""; if(!f) return;
-  $("split").classList.add("hidden"); setMsg("");
+  $("split").classList.add("hidden"); $("v-study").classList.remove("split-mode"); setViewH(); setMsg("");
   try {
     $("info").textContent = "Opening the PDF…";
     await loadPdf();
@@ -3753,6 +3769,9 @@ function headingRows(pages){
 }
 function showSplit(){
   var el = $("split"), n = pend.pages.length; el.classList.remove("hidden");
+  if($("upl")) $("upl").classList.add("hidden");
+  $("v-study").classList.add("split-mode");
+  setViewH();
   if(pend.subject === undefined) pend.subject = "General";
   if(pend.sem === undefined) pend.sem = "";
   var SUBOPT = uniq(subjList().concat(["Maths","Science","Physics","Chemistry","Biology","English","Hindi","Social Science","History","Geography","Economics","Civics","Computer Science","Accountancy","Business Studies","EVS","General"])).sort();
@@ -3769,7 +3788,7 @@ function showSplit(){
     var end = i + 1 < pend.rows.length ? pend.rows[i+1].start - 1 : n;
     h += "<div class='row'><input type='text' data-i='" + i + "' data-f='name' value='" + esc(r.name).replace(/'/g, "&#39;") + "'><span class='status'>from page</span><input type='number' min='1' max='" + n + "' data-i='" + i + "' data-f='start' value='" + r.start + "' style='width:76px;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit'><span class='status'>to " + end + "</span><button data-del='" + i + "'>✕</button></div>";
   });
-  h += "<div class='row'><button id='spAdd'>＋ Add row</button><button id='spAi'> Detect chapters with AI</button></div><div class='row'><button class='primary' id='spSave'>Save " + pend.rows.length + " chapter" + (pend.rows.length > 1 ? "s" : "") + "</button><button id='spCancel'>Cancel</button></div><div id='spMsg' class='status'></div>";
+  h += "<div class='splitActionsBar'><div class='row' style='margin:0 0 8px'><button id='spAdd'>＋ Add row</button><button id='spAi'> Detect chapters with AI</button></div><div class='row' style='margin:0'><button class='primary' id='spSave'>Save " + pend.rows.length + " chapter" + (pend.rows.length > 1 ? "s" : "") + "</button><button id='spCancel'>Cancel</button></div><div id='spMsg' class='status' style='margin-top:4px'></div></div>";
   el.innerHTML = h;
   el.querySelectorAll("input[data-i]").forEach(function(inp){ inp.onchange = function(){ var r = pend.rows[+inp.dataset.i]; if(!r) return; r[inp.dataset.f] = inp.dataset.f === "start" ? Math.max(1, Math.min(n, +inp.value || 1)) : inp.value; showSplit(); }; });
   $("spSubj").onchange = function(){ pend.subject = this.value.trim() || "General"; };
@@ -3778,7 +3797,7 @@ function showSplit(){
   if($("spChap")) $("spChap").onchange = function(){ var v = this.value.trim() || "Chapter 1"; if(pend.rows[0]) pend.rows[0].name = v; };
   el.querySelectorAll("[data-del]").forEach(function(b){ b.onclick = function(){ pend.rows.splice(+b.dataset.del, 1); showSplit(); }; });
   $("spAdd").onclick = function(){ var last = pend.rows.length ? pend.rows[pend.rows.length-1].start : 0; pend.rows.push({name: "New chapter", start: Math.min(n, last + 1)}); showSplit(); };
-  $("spCancel").onclick = function(){ pend = null; el.classList.add("hidden"); fillSel(); };
+  $("spCancel").onclick = function(){ pend = null; el.classList.add("hidden"); $("v-study").classList.remove("split-mode"); setViewH(); fillSel(); };
   $("spAi").onclick = aiSplit;
   $("spSave").onclick = saveSplit;
 }
@@ -3810,7 +3829,7 @@ function saveSplit(){
     added++;
   });
   if(!firstId){ $("spMsg").innerHTML = "<span class='err'>No readable text in these page ranges.</span>"; return; }
-  logEv("upload", "Added chapters from “" + pend.book + "” under " + (pend.subject || "General") + (pend.sem ? " · " + pend.sem : "")); DB.cur = firstId; pend = null; save(); $("split").classList.add("hidden"); fillSel(); clearOut();
+  logEv("upload", "Added chapters from “" + pend.book + "” under " + (pend.subject || "General") + (pend.sem ? " · " + pend.sem : "")); DB.cur = firstId; pend = null; save(); $("split").classList.add("hidden"); $("v-study").classList.remove("split-mode"); setViewH(); fillSel(); clearOut();
   if(capped){ upgradeModal("Added " + added + " chapter(s) up to the " + FREE_CHAPTER_LIMIT + "-chapter Free limit (" + capped + " skipped). Go Pro for full multi-chapter books."); }
   else if(skipped) setMsg(skipped + " empty section(s) were skipped.");
 }
@@ -11228,13 +11247,18 @@ RENDER.fun = function(){
 };
 
 function setViewH(){
-  var hd = $("top"), h = hd ? hd.getBoundingClientRect().height : 99;
-  var av = Math.max(300, Math.round(window.innerHeight - h - 30));
+  var hd = $("top"), h = hd ? hd.getBoundingClientRect().height : 52;
+  var bn = $("bottomNav");
+  var bh = (bn && !bn.classList.contains("hidden") && getComputedStyle(bn).display !== "none") ? bn.getBoundingClientRect().height : 0;
+  var av = Math.max(300, Math.round(window.innerHeight - h - bh));
   document.documentElement.style.setProperty("--viewH", av + "px");
 }
 window.addEventListener("resize", function(){
   setViewH();
   if(curView === "home" && (window.innerWidth < 620) !== homeNarrow) RENDER.home();
+});
+window.addEventListener("orientationchange", function(){
+  setTimeout(setViewH, 100);
 });
 load(); anaInit(); pilotLoadPending(); setViewH(); if(aiCfg() && !IDB_HYDRATING) save(); if(DB.engine === "ai" && !aiCfg()){ DB.engine = "local"; if(!IDB_HYDRATING) save(); } refreshKeyBtn();
 try { pilotRetryRequest(); subRetryQueue(); } catch(e){}
