@@ -50,6 +50,7 @@ input[type=text]{flex:1;min-width:150px}textarea{width:100%;min-height:90px}labe
 .fact{border-left:5px solid var(--acc2);padding:10px 12px;margin:10px 0;background:var(--acc2bg);border-radius:10px}
 #v-onb{min-height:68vh;flex-direction:column;justify-content:center}#v-onb:not(.hidden){display:flex}.center{width:100%;max-width:520px;margin:0 auto}.center .hero{text-align:center}.center .form button{width:100%}@media (max-width:600px){h1{font-size:1.3rem}button{padding:9px 11px}.stat>div{min-width:90px}.grid{grid-template-columns:1fr 1fr;gap:8px}.mth{padding:10px}.brand{font-size:1.32rem}}
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:8px 16px;border-color:var(--acc2);border-width:2px}.pill svg{width:18px;height:18px;flex:none}.avatar{width:42px;height:42px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid var(--acc)}.avatar svg{width:100%;height:100%;display:block}
+.themeToggleBtn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;min-width:38px;padding:0;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;transition:all .2s ease}.themeToggleBtn:hover{border-color:var(--acc);transform:scale(1.06)}.themeToggleBtn svg{width:19px;height:19px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .gh{margin:18px 0 8px;font-size:.82rem;color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
 .grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.mth.tile{flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;gap:6px;padding:16px 10px;min-height:132px}.tile .ic{width:50px;height:50px;padding:11px;border-radius:50%;background:var(--accbg)}.tile b{font-size:1rem}.mth.tile.on .ic{background:var(--acc);color:var(--onacc)}
 .grow{display:flex;align-items:center;gap:12px;justify-content:center;background:var(--acc2bg);border-radius:14px;padding:8px 12px;margin:10px 0;text-align:left}.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}.mi{display:inline-block;width:15px;height:15px;vertical-align:-2px;margin-right:2px}.mi svg{width:100%;height:100%}th,td{padding:4px 8px;text-align:left;border-bottom:1px solid var(--line)}
@@ -170,19 +171,27 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:8px 0 2px}
 body.method-open #v-study>h1{display:none}
 /* Note: body.fit main padding is consolidated below to respect --bottom-dock-total */
 @media (max-width:560px){.brandTag{display:none}}
-@media (max-width:620px){#scTitle{display:none!important}#bHome .lbl{display:none}#whoChip{max-width:30vw}.bar1{gap:6px}
- #bKey{display:none!important}
- .cta{padding:10px 12px}
- .cta .status{display:none}
- .cta .row{margin:6px 0 0;flex-wrap:nowrap}
- .cta button{flex:1;min-width:0;padding:8px 10px;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
- #v-progress .stat>div,#v-perf .stat>div{min-width:0}
- #v-study #chSel{flex:1 1 100%;min-width:0}
- #v-study #chCard #packInfo{display:none}
- #v-study .methodsGrid{grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:6px}
- #v-study .mth.tile{flex-direction:row;align-items:center;justify-content:flex-start;text-align:left;min-height:0;padding:8px;gap:8px}
- #v-study .mth.tile .ic{width:24px;height:24px;padding:2px}
- #v-study .mth.tile b{font-size:.84rem;line-height:1.2}
+@media (max-width:620px){
+  #scTitle{display:none!important}
+  .barL{flex:0 0 auto!important;max-width:none!important;overflow:visible!important}
+  .brand{flex-shrink:0!important;font-size:1.22rem!important;overflow:visible!important;min-width:max-content!important;letter-spacing:-0.01em!important}
+  #whoChip{max-width:24vw!important;font-size:0.75rem!important;padding:4px 8px!important}
+  #aiStat{max-width:22vw!important;font-size:0.73rem!important;padding:4px 7px!important}
+  .bar1{gap:6px!important;justify-content:space-between!important}
+  #bKey{display:none!important}
+  .themeToggleBtn{width:34px!important;height:34px!important;min-width:34px!important;padding:0!important}
+  .cta{padding:10px 12px}
+  .cta .status{display:none}
+  .cta .row{margin:6px 0 0;flex-wrap:nowrap}
+  .cta button{flex:1;min-width:0;padding:8px 10px;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #v-progress .stat>div,#v-perf .stat>div{min-width:0}
+  #v-study #chSel{flex:1 1 100%;min-width:0}
+  #v-study #chCard #packInfo{display:none}
+  #v-study .methodsGrid{grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:6px}
+  #v-study .mth.tile{flex-direction:row;align-items:center;justify-content:flex-start;text-align:left;min-height:0;padding:8px;gap:8px}
+  #v-study .mth.tile .ic{width:24px;height:24px;padding:2px}
+  #v-study .mth.tile b{font-size:.84rem;line-height:1.2}
+}
  #v-study .mth.tile .badge{position:static;margin:0}
  #v-study #chCard button{padding:6px 8px;font-size:.82rem}
  #v-study #chCard #engRow{flex-wrap:wrap;gap:6px}
@@ -255,7 +264,7 @@ body.method-open #v-study>h1{display:none}
   box-sizing: border-box;
 }
 #v-study>#stBody{display:flex;flex-direction:column}
-#v-study>#stBody>#mp{flex:1;min-height:0;overflow:auto}
+#v-study>#stBody>#mp{flex:1;min-height:0;overflow:auto;padding-bottom:32px!important;box-sizing:border-box}
 body:not(.method-open) #v-study>#stBody>#mp{flex:0 0 auto;padding:8px 12px}
 #v-study>#stBody>#mp>p.status:only-child{margin:0;padding:2px 0}
 #v-study>#stBody>#vidAsk:empty{display:none}
@@ -449,9 +458,9 @@ body:not(.method-open) #v-study>#stBody>#mp{flex:0 0 auto;padding:8px 12px}
   --onacc2: #06352f;
   --shadow: 0 10px 30px rgba(31, 39, 64, 0.08);
   --shadow-sm: 0 4px 14px rgba(31, 39, 64, 0.06);
-  --tab-bar-height: 58px;
+  --tab-bar-height: 56px;
   --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+  --safe-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
   --bottom-dock-total: calc(var(--tab-bar-height) + var(--safe-bottom));
   --viewH: calc(100dvh - var(--bottom-dock-total) - 60px);
   color-scheme: light;
@@ -525,10 +534,10 @@ h1, h2, h3 {
   left: 0;
   right: 0;
   bottom: 0;
-  min-height: 64px;
-  height: calc(58px + max(env(safe-area-inset-bottom, 0px), 16px));
+  min-height: 70px;
+  height: calc(56px + max(env(safe-area-inset-bottom, 0px), 20px));
   padding-top: 6px;
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
   padding-left: max(env(safe-area-inset-left, 0px), 8px);
   padding-right: max(env(safe-area-inset-right, 0px), 8px);
   box-sizing: border-box;
@@ -536,7 +545,7 @@ h1, h2, h3 {
   border-top: 1px solid var(--line);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  align-items: center;
+  align-items: start;
   z-index: 1000;
   box-shadow: 0 -3px 18px rgba(15, 21, 36, 0.12);
   user-select: none;
@@ -547,10 +556,10 @@ h1, h2, h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100%;
+  justify-content: flex-start;
+  height: 48px;
   min-height: 44px;
-  padding: 3px 0;
+  padding: 3px 0 0;
   background: transparent;
   border: none;
   color: var(--mute);
@@ -576,8 +585,8 @@ h1, h2, h3 {
 #bottomNav .navTab span {
   font-size: 11px;
   font-weight: 600;
-  line-height: 1.2;
-  margin-top: 3px;
+  line-height: 1.15;
+  margin-top: 2px;
   display: block;
   letter-spacing: 0.1px;
   white-space: nowrap;
@@ -674,14 +683,12 @@ h1, h2, h3 {
   border-color: var(--acc);
 }
 
-/* In Focus Mode (method open) or auth screen, hide the bottom tab bar */
-body.method-open #bottomNav,
+/* Auth screen only: hide the bottom tab bar until student logs in */
 body.auth-screen #bottomNav,
 #bottomNav.hidden {
   display: none !important;
 }
 
-body.method-open #main,
 body.auth-screen #main {
   padding-bottom: calc(var(--safe-bottom) + 24px) !important;
 }
@@ -1237,19 +1244,131 @@ body.auth-screen #main {
   box-shadow: var(--shadow-sm);
 }
 
-/* Tablet responsiveness: expand slightly on >= 768px */
-@media (min-width: 768px) {
+/* ==========================================================================
+   ADAPTIVE SCREEN BOUNDARY SYSTEM (Option A)
+   - On Desktop & Tablets (>=621px): Contained in an ergonomic smartphone stage
+     with a solid dark perimeter boundary, rounded corners, and drop shadow.
+   - On Mobile Phones (<=620px): Full responsive viewport with strict 14px safe
+     gutters, safe-area elevation, and overflow prevention so no element touches
+     the screen edges or gets clipped.
+   ========================================================================== */
+
+#appShell {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 620px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #appShell {
+    max-width: 100%;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  #top {
+    width: 100%;
+    box-sizing: border-box;
+    padding: calc(var(--safe-top) + 8px) 14px 8px;
+  }
   #main, main {
-    max-width: 680px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    overflow-x: hidden;
   }
   #bottomNav {
-    max-width: 680px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 20px 20px 0 0;
-    border-left: 1px solid var(--line);
-    border-right: 1px solid var(--line);
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    border-radius: 0;
+  }
+}
+
+@media (min-width: 621px) {
+  body {
+    background-color: #070a14;
+    background-image: radial-gradient(1100px 650px at 50% -10%, rgba(120, 140, 255, 0.14), transparent 70%),
+                      radial-gradient(900px 500px at 50% 105%, rgba(80, 210, 190, 0.08), transparent 70%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  #appShell {
+    width: 100%;
+    max-width: 480px;
+    height: min(920px, calc(100vh - 48px));
+    border: 2.5px solid var(--line);
+    border-radius: 38px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  #top {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    border-radius: 36px 36px 0 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--card);
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px 10px;
+    box-sizing: border-box;
+  }
+  #pilotBar {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  #main, main {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 12px 16px calc(var(--bottom-dock-total) + 40px) !important;
+    box-sizing: border-box;
+  }
+  #bottomNav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+    border-radius: 0 0 36px 36px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1px solid var(--line);
+    z-index: 800;
   }
   .methodsGrid2x4 {
     grid-template-columns: repeat(4, 1fr);
@@ -1259,7 +1378,8 @@ body.auth-screen #main {
 </style>
 </head>
 <body>
-<header id="top"><div class="bar1"><div class="barL"><span class="brand">ENGRAMOS</span><span class="brandTag">Memory, engineered.</span><span id="scTitle" class="hidden"></span></div><span id="whoChip" class="chip hidden"></span><span id="aiStat" class="chip hidden"></span><button id="bHome" class="pill" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M3 10l9-6 9 6z M5 10v8 M9 10v8 M15 10v8 M19 10v8 M3 20h18"/></svg><span class="lbl">Home</span></button><button id="bProf" class="avatar" title="My details" aria-label="My details"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="var(--accbg)"/><path d="M5 40c0-10 6-14 15-14s15 4 15 14z" fill="var(--acc)"/><circle cx="20" cy="21" r="7" fill="#f2c9a0"/><path d="M7 14l13-6 13 6-13 6z" fill="#2b3550"/><path d="M13 17v4c0 2 14 2 14 0v-4" fill="#2b3550"/><path d="M32 15v7" stroke="#24a99a" stroke-width="1.6"/></svg></button><button id="bKey" class="hidden">✦ Connect AI</button></div></header>
+<div id="appShell">
+<header id="top"><div class="bar1"><div class="barL"><span class="brand">ENGRAMOS</span><span class="brandTag">Memory, engineered.</span><span id="scTitle" class="hidden"></span></div><span id="whoChip" class="chip hidden"></span><span id="aiStat" class="chip hidden"></span><button id="bTheme" class="pill themeToggleBtn" title="Switch theme" aria-label="Switch theme"></button><button id="bProf" class="avatar" title="My details" aria-label="My details"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="var(--accbg)"/><path d="M5 40c0-10 6-14 15-14s15 4 15 14z" fill="var(--acc)"/><circle cx="20" cy="21" r="7" fill="#f2c9a0"/><path d="M7 14l13-6 13 6-13 6z" fill="#2b3550"/><path d="M13 17v4c0 2 14 2 14 0v-4" fill="#2b3550"/><path d="M32 15v7" stroke="#24a99a" stroke-width="1.6"/></svg></button><button id="bKey" class="hidden">✦ Connect AI</button></div></header>
 <div id="navFab" class="hidden"><button id="bBack" class="navFabBtn" title="Go back to the previous screen" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><span class="lbl">Back</span></button><button id="bFwd" class="navFabBtn" title="Go forward" aria-label="Go forward"><span class="lbl">Forward</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
 <div id="pilotBar" class="pilotBar hidden" role="status"></div>
 <main id="main">
@@ -1367,9 +1487,9 @@ body.auth-screen #main {
 <section id="v-home" class="hidden"><div id="homeIn"></div></section>
 
 <section id="v-study" class="hidden"><h1> Study</h1>
-<div class="card" id="chCard"><div class="cascade"><select id="selSubj" aria-label="Subject" title="Subject"></select><select id="selSem" aria-label="Semester" title="Semester"></select><select id="selBook" aria-label="Book" title="Book"></select><select id="chSel" aria-label="Chapter" title="Chapter"></select></div><div class="row" style="margin:8px 0 0"><button id="chAdd" class="primary">＋ Add book or chapter (PDF)</button><button id="chPaste" title="Paste textbook text or notes without a PDF">📋 Paste text</button><button id="chSyll" title="Upload your syllabus (PDF or Excel) so I can plan your study">🗓 Syllabus</button><button id="chPack" class="hidden" title="Uses the internet and your AI. Press only when online.">⚡ Smart pack (online)</button><button id="chDel" class="hidden"> Delete</button></div><input type="file" id="file" accept="application/pdf" class="hidden"><input type="file" id="sylFile" accept=".pdf,.xlsx,.xls,.csv,.tsv,.txt,application/pdf" class="hidden"><div class="row" id="engRow" style="margin:8px 0 0"><span class="status">Prepare questions:</span><select id="engSel"><option value="local">On this device (instant, no limits)</option><option value="ai">With AI (smarter, needs internet)</option></select></div><div id="packInfo" class="status"></div><div id="info" class="status"></div></div>
+<div class="card" id="chCard"><div class="cascade"><select id="selSubj" aria-label="Subject" title="Subject"></select><select id="selSem" aria-label="Semester" title="Semester"></select><select id="selBook" aria-label="Book" title="Book"></select><select id="chSel" aria-label="Chapter" title="Chapter"></select></div><div class="row" style="margin:8px 0 0"><button id="chAdd" class="primary">＋ Add book or chapter (PDF)</button><button id="chBooks" title="View all uploaded books, check pack status, build packs and delete books">📚 Books &amp; Packs</button><button id="chPaste" title="Paste textbook text or notes without a PDF">📋 Paste text</button><button id="chSyll" title="Upload your syllabus (PDF or Excel) so I can plan your study">🗓 Syllabus</button><button id="chPack" class="hidden" title="Uses the internet and your AI. Press only when online.">⚡ Smart pack (online)</button><button id="chShareWa" class="hidden" title="Share this chapter's Smart Pack with classmates via WhatsApp">📱 Share on WhatsApp</button><button id="chDel" class="hidden"> Delete</button></div><input type="file" id="file" accept="application/pdf" class="hidden"><input type="file" id="sylFile" accept=".pdf,.xlsx,.xls,.csv,.tsv,.txt,application/pdf" class="hidden"><div class="row" id="engRow" style="margin:8px 0 0"><span class="status">Prepare questions:</span><select id="engSel"><option value="local">On this device (instant, no limits)</option><option value="ai">With AI (smarter, needs internet)</option></select></div><div id="packInfo" class="status"></div><div id="info" class="status"></div></div>
 <div id="split" class="card hidden"></div>
-<div id="upl" class="card hero" style="text-align:center;padding:28px 16px"><div class="ic" style="width:64px;height:64px;margin:0 auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg></div><h2>Drop your book. I’ve got the rest.</h2><p>Add your textbook (whole book or one chapter), paste notes, or try a built-in sample. I’ll turn it into notes, flashcards, mind maps, recall drills and cram sheets.</p><div class="row" style="justify-content:center;margin:10px 0 6px"><button id="uplBtn" class="primary" style="font-size:1.05rem;padding:12px 22px">Choose my book (PDF)</button><button id="uplPaste" style="font-size:1.02rem;padding:11px 18px">📋 Paste chapter text</button></div><div class="row" style="justify-content:center;margin:4px 0 8px"><button id="uplSample">✨ Try a sample chapter</button><button id="uplMaths">🧮 Open Maths Workbench</button></div><p class="status">or drop the PDF anywhere on this card</p></div>
+<div id="upl" class="card hero" style="text-align:center;padding:28px 16px"><div class="ic" style="width:64px;height:64px;margin:0 auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg></div><h2>Drop your book. I’ve got the rest.</h2><p>Add your textbook (whole book or one chapter), paste notes, or try a built-in sample. I’ll turn it into notes, flashcards, mind maps, recall drills and cram sheets.</p><div class="row" style="justify-content:center;margin:10px 0 6px"><button id="uplBtn" class="primary" style="font-size:1.05rem;padding:12px 22px">Choose my book (PDF)</button><button id="uplPaste" style="font-size:1.02rem;padding:11px 18px">📋 Paste chapter text</button></div><div class="row" style="justify-content:center;margin:4px 0 8px"><button id="uplSample">✨ Try a sample chapter</button><button id="uplBooks" class="hidden">📚 My Books &amp; Packs</button><button id="uplMaths">🧮 Open Maths Workbench</button></div><p class="status">or drop the PDF anywhere on this card</p></div>
 <div id="stBody" class="hidden"><div id="path"></div><div id="vidAsk" class="card hero"></div><h3>How do you want to study today?</h3><div id="methods"></div><div class="card" id="mp" style="margin-top:14px"><p class="status">Pick a method to start </p></div></div><div id="msg" class="status"></div></section>
 
 <section id="v-plan" class="hidden"><div id="spIn"></div></section>
@@ -1408,6 +1528,7 @@ body.auth-screen #main {
     <span>More</span>
   </button>
 </nav>
+</div><!-- /#appShell -->
 
 <script>
 var $ = function(id){return document.getElementById(id)};
@@ -1827,6 +1948,184 @@ function popup(html, onClose){
 }
 function askYes(msg, yes){ var m = popup("<h3 style='margin-top:0'>" + esc(msg) + "</h3><div class='row' style='margin-top:14px'><button class='primary' id='yY'>Yes</button><button data-close>No, go back</button></div>"); m.el.querySelector("#yY").onclick = function(){ m.el.remove(); yes(); }; }
 
+/* ---------- Theme toggle: Light (☾) / Dark (☀) mode ---------- */
+var THEME_KEY = "engramos_theme";
+function getSavedTheme(){ try { return localStorage.getItem(THEME_KEY) || ""; } catch(e){ return ""; } }
+function isDarkTheme(){
+  var curT = document.documentElement.getAttribute("data-theme");
+  if(curT === "dark") return true;
+  if(curT === "light") return false;
+  return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+}
+function applyTheme(t){
+  if(t === "dark" || t === "light"){
+    document.documentElement.setAttribute("data-theme", t);
+    try { localStorage.setItem(THEME_KEY, t); } catch(e){}
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    try { localStorage.removeItem(THEME_KEY); } catch(e){}
+  }
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  var btn = $("bTheme");
+  if(!btn) return;
+  var dk = isDarkTheme();
+  var moonSvg = "<svg viewBox='0 0 24 24'><path d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'/></svg>";
+  var sunSvg = "<svg viewBox='0 0 24 24'><circle cx='12' cy='12' r='5'/><line x1='12' y1='1' x2='12' y2='3'/><line x1='12' y1='21' x2='12' y2='23'/><line x1='4.22' y1='4.22' x2='5.64' y2='5.64'/><line x1='18.36' y1='18.36' x2='19.78' y2='19.78'/><line x1='1' y1='12' x2='3' y2='12'/><line x1='21' y1='12' x2='23' y2='12'/><line x1='4.22' y1='19.78' x2='5.64' y2='18.36'/><line x1='18.36' y1='5.64' x2='19.78' y2='4.22'/></svg>";
+  btn.innerHTML = dk ? sunSvg : moonSvg;
+  btn.title = dk ? "Switch to light mode" : "Switch to dark mode";
+  btn.setAttribute("aria-label", btn.title);
+}
+function initTheme(){
+  var sv = getSavedTheme();
+  if(sv) applyTheme(sv);
+  else updateThemeBtn();
+  var b = $("bTheme");
+  if(b){
+    b.onclick = function(){
+      var next = isDarkTheme() ? "light" : "dark";
+      applyTheme(next);
+      toast(next === "dark" ? "🌙 Dark theme activated" : "☀️ Light theme activated");
+    };
+  }
+}
+
+/* ---------- Google Gemini Flash Guide Modal ---------- */
+function geminiGuideModal(){
+  var h = "<div class='card hero' style='margin:0 0 12px;background:var(--accbg);border-color:var(--acc);text-align:center;padding:16px 12px'>" +
+    "<h2 style='margin:0 0 4px;font-size:1.25rem'>⚡ Connect Google Gemini Flash</h2>" +
+    "<p style='margin:0;font-size:13px;color:var(--mute)'>100% Free · No credit card · Takes 60 seconds</p>" +
+    "</div>" +
+    "<div style='display:flex;flex-direction:column;gap:12px;margin-bottom:16px'>" +
+    "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>" +
+    "<b style='color:var(--acc);display:block;margin-bottom:4px'>Step 1: Open Google AI Studio</b>" +
+    "<p style='margin:0 0 8px;font-size:13px'>Go to Google AI Studio and sign in with your regular Google / Gmail account.</p>" +
+    "<a href='https://aistudio.google.com/apikey' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:7px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px'>🔗 Open Google AI Studio ↗</a>" +
+    "</div>" +
+    "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>" +
+    "<b style='color:var(--acc);display:block;margin-bottom:4px'>Step 2: Create your free API key</b>" +
+    "<p style='margin:0;font-size:13px'>Click the blue <b>“+ Create API key”</b> button, select any project (or default), and click <b>“Copy”</b>. Your key starts with <code>AIzaSy…</code>.</p>" +
+    "</div>" +
+    "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>" +
+    "<b style='color:var(--acc);display:block;margin-bottom:4px'>Step 3: Paste into ENGRAMOS</b>" +
+    "<p style='margin:0;font-size:13px'>Paste your key into the Gemini box and click <b>“Connect”</b>. ENGRAMOS will verify it instantly.</p>" +
+    "</div>" +
+    "</div>" +
+    "<div class='row' style='justify-content:flex-end'><button class='primary' data-close>Got it, let’s connect</button></div>";
+  popup(h);
+}
+
+/* ---------- 1-Tap WhatsApp Smart Pack Sharing & Instant Receiver ---------- */
+function sharePackToWhatsApp(c){
+  c = c || cur();
+  if(!c || !c.pack || !c.pack.concepts || !c.pack.concepts.length){
+    toast("Build a Smart Pack for this chapter first.");
+    return;
+  }
+  var pk = c.pack, bName = bookOf(c), chName = c.name, sub = subjOf(c);
+  var lines = [];
+  lines.push("📚 *" + (sub ? sub + " · " : "") + bName + "*");
+  lines.push("📖 *" + chName + "*");
+  lines.push("✨ *ENGRAMOS Smart Pack (" + pk.concepts.length + " concepts)*\n");
+  lines.push("🧠 *Key Concepts:*");
+  pk.concepts.slice(0, 5).forEach(function(item, i){
+    lines.push((i + 1) + ". *" + item.t + ":* " + item.d + (item.ex ? " _(e.g. " + item.ex + ")_" : ""));
+  });
+  if(pk.concepts.length > 5){
+    lines.push("_(+" + (pk.concepts.length - 5) + " more concepts in the pack)_");
+  }
+  if(pk.qa && pk.qa.length){
+    lines.push("\n❓ *Top Recall Questions:*");
+    pk.qa.slice(0, 2).forEach(function(q){
+      lines.push("• *Q:* " + q.q);
+      lines.push("  *A:* " + q.a);
+    });
+  }
+  var sharePayload = {book: bName, chapter: chName, subject: sub, sem: semOf(c), pack: pk};
+  var jsonStr = JSON.stringify(sharePayload);
+  var encoded = "";
+  try {
+    encoded = btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, function(match, p1){ return String.fromCharCode('0x' + p1); }));
+  } catch(e){}
+  var appUrl = window.location.href.split("#")[0];
+  var magicLink = appUrl + (encoded ? "#importPack=" + encoded : "");
+  if(encoded) lines.push("\n👉 *Tap to study notes, flashcards & drills in ENGRAMOS:*\n" + magicLink);
+  lines.push("\n_ENGRAMOS — Memory, engineered._");
+  var fullMsg = lines.join("\n");
+  var waUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(fullMsg);
+  if(navigator.share && window.innerWidth < 768){
+    navigator.share({title: "ENGRAMOS · " + chName, text: fullMsg, url: magicLink}).catch(function(err){
+      if(err.name !== "AbortError") window.open(waUrl, "_blank");
+    });
+  } else {
+    window.open(waUrl, "_blank");
+  }
+}
+function checkIncomingSharedPack(){
+  var hash = window.location.hash || "";
+  if(!hash || hash.indexOf("#importPack=") !== 0) return;
+  var encoded = hash.slice("#importPack=".length);
+  if(!encoded) return;
+  try {
+    var rawStr = decodeURIComponent(Array.prototype.map.call(atob(encoded), function(c){
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    var data = JSON.parse(rawStr);
+    if(!data || !data.pack || !data.chapter) return;
+    try { history.replaceState(null, "", window.location.pathname + window.location.search); } catch(e){}
+    var pk = data.pack, cCount = (pk.concepts || []).length, qCount = (pk.qa || []).length;
+    var h = "<div class='card hero' style='text-align:center;margin:0 0 12px;background:var(--okbg);border-color:var(--ok);padding:14px'>" +
+      "<h2 style='margin:0 0 4px;color:var(--ok);font-size:1.25rem'>📥 Smart Pack Received!</h2>" +
+      "<p style='margin:0;font-size:13px;color:var(--ink)'>Shared via WhatsApp</p>" +
+      "</div>" +
+      "<div style='background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px'>" +
+      "<b style='font-size:16px;display:block;margin-bottom:4px'>" + esc(data.chapter) + "</b>" +
+      "<span class='status' style='font-size:13px'>" + esc(data.book || "Textbook") + (data.subject ? " · " + esc(data.subject) : "") + "</span>" +
+      "<div class='row' style='gap:8px;margin-top:10px'>" +
+      "<span class='chip' style='margin:0'>🧠 " + cCount + " Concepts</span>" +
+      "<span class='chip' style='margin:0'>❓ " + qCount + " Questions</span>" +
+      "</div>" +
+      "</div>" +
+      "<p class='status' style='font-size:13px;margin:0 0 14px'>Import this pack into your local library to instantly unlock Notes, Flashcards, Recall Drills, and Concept Maps.</p>" +
+      "<div class='row' style='justify-content:flex-end;gap:8px'>" +
+      "<button id='impCancel'>Cancel</button>" +
+      "<button class='primary' id='impGo'>▶ Import &amp; Start Studying</button>" +
+      "</div>";
+    var m = popup(h);
+    m.el.querySelector("#impCancel").onclick = function(){ m.close(); };
+    m.el.querySelector("#impGo").onclick = function(){
+      var found = null;
+      (DB.chapters || []).forEach(function(ch){
+        if(ch.name.toLowerCase() === data.chapter.toLowerCase() || (ch.book && data.book && ch.book.toLowerCase() === data.book.toLowerCase() && ch.name.toLowerCase() === data.chapter.toLowerCase())){
+          found = ch;
+        }
+      });
+      if(!found){
+        found = {
+          id: "ch_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+          book: data.book || "Imported Book",
+          name: data.chapter,
+          subject: data.subject || "General",
+          sem: data.sem || "Semester 1",
+          pages: 1,
+          text: (pk.concepts || []).map(function(c){ return c.t + ": " + c.d + (c.ex ? " (e.g. " + c.ex + ")" : ""); }).join("\n\n"),
+          pack: pk
+        };
+        DB.chapters = DB.chapters || [];
+        DB.chapters.push(found);
+      } else {
+        found.pack = pk;
+      }
+      DB.cur = found.id;
+      save(); fillSel(); clearOut(); m.close(); showView("study");
+      toast("✓ Imported Smart Pack for “" + data.chapter + "”");
+    };
+  } catch(e){
+    console.error("Failed to parse shared pack from hash", e);
+  }
+}
+
 /* ---------- profile, language, AI ---------- */
 var CLASSES = ["Class 5","Class 6","Class 7","Class 8","Class 9","Class 10","Class 11","Class 12","College – 1st year","College – 2nd year","College – 3rd year","Other"];
 var LEVELS = [["Not sure — keep it general", 1], ["Younger (up to Class 7)", 0], ["School (Class 8–10)", 1], ["Senior (Class 11–12)", 2], ["College / University", 3]];
@@ -1908,9 +2207,9 @@ function persona(){ return "You are the ENGRAMOS study companion, a warm older-s
 function base(q){ var c = cur(); q = q || EXQ; EXQ = ""; var ct = q ? excerpt(q, 4) : c.text; return persona() + "Stay faithful to the textbook text below; never contradict it. Use its wording and examples where they help. If the text does not contain the answer, say briefly what the chapter does cover instead of guessing.\n\nBOOK: " + c.book + "\nCHAPTER: " + c.name + "\nCHAPTER TEXT:\n" + ct + "\n\nTASK:\n"; }
 /* ---------- AI providers: free models, email sign-in, or your own key ---------- */
 var AI_PROVIDERS = {
-  puter: {name:"Free AI", tag:"Email sign-in · no key", desc:"Sign in with your email (or Google) and get a free monthly allowance. No card, no key.", model:"gpt-5.4-nano", free:true, link:"https://puter.com"},
-  gemini: {name:"Google Gemini", tag:"Free tier · API key", desc:"Google gives a free monthly quota. Make a key in AI Studio in about a minute.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.5-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash", "gemini-flash-latest"]},
-  groq: {name:"Groq", tag:"Free tier · API key", desc:"Very fast free models. Sign up with email and copy the key.", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.3-70b-versatile", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"]},
+  gemini: {name:"Google Gemini", tag:"Recommended · 1,500/day free", desc:"Google Gemini 2.0 Flash: ultra-fast, handles entire 40-page chapters, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.0-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-flash-latest"]},
+  groq: {name:"Groq", tag:"Ultra-fast · 14,400/day free", desc:"Lightning-fast open models (Llama 3.3 70B). Up to 14,400 requests/day free with email.", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.3-70b-versatile", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"]},
+  puter: {name:"Free AI (Puter)", tag:"Email sign-in · no key", desc:"Sign in with email for a shared monthly allowance. (Note: slower during peak hours).", model:"gpt-5.4-nano", free:true, link:"https://puter.com"},
   openrouter: {name:"OpenRouter", tag:"Free models · API key", desc:"One key opens many free models. Names ending in :free cost nothing.", api:"https://openrouter.ai/api/v1/chat/completions", kind:"openai", model:"nvidia/nemotron-3-ultra-550b-a55b:free", free:true, link:"https://openrouter.ai/keys", hint:"sk-or-…", models:["nvidia/nemotron-3-ultra-550b-a55b:free", "google/gemma-4-26b-a4b-it:free"]},
   anthropic: {name:"Claude", tag:"Paid · API key", desc:"Claude’s own models. Needs a paid API key from Anthropic Console.", api:"https://api.anthropic.com/v1/messages", kind:"anthropic", model:"claude-sonnet-5-5", free:false, link:"https://console.anthropic.com/settings/keys", hint:"sk-ant-…", models:["claude-sonnet-5-5", "claude-sonnet-4-5", "claude-opus-4-5", "claude-haiku-4-5"]}
 };
@@ -2146,16 +2445,15 @@ function bestPuterModel(list){
 function connectModal(){
   return new Promise(function(res){
     var o = document.createElement("div"); o.className = "modal";
-    var old = aiCfg(), filePage = location.protocol === "file:", pick = old ? old.provider : "puter";
-    if(pick === "puter" && filePage) pick = "gemini";
+    var old = aiCfg(), filePage = location.protocol === "file:", pick = old ? old.provider : "gemini";
     var done = function(){ o.remove(); res(); };
     var msg = function(t){ var e = o.querySelector("#kMsg"); if(e) e.textContent = t || ""; };
     if(!filePage) loadPuter().catch(function(){});
     var intro = filePage
       ? "AI makes questions, flashcards, tests and fun facts sharper. Everything still works offline."
-      : "AI makes questions, flashcards, tests and fun facts sharper. The free options work with just your email. Everything still works offline.";
+      : "AI makes questions, flashcards, tests and fun facts sharper. The free options work with just your email or a free key. Everything still works offline.";
     var fileNote = filePage
-      ? "<p class='status' style='font-size:.8rem;margin:0 0 8px'><b>Opened directly from a file.</b> Email sign-in needs the web version of ENGRAMOS; here you can paste a free Google Gemini, Groq, or OpenRouter key below.</p>"
+      ? "<p class='status' style='font-size:.8rem;margin:0 0 8px'><b>Opened directly from a file.</b> Paste your free Google Gemini (recommended) or Groq key below in 60 seconds.</p>"
       : "";
     o.innerHTML = "<div><h3 style='margin-top:0'>Connect AI</h3><p class='status' style='margin-top:4px'>" + intro + "</p>" + fileNote + "<div class='row' id='pvTabs' style='margin-top:12px'></div><div id='pvBody'></div><div id='kMsg' class='status err' style='min-height:18px'></div><div class='row' style='margin-top:8px'><button class='primary' id='kOk'>Connect</button><button id='kNo'>Not now</button>" + (old ? "<button id='kOff'>Disconnect</button>" : "") + "</div><p class='status' style='font-size:.76rem;margin:10px 0 0'>Your key and sign-in stay only in this browser. Text goes only to the AI provider you choose.</p></div>";
     document.body.appendChild(o);
@@ -2185,6 +2483,33 @@ function connectModal(){
     var drawPanel = async function(){
       var myPick = pick, P = AI_PROVIDERS[pick], body = o.querySelector("#pvBody");
       var h = "<p style='margin:2px 0 10px'>" + esc(P.desc) + "</p>";
+      if(pick === "gemini"){
+        h += "<div style='background:var(--accbg);border:1px solid var(--acc);border-radius:12px;padding:12px;margin:0 0 12px'>" +
+          "<div style='font-size:13px;font-weight:700;color:var(--acc);margin-bottom:6px'>⚡ Why Google Gemini 2.0 Flash is recommended for students:</div>" +
+          "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--ink)'>" +
+          "<div>• <b>Ultra-Fast:</b> 1.5–2.5s generation for full Smart Packs & questions.</div>" +
+          "<div>• <b>1M Token Context:</b> Ingests entire 40-page textbook chapters without cutting.</div>" +
+          "<div>• <b>Top Indic Accuracy:</b> Superior Hindi & regional Indian exam comprehension.</div>" +
+          "<div>• <b>1,500 Requests / Day Free:</b> 100% free daily quota for every student forever.</div>" +
+          "<div>• <b>No Credit Card Needed:</b> Sign in with regular Gmail & copy key in 60 seconds.</div>" +
+          "</div>" +
+          "<div class='row' style='margin-top:10px;gap:8px;flex-wrap:wrap'>" +
+          "<button type='button' id='btnGemGuide' class='primary' style='font-size:12px;padding:6px 12px'>📘 Step-by-Step Guide</button>" +
+          "<a href='https://aistudio.google.com/apikey' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Google AI Studio ↗</a>" +
+          "</div>" +
+          "</div>";
+      } else if(pick === "groq"){
+        h += "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 12px'>" +
+          "<div style='font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px'>⚡ Groq Cloud (Llama 3.3 70B):</div>" +
+          "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--mute)'>" +
+          "<div>• <b>Near-Instant Speed:</b> ~1.2s response time powered by LPU inference engine.</div>" +
+          "<div>• <b>14,400 Requests / Day:</b> Dedicated free daily limit per student email.</div>" +
+          "</div>" +
+          "<div class='row' style='margin-top:10px'>" +
+          "<a href='https://console.groq.com/keys' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Groq Console ↗</a>" +
+          "</div>" +
+          "</div>";
+      }
       var cfg = old && old.provider === pick ? old : null, signed = pick === "puter" && puterSignedIn();
       if(pick === "puter"){
         h += "<div class='row'><button id='pSign'>" + (signed ? "Signed in ✓" : "Sign in with email") + "</button><span id='pUser' class='status'>" + (cfg && cfg.email ? esc(cfg.email) : "") + "</span></div>";
@@ -2199,6 +2524,10 @@ function connectModal(){
         h += "<p class='status' style='font-size:.8rem'>Get a" + (P.free ? " free" : "n") + " key at <a target='_blank' rel='noopener' href='" + P.link + "'>" + esc(hostOf(P.link)) + "</a>. " + (P.free ? "Free tiers have daily limits." : "Billed by Anthropic, separate from a Claude chat plan.") + "</p>";
       }
       body.innerHTML = h;
+      if(pick === "gemini"){
+        var gBtn = o.querySelector("#btnGemGuide");
+        if(gBtn) gBtn.onclick = function(){ geminiGuideModal(); };
+      }
       var want = cfg && cfg.model || P.model, names = P.models || [];
       if(pick === "puter"){
         if(signed){ names = await puterModelNames(); if(pick !== myPick) return; if(!(cfg && cfg.model)) want = bestPuterModel(names); }
@@ -2434,8 +2763,9 @@ function setMethodOpen(on, name){
   if($("stBody")) $("stBody").classList.toggle("hidden", on ? false : (!hasCh || sp));
   setScreenTitle(on ? (name || methodLabel("")) : (SCREEN_NAMES[curView] || ""));
   var bn = $("bottomNav");
-  if(bn) bn.classList.toggle("hidden", on || curView === "intro" || curView === "request" || curView === "activate");
+  if(bn) bn.classList.toggle("hidden", curView === "intro" || curView === "request" || curView === "activate");
   updateBackBtn();
+  setViewH();
 }
 function closeMethod(){
   if(!methodOpen()) return;
@@ -2463,7 +2793,7 @@ function showView(v){
   VIEWS.forEach(function(x){ $("v-" + x).classList.toggle("hidden", x !== v); });
   var authed = !!(DB.profile && AUTH.session);
   var hideNav = v === "intro" || v === "request" || v === "activate" || (v === "onb" && !authed);
-  $("bHome").classList.toggle("hidden", hideNav);
+  if($("bTheme")) $("bTheme").classList.toggle("hidden", hideNav);
   $("bProf").classList.toggle("hidden", hideNav);
   $("bKey").classList.toggle("hidden", HOSTED || !authed || hideNav);
   setScreenTitle(SCREEN_NAMES[v] || "");
@@ -2486,7 +2816,7 @@ function showView(v){
     b.classList.toggle("active", b.id === targetTabId);
   });
   var bn = $("bottomNav");
-  if(bn) bn.classList.toggle("hidden", hideNav || (typeof methodOpen === "function" && methodOpen()));
+  if(bn) bn.classList.toggle("hidden", hideNav);
 
   if(typeof anaView === "function") anaView(v);
   if(typeof refreshPilotBar === "function") refreshPilotBar();
@@ -2494,7 +2824,6 @@ function showView(v){
   refreshBanner(); updateBackBtn();
   muteObs = true; if(RENDER[v]) RENDER[v](); if(["progress","perf","hist","rep","fun","note"].indexOf(v) >= 0) addCta(v); if(v === "home") newQuote(); setViewH(); window.scrollTo(0, 0); replay($("v-" + v)); setTimeout(function(){ muteObs = false; }, 0);
 }
-$("bHome").onclick = function(){ show("home"); };
 $("bBack").onclick = function(){
   if(methodOpen()){ closeMethod(); return; }
   if(NIDX > 0){ NIDX--; showView(NAV[NIDX]); } else show("home");
@@ -2980,145 +3309,11 @@ $("acGo").onclick = function(){
 $("acReq").onclick = function(){ show("request"); };
 $("acLogout").onclick = function(){ askYes("Log out of this account?", logOut); };
 
-/* ---------- Home: the study galaxy ---------- */
+/* ---------- Home: Mobile Study Hub (replaced legacy Galaxy) ---------- */
 var SECS = [{k:"study",e:"",n:"Study"},{k:"progress",e:"",n:"Progress"},{k:"perf",e:"",n:"Performance"},{k:"hist",e:"",n:"History"},{k:"rep",e:"",n:"Reports"},{k:"rec",e:"",n:"Today's plan"},{k:"fun",e:"",n:"Fun facts"},{k:"note",e:"",n:"Notebook"}];
-var HOME_NODES = [
-  {k:"study", n:"Study", view:"study", icon:"study", ring:0, c:"#4f7dff"},
-  {k:"plan", n:"Plan", view:"plan", icon:"plan", ring:0, c:"#f0abfc"},
-  {k:"resume", n:"Pick up", resume:1, icon:"hist", ring:0, c:"#38bdf8"},
-  {k:"progress", n:"Neural Map", view:"progress", icon:"progress", ring:1, c:"#4ade80"},
-  {k:"maths", n:"Maths", tool:"maths", icon:"maths", ring:1, c:"#2dd4bf"},
-  {k:"mist", n:"Errors", view:"mist", icon:"mist", ring:1, c:"#ff5d73"},
-  {k:"note", n:"Notebook", view:"note", icon:"note", ring:1, c:"#ff9f43"},
-  {k:"tools", n:"Settings", view:"tools", icon:"tools", ring:1, c:"#94a3b8"}
-];
-var GAL_RING = ["#ffd36b", "#8ea2ff"];
-var STAR_SEED = null;
-function starLayer(n, W, H){
-  if(!STAR_SEED){
-    STAR_SEED = []; var s = 987654321, i;
-    for(i = 0; i < 260; i++){
-      s = (s * 1103515245 + 12345) & 0x7fffffff; var a = s / 0x7fffffff;
-      s = (s * 1103515245 + 12345) & 0x7fffffff; var b = s / 0x7fffffff;
-      s = (s * 1103515245 + 12345) & 0x7fffffff; STAR_SEED.push([a, b, s / 0x7fffffff]);
-    }
-  }
-  return STAR_SEED.slice(0, n).map(function(a, i){
-    return "<circle class='star' cx='" + ((a[0] * 1.08 - 0.04) * W).toFixed(1) + "' cy='" + ((a[1] * 1.08 - 0.04) * H).toFixed(1) + "' r='" + (0.5 + a[2] * 1.5).toFixed(2) + "' style='animation-delay:" + ((i % 9) * -0.45).toFixed(2) + "s'/>";
-  }).join("");
-}
-function orbitNodes(nodes, r, cx, cy, dur, R, fs, labelUp, rc){
-  var h = "<g class='orbitSpin' style='--t:" + dur + ";transform-origin:" + cx + "px " + cy + "px;transform-box:view-box'>";
-  h += "<circle cx='" + cx + "' cy='" + cy + "' r='" + r + "' fill='none' stroke='" + rc + "' stroke-opacity='.38' stroke-dasharray='2 9' stroke-width='1.4'/>";
-  var n = nodes.length;
-  nodes.forEach(function(nd, i){
-    var a = -Math.PI / 2 + i * 2 * Math.PI / n, x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
-    var ic = ICON[nd.icon] || ICON.study, sc = (R * 1.15) / 24, col = nd.c || rc;
-    h += "<g class='gnode orbitCounter' " + (nd.resume ? "data-resume='1'" : "data-nav='" + (nd.tool || nd.view) + "'") + " role='button' tabindex='0' aria-label='" + esc(nd.n) + "' style='--t:" + dur + ";transform-origin:" + x + "px " + y + "px;transform-box:view-box'>";
-    h += "<g class='orbBody' style='transform-box:fill-box;transform-origin:center'>";
-    h += "<circle class='halo' cx='" + x + "' cy='" + y + "' r='" + (R + 4) + "' fill='none' stroke='" + col + "' stroke-opacity='.4' stroke-width='1.6'/>";
-    h += "<circle cx='" + x + "' cy='" + y + "' r='" + R + "' fill='url(#gOrb_" + nd.k + ")' stroke='" + col + "' stroke-width='1.5'/>";
-    h += "<circle cx='" + (x - R * 0.3).toFixed(1) + "' cy='" + (y - R * 0.32).toFixed(1) + "' r='" + (R * 0.4).toFixed(1) + "' fill='#fff' opacity='.14'/>";
-    h += "<g transform='translate(" + (x - R * 0.56).toFixed(1) + "," + (y - R * 0.56).toFixed(1) + ") scale(" + sc.toFixed(3) + ")' fill='none' stroke='#fff' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'>" + ic + "</g>";
-    h += "</g>";
-    var label = nd.s || nd.n;
-    var lw = label.length * fs * 0.56 + fs * 0.9, lh = fs * 1.75;
-    var ly = (labelUp || y < cy - R * 0.9) ? (y - R - lh - 3) : (y + R + 4);
-    h += "<g class='glabel'><rect class='lblBg' x='" + (x - lw / 2).toFixed(1) + "' y='" + ly.toFixed(1) + "' width='" + lw.toFixed(1) + "' height='" + lh.toFixed(1) + "' rx='" + (lh / 2).toFixed(1) + "' fill='#0b0d33' stroke='" + col + "' stroke-opacity='.55' stroke-width='1'/>";
-    h += "<text x='" + x + "' y='" + (ly + lh / 2).toFixed(1) + "' text-anchor='middle' dominant-baseline='central' font-size='" + fs + "' font-weight='700' fill='#eef1ff'>" + esc(label) + "</text></g>";
-    h += "</g>";
-  });
-  return h + "</g>";
-}
-function galaxySvg(compact){
-  var W = compact ? 440 : 880, H = compact ? 490 : 540, cx = W / 2, cy = compact ? 245 : 268;
-  var innerR = compact ? 105 : 138, outerR = compact ? 168 : 216, cr = compact ? 26 : 36;
-  var inner = HOME_NODES.filter(function(n){ return n.ring === 0; }), outer = HOME_NODES.filter(function(n){ return n.ring === 1; });
-  var SYMS = [["∑", .10, .30], ["π", .87, .25], ["√", .20, .74], ["Δ", .81, .64], ["∞", .31, .13], ["θ", .68, .87], ["∫", .12, .57], ["≈", .90, .45], ["A+", .50, .07], ["💡", .06, .45], ["⚛", .49, .94], ["✎", .73, .11]];
-  var TINT = ["#ffd36b", "#8fd8ff", "#ff9ad5", "#a9ffcf", "#c3b1ff"];
-  var h = "<svg class='galaxy' viewBox='0 0 " + W + " " + H + "' role='img' aria-label='Study galaxy. Tap a planet to open a section.'>";
-  h += "<defs>";
-  h += "<radialGradient id='gSunCore' cx='35%' cy='30%' r='78%'><stop offset='0%' stop-color='#fffbe3'/><stop offset='45%' stop-color='#ffd36b'/><stop offset='100%' stop-color='#ff9a3c'/></radialGradient>";
-  h += "<radialGradient id='gSunGlow' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#ffd36b' stop-opacity='.55'/><stop offset='38%' stop-color='#ff9a5a' stop-opacity='.22'/><stop offset='100%' stop-color='#ff9a5a' stop-opacity='0'/></radialGradient>";
-  h += "<radialGradient id='gNeb1' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#6d43d6' stop-opacity='.5'/><stop offset='100%' stop-color='#6d43d6' stop-opacity='0'/></radialGradient>";
-  h += "<radialGradient id='gNeb2' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#0f8f9f' stop-opacity='.42'/><stop offset='100%' stop-color='#0f8f9f' stop-opacity='0'/></radialGradient>";
-  h += "<radialGradient id='gNeb3' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#a82b7a' stop-opacity='.34'/><stop offset='100%' stop-color='#a82b7a' stop-opacity='0'/></radialGradient>";
-  h += "<radialGradient id='gDisk' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#ffd6a0' stop-opacity='.28'/><stop offset='38%' stop-color='#c98bd6' stop-opacity='.12'/><stop offset='100%' stop-color='#7a5cff' stop-opacity='0'/></radialGradient>";
-  h += "<linearGradient id='gShoot' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#fff' stop-opacity='0'/><stop offset='100%' stop-color='#fff'/></linearGradient>";
-  h += "<clipPath id='gSunClip'><circle cx='" + cx + "' cy='" + cy + "' r='" + cr + "'/></clipPath>";
-  HOME_NODES.forEach(function(nd){
-    var col = nd.c || GAL_RING[1];
-    h += "<radialGradient id='gOrb_" + nd.k + "' cx='34%' cy='30%' r='74%'><stop offset='0%' stop-color='#ffffff' stop-opacity='.9'/><stop offset='42%' stop-color='" + col + "'/><stop offset='100%' stop-color='#0a0c2a'/></radialGradient>";
-  });
-  h += "</defs>";
-  h += "<rect width='" + W + "' height='" + H + "' fill='#070b24'/>";
-  h += "<ellipse cx='" + (W * .22).toFixed(0) + "' cy='" + (H * .18).toFixed(0) + "' rx='" + (W * .44).toFixed(0) + "' ry='" + (H * .36).toFixed(0) + "' fill='url(#gNeb1)'/>";
-  h += "<ellipse cx='" + (W * .82).toFixed(0) + "' cy='" + (H * .78).toFixed(0) + "' rx='" + (W * .42).toFixed(0) + "' ry='" + (H * .34).toFixed(0) + "' fill='url(#gNeb2)'/>";
-  h += "<ellipse cx='" + (W * .70).toFixed(0) + "' cy='" + (H * .15).toFixed(0) + "' rx='" + (W * .36).toFixed(0) + "' ry='" + (H * .28).toFixed(0) + "' fill='url(#gNeb3)'/>";
-  h += "<circle cx='" + cx + "' cy='" + cy + "' r='" + (outerR + 24) + "' fill='url(#gDisk)'/>";
-  h += "<g class='galaxyStars'>" + starLayer(compact ? 120 : 200, W, H) + "</g>";
-  h += "<g class='galaxySyms'>" + SYMS.map(function(s, i){
-    return "<text class='symbol' x='" + (W * s[1]).toFixed(0) + "' y='" + (H * s[2]).toFixed(0) + "' text-anchor='middle' font-size='" + (compact ? 14 : 20) + "' font-weight='700' fill='" + TINT[i % 5] + "' opacity='.34' style='animation-delay:" + (i * -0.6).toFixed(1) + "s'>" + s[0] + "</text>";
-  }).join("") + "</g>";
-  h += "<g transform='rotate(-18 " + cx + " " + cy + ")'>";
-  [[outerR + 22, GAL_RING[1], .14], [innerR + 26, GAL_RING[0], .13]].forEach(function(e){
-    h += "<ellipse cx='" + cx + "' cy='" + cy + "' rx='" + e[0] + "' ry='" + (e[0] * 0.34).toFixed(1) + "' fill='none' stroke='" + e[1] + "' stroke-opacity='" + e[2] + "' stroke-width='1.3'/>";
-  });
-  h += "</g>";
-  h += orbitNodes(inner, innerR, cx, cy, compact ? "76s" : "96s", compact ? 25 : 32, compact ? 13 : 14.5, true, GAL_RING[0]);
-  h += orbitNodes(outer, outerR, cx, cy, compact ? "124s" : "156s", compact ? 24 : 31, compact ? 12.5 : 14, false, GAL_RING[1]);
-  h += "<g class='galCore'>";
-  h += "<circle class='sunGlow' cx='" + cx + "' cy='" + cy + "' r='" + (cr * (compact ? 2.8 : 3.0)).toFixed(0) + "' fill='url(#gSunGlow)'/>";
-  h += "<g class='sunRays' style='transform-origin:" + cx + "px " + cy + "px;transform-box:view-box'>";
-  var r1 = cr * 1.14, r2 = cr * 1.82;
-  for(var k = 0; k < 20; k++){
-    var a2 = k * 2 * Math.PI / 20;
-    h += "<line x1='" + (cx + r1 * Math.cos(a2)).toFixed(1) + "' y1='" + (cy + r1 * Math.sin(a2)).toFixed(1) + "' x2='" + (cx + r2 * Math.cos(a2)).toFixed(1) + "' y2='" + (cy + r2 * Math.sin(a2)).toFixed(1) + "' stroke='#ffd36b' stroke-opacity='.5' stroke-width='2' stroke-linecap='round'/>";
-  }
-  h += "</g>";
-  var pic = safePic(DB.profile && DB.profile.pic);
-  h += "<circle cx='" + cx + "' cy='" + cy + "' r='" + cr + "' fill='url(#gSunCore)'/>";
-  if(pic){
-    h += "<image href='" + pic + "' x='" + (cx - cr) + "' y='" + (cy - cr) + "' width='" + (cr * 2) + "' height='" + (cr * 2) + "' preserveAspectRatio='xMidYMid slice' clip-path='url(#gSunClip)'/>";
-  } else {
-    h += "<text x='" + cx + "' y='" + (cy + (compact ? 7 : 10)) + "' text-anchor='middle' font-size='" + (compact ? 20 : 28) + "' font-weight='800' fill='#3a2a08'>" + esc((DB.profile.name || "S").trim().charAt(0).toUpperCase()) + "</text>";
-  }
-  h += "<circle cx='" + cx + "' cy='" + cy + "' r='" + cr + "' fill='none' stroke='#ffd36b' stroke-width='2.4'/>";
-  h += "</g>";
-  h += "<g transform='translate(" + (W * .1).toFixed(0) + "," + (H * .1).toFixed(0) + ")'>";
-  h += "<g class='shoot' style='--sx:" + (compact ? 190 : 330) + "px;--sy:" + (compact ? 100 : 172) + "px'>";
-  h += "<path d='M0 0 L150 78' stroke='url(#gShoot)' stroke-width='2.4' stroke-linecap='round' fill='none'/><circle cx='150' cy='78' r='2.6' fill='#fff'/></g></g>";
-  /* Sun label intentionally removed — the sun stands on its own as an encouraging centre. */
-  return h + "</svg>";
-}
 function openMindmap(){ if(!cur()){ show("study"); toast("Add a chapter first, then open the mind map."); return; } show("study"); goMethod("mindmap", "", DB.cur); }
 function openMaths(){
   goMethod("maths", "", DB.cur);
-}
-function bindGalaxy(root){
-  root.querySelectorAll("[data-nav]").forEach(function(g){
-    var go = function(){ var v = g.getAttribute("data-nav"); if(v === "mindmap") openMindmap(); else if(v === "maths") openMaths(); else show(v); };
-    g.onclick = go;
-    g.onkeydown = function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); } };
-  });
-  root.querySelectorAll("[data-resume]").forEach(function(g){
-    var go = function(){ resumeLast(); };
-    g.onclick = go;
-    g.onkeydown = function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); } };
-  });
-  var svg = root.querySelector("svg.galaxy");
-  if(svg && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)){
-    var st = svg.querySelector(".galaxyStars"), sym = svg.querySelector(".galaxySyms");
-    if(st){
-      svg.addEventListener("pointermove", function(e){
-        var b = svg.getBoundingClientRect();
-        var dx = (e.clientX - b.left) / b.width - .5, dy = (e.clientY - b.top) / b.height - .5;
-        st.style.transform = "translate(" + (dx * 14).toFixed(1) + "px," + (dy * 14).toFixed(1) + "px)";
-        if(sym) sym.style.transform = "translate(" + (dx * 26).toFixed(1) + "px," + (dy * 26).toFixed(1) + "px)";
-      });
-      svg.addEventListener("pointerleave", function(){ st.style.transform = ""; if(sym) sym.style.transform = ""; });
-    }
-  }
 }
 function studyDaysMap(){
   var days = {};
@@ -3374,6 +3569,7 @@ function fillSel(){
   has = !!cur();
   var sp = typeof pend !== "undefined" && pend;
   $("stBody").classList.toggle("hidden", !has || !!sp); $("upl").classList.toggle("hidden", !!DB.chapters.length || !!sp); $("chDel").classList.toggle("hidden", !has);
+  if($("uplBooks")) $("uplBooks").classList.toggle("hidden", !(DB.chapters && DB.chapters.length));
   $("chPack").classList.toggle("hidden", !has);
   var pk = has ? cur().pack : null;
   $("chPack").textContent = pk && pk.concepts && pk.concepts.length ? "✓ Smart pack (" + pk.concepts.length + ") · rebuild" : "⚡ Smart pack (online)";
@@ -3384,6 +3580,7 @@ function clearOut(){ $("mp").innerHTML = "<p class='status'>Pick a method above 
 RENDER.study = function(){
   var narrow = window.innerWidth < 620;
   if($("chAdd")) $("chAdd").textContent = narrow ? "＋ PDF" : "＋ Add book or chapter (PDF)";
+  if($("chBooks")) $("chBooks").textContent = narrow ? "📚 Books" : "📚 Books & Packs";
   if($("chPaste")) $("chPaste").textContent = narrow ? "✎ Paste" : "✎ Paste text";
   if($("chSyll")) $("chSyll").textContent = narrow ? "📋 Syllabus" : "📋 Syllabus & plan";
   $("engSel").value = DB.engine; fillSel();
@@ -3424,6 +3621,8 @@ if($("selSubj")) $("selSubj").onchange = function(){ fillSel(); clearOut(); };
 if($("selSem")) $("selSem").onchange = function(){ fillSel(); clearOut(); };
 if($("selBook")) $("selBook").onchange = function(){ fillSel(); clearOut(); };
 $("chAdd").onclick = $("uplBtn").onclick = function(){ askBookMeta(false, function(){ $("file").click(); }); };
+if($("chBooks")) $("chBooks").onclick = function(){ manageBooksModal(); };
+if($("uplBooks")) $("uplBooks").onclick = function(){ manageBooksModal(); };
 if($("chPaste")) $("chPaste").onclick = function(){ pasteChapterModal(); };
 if($("uplPaste")) $("uplPaste").onclick = function(){ pasteChapterModal(); };
 if($("uplSample")) $("uplSample").onclick = function(){ sampleChapterModal(); };
@@ -3601,11 +3800,22 @@ async function runPack(cid){
 function renderPackInfo(){
   var el = $("packInfo"); if(!el) return;
   var c = cur(), pk = c && c.pack;
+  var waBtn = $("chShareWa");
+  if(waBtn){
+    if(pk && (pk.concepts || []).length){
+      waBtn.classList.remove("hidden");
+      waBtn.onclick = function(){ sharePackToWhatsApp(cur()); };
+    } else {
+      waBtn.classList.add("hidden");
+      waBtn.onclick = null;
+    }
+  }
   if(!pk || !(pk.concepts || []).length){
     el.innerHTML = c ? "<span class='status'>Optional: build a <b>smart pack</b> once when online. It adds standard concepts, examples and Q&amp;As to this chapter and is saved on this device.</span>" : "";
     return;
   }
-  el.innerHTML = "<span style='color:var(--acc)'>✓ Smart pack saved on this device: " + pk.concepts.length + " concepts · " + (pk.qa || []).length + " Q&amp;As · " + (pk.facts || []).length + " facts.</span> <button id='pkSave' type='button'>Save pack file</button> <button id='pkDel' type='button'>Remove</button>";
+  el.innerHTML = "<span style='color:var(--acc)'>✓ Smart pack saved on this device: " + pk.concepts.length + " concepts · " + (pk.qa || []).length + " Q&amp;As · " + (pk.facts || []).length + " facts.</span> <button id='pkShareWa' type='button' style='background:#25D366;color:#fff;border-color:#25D366;font-weight:600'>📱 WhatsApp</button> <button id='pkSave' type='button'>Save pack file</button> <button id='pkDel' type='button'>Remove</button>";
+  $("pkShareWa").onclick = function(){ sharePackToWhatsApp(cur()); };
   $("pkSave").onclick = function(){
     var cc = cur(); if(!cc || !cc.pack) return;
     saveFile(cc.name.replace(/[^\w\- ]+/g, "") + "-smart-pack.json", JSON.stringify(cc.pack, null, 1));
@@ -3627,6 +3837,275 @@ $("chDel").onclick = function(){
     DB.cur = DB.chapters.length ? DB.chapters[0].id : null; save(); fillSel(); clearOut();
   });
 };
+
+/* ---------- Uploaded Books & Smart Packs Management ---------- */
+function booksCatalog(){
+  var map = {};
+  (DB.chapters || []).forEach(function(c){
+    var s = subjOf(c), sm = semOf(c), bk = bookOf(c);
+    var bKey = s + "|||" + sm + "|||" + bk;
+    if(!map[bKey]){
+      map[bKey] = {
+        key: bKey,
+        subject: s,
+        sem: sm,
+        book: bk,
+        chapters: [],
+        pages: 0,
+        chars: 0,
+        packedCount: 0
+      };
+    }
+    map[bKey].chapters.push(c);
+    map[bKey].pages += (+c.pages || 1);
+    map[bKey].chars += (c.text ? c.text.length : 0);
+    if(c.pack && c.pack.concepts && c.pack.concepts.length) map[bKey].packedCount++;
+  });
+  return Object.keys(map).map(function(k){ return map[k]; }).sort(function(a, b){
+    return a.book.localeCompare(b.book);
+  });
+}
+
+function packedChaptersCount(){
+  var count = 0;
+  (DB.chapters || []).forEach(function(c){
+    if(c.pack && c.pack.concepts && c.pack.concepts.length) count++;
+  });
+  return count;
+}
+
+function manageBooksModal(){
+  var catalog = booksCatalog();
+  var totalChapters = (DB.chapters || []).length;
+  var totalPacked = packedChaptersCount();
+  
+  var h = "<div class='booksManageWrap'>";
+  h += "<div style='display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px;border-bottom:1px solid var(--line);padding-bottom:10px'>";
+  h += "<div><h3 style='margin:0 0 4px;font-size:1.25rem'>📚 Uploaded Books &amp; Smart Packs</h3>";
+  h += "<p class='status' style='margin:0;font-size:12px'>Review textbooks, check Smart Pack readiness, generate packs with AI, and delete books.</p></div>";
+  h += "<button data-close style='border-radius:50%;width:32px;height:32px;padding:0;display:grid;place-items:center;font-size:15px;flex:none' aria-label='Close'>✕</button>";
+  h += "</div>";
+
+  // Global summary pills
+  h += "<div class='stat' style='margin-bottom:14px'>";
+  h += "<div><b style='font-size:1.2rem'>" + catalog.length + "</b><small style='display:block;color:var(--mute);font-size:11px'>Books</small></div>";
+  h += "<div><b style='font-size:1.2rem'>" + totalChapters + "</b><small style='display:block;color:var(--mute);font-size:11px'>Chapters</small></div>";
+  h += "<div><b style='font-size:1.2rem;color:var(--acc)'>" + totalPacked + " / " + totalChapters + "</b><small style='display:block;color:var(--mute);font-size:11px'>Packs Ready</small></div>";
+  h += "</div>";
+
+  if(!catalog.length){
+    h += "<div class='card hero' style='text-align:center;padding:24px 14px'>";
+    h += plantSvg(1, 56);
+    h += "<p style='margin:10px 0 14px;font-size:14px'>No books uploaded yet. Drop a PDF textbook or paste chapter text to start studying.</p>";
+    h += "<button class='primary' id='bmAddBtn'>＋ Add book or chapter (PDF)</button>";
+    h += "</div></div>";
+    var m = popup(h);
+    var ab = m.el.querySelector("#bmAddBtn");
+    if(ab) ab.onclick = function(){ m.el.remove(); askBookMeta(false, function(){ $("file").click(); }); };
+    return;
+  }
+
+  // Books list
+  h += "<div class='booksList' style='display:flex;flex-direction:column;gap:12px;max-height:58vh;overflow-y:auto;padding-right:2px'>";
+  catalog.forEach(function(b, idx){
+    var allPacked = b.packedCount === b.chapters.length && b.chapters.length > 0;
+    var pct = b.chapters.length ? Math.round(b.packedCount / b.chapters.length * 100) : 0;
+    var chipClass = allPacked ? "on" : (b.packedCount > 0 ? "local" : "off");
+    var chipText = allPacked ? ("✓ All " + b.packedCount + "/" + b.chapters.length + " Packs Ready") : (b.packedCount > 0 ? (b.packedCount + "/" + b.chapters.length + " Packs (" + pct + "%)") : "No Packs Yet");
+
+    h += "<div class='card bookCard' data-bidx='" + idx + "' style='margin:0;padding:14px;border:1px solid var(--line);border-radius:16px'>";
+    h += "<div style='display:flex;align-items:flex-start;justify-content:space-between;gap:8px'>";
+    h += "<div><span class='shelfKicker'>" + esc(b.subject) + (b.sem && b.sem !== "No semester" ? " · " + esc(b.sem) : "") + "</span>";
+    h += "<b style='font-size:1.05rem;font-family:Georgia,serif;display:block;margin:2px 0 4px;color:var(--ink)'>" + esc(b.book) + "</b>";
+    h += "<span class='status' style='font-size:12px'>" + b.chapters.length + " chapter" + (b.chapters.length > 1 ? "s" : "") + " · " + b.pages + " pages · ~" + Math.round(b.chars / 1024) + " KB</span></div>";
+    h += "<span class='chip " + chipClass + "' style='font-size:11px;flex:none'>" + chipText + "</span>";
+    h += "</div>";
+
+    // Progress bar for pack status
+    h += "<div style='height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin:10px 0 12px'>";
+    h += "<div style='height:100%;width:" + pct + "%;background:" + (allPacked ? "var(--ok)" : "var(--acc)") + ";border-radius:6px;transition:width 0.3s'></div>";
+    h += "</div>";
+
+    // Action buttons
+    h += "<div class='row' style='gap:6px;flex-wrap:wrap;margin-bottom:8px'>";
+    h += "<button class='primary' data-act='studybook' data-bidx='" + idx + "' style='font-size:12px;padding:7px 12px'>▶ Study this book</button>";
+    h += "<button data-act='buildbook' data-bidx='" + idx + "' style='font-size:12px;padding:7px 12px'>⚡ " + (allPacked ? "Rebuild All Packs" : "Build All Packs (AI)") + "</button>";
+    h += "<button data-act='delbook' data-bidx='" + idx + "' style='font-size:12px;padding:7px 12px;border-color:var(--bad);color:var(--bad)'>🗑️ Delete Book</button>";
+    h += "</div>";
+    h += "<div id='bmStat_" + idx + "' class='status' style='font-size:12px;margin-bottom:6px'></div>";
+
+    // Collapsible chapter list
+    h += "<details style='margin-top:6px;border-top:1px dashed var(--line);padding-top:8px'>";
+    h += "<summary style='font-size:12px;font-weight:600;color:var(--mute);cursor:pointer'>Show chapters &amp; individual packs (" + b.chapters.length + ") ▾</summary>";
+    h += "<div style='display:flex;flex-direction:column;gap:8px;margin-top:8px'>";
+    b.chapters.forEach(function(c){
+      var hasPk = c.pack && c.pack.concepts && c.pack.concepts.length;
+      h += "<div style='background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:6px'>";
+      h += "<div style='display:flex;align-items:center;justify-content:space-between;gap:8px'>";
+      h += "<div style='min-width:0;flex:1'><b style='font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>" + esc(c.name) + "</b>";
+      h += "<span class='status' style='font-size:11px'>" + (c.pages || 1) + " pages · " + c.text.length.toLocaleString() + " chars</span></div>";
+      h += "<span class='chip " + (hasPk ? "on" : "off") + "' style='font-size:10px;flex:none'>" + (hasPk ? ("✓ Pack (" + c.pack.concepts.length + ")") : "No pack") + "</span>";
+      h += "</div>";
+      
+      h += "<div class='row' style='gap:6px;flex-wrap:wrap;margin:0'>";
+      if(hasPk){
+        h += "<button data-act='sharewa' data-cid='" + c.id + "' style='font-size:11px;padding:4px 8px;background:#25D366;color:#fff;border-color:#25D366;font-weight:600'>📱 WhatsApp</button>";
+        h += "<button data-act='savepack' data-cid='" + c.id + "' style='font-size:11px;padding:4px 8px'>💾 Save pack</button>";
+        h += "<button data-act='buildpack' data-cid='" + c.id + "' style='font-size:11px;padding:4px 8px'>🔄 Rebuild</button>";
+        h += "<button data-act='delpack' data-cid='" + c.id + "' style='font-size:11px;padding:4px 8px'>✕ Remove pack</button>";
+      } else {
+        h += "<button class='primary' data-act='buildpack' data-cid='" + c.id + "' style='font-size:11px;padding:4px 8px'>⚡ Create Pack (AI)</button>";
+      }
+      h += "<button data-act='delchapter' data-cid='" + c.id + "' style='font-size:11px;padding:4px 8px;border-color:var(--bad);color:var(--bad);margin-left:auto'>✕ Delete</button>";
+      h += "</div>";
+      h += "</div>";
+    });
+    h += "</div></details>";
+    h += "</div>";
+  });
+  h += "</div>"; // end booksList
+  h += "<div class='row' style='margin-top:14px;justify-content:space-between'>";
+  h += "<button id='bmAddMore'>＋ Add another book (PDF)</button>";
+  h += "<button data-close class='primary'>Done</button>";
+  h += "</div>";
+  h += "</div>"; // end booksManageWrap
+
+  var m = popup(h);
+
+  // Bind clicks
+  var el = m.el;
+  var am = el.querySelector("#bmAddMore");
+  if(am) am.onclick = function(){ m.el.remove(); askBookMeta(false, function(){ $("file").click(); }); };
+
+  el.querySelectorAll("[data-act]").forEach(function(btn){
+    btn.onclick = async function(){
+      var act = btn.dataset.act;
+      if(act === "studybook"){
+        var b = catalog[+btn.dataset.bidx];
+        if(!b) return;
+        var firstCh = b.chapters[0];
+        if(firstCh){ DB.cur = firstCh.id; save(); fillSel(); clearOut(); }
+        m.el.remove();
+        showView("study");
+      }
+      else if(act === "delbook"){
+        var b = catalog[+btn.dataset.bidx];
+        if(!b) return;
+        askYes("Delete the entire book “" + b.book + "” with all " + b.chapters.length + " chapters? All notes, packs, and study progress for this book will be permanently erased from this device.", function(){
+          var ids = b.chapters.map(function(c){ return c.id; });
+          DB.chapters = DB.chapters.filter(function(c){ return ids.indexOf(c.id) < 0; });
+          ids.forEach(function(id){
+            delete DB.progress[id];
+            if(PREP[id]) delete PREP[id];
+            Object.keys(DB.cache || {}).forEach(function(k){
+              if(k.indexOf(id) >= 0) delete DB.cache[k];
+            });
+          });
+          if(ids.indexOf(DB.cur) >= 0){
+            DB.cur = DB.chapters.length ? DB.chapters[0].id : null;
+          }
+          save(); fillSel(); clearOut();
+          toast("Deleted book “" + b.book + "” (" + ids.length + " chapters erased)");
+          m.el.remove();
+          manageBooksModal();
+        });
+      }
+      else if(act === "buildbook"){
+        var b = catalog[+btn.dataset.bidx];
+        if(!b) return;
+        if(!navigator.onLine){ toast("Go online first to build Smart Packs with AI"); return; }
+        if(!aiCfg()){
+          connectModal().then(function(){
+            if(aiCfg()) buildBookPacks(b, btn, el.querySelector("#bmStat_" + btn.dataset.bidx), m);
+            else toast("Connect AI first");
+          });
+        } else {
+          buildBookPacks(b, btn, el.querySelector("#bmStat_" + btn.dataset.bidx), m);
+        }
+      }
+      else if(act === "buildpack"){
+        var cid = btn.dataset.cid;
+        var c = DB.chapters.filter(function(x){ return x.id === cid; })[0];
+        if(!c) return;
+        if(!navigator.onLine){ toast("Go online first to build Smart Packs"); return; }
+        btn.disabled = true; btn.textContent = "Building…";
+        try {
+          await runPack(c.id);
+          m.el.remove();
+          manageBooksModal();
+        } catch(e){
+          btn.disabled = false; btn.textContent = "⚡ Create Pack (AI)";
+        }
+      }
+      else if(act === "sharewa"){
+        var cid = btn.dataset.cid;
+        var c = DB.chapters.filter(function(x){ return x.id === cid; })[0];
+        if(!c || !c.pack) return;
+        sharePackToWhatsApp(c);
+      }
+      else if(act === "savepack"){
+        var cid = btn.dataset.cid;
+        var c = DB.chapters.filter(function(x){ return x.id === cid; })[0];
+        if(!c || !c.pack) return;
+        saveFile(c.name.replace(/[^\w\- ]+/g, "") + "-smart-pack.json", JSON.stringify(c.pack, null, 1));
+        toast("Saved pack file");
+      }
+      else if(act === "delpack"){
+        var cid = btn.dataset.cid;
+        var c = DB.chapters.filter(function(x){ return x.id === cid; })[0];
+        if(!c) return;
+        askYes("Remove the smart pack from “" + c.name + "”? The chapter and notes stay.", function(){
+          delete c.pack; delete PREP[c.id]; save(); fillSel();
+          toast("Smart pack removed");
+          m.el.remove();
+          manageBooksModal();
+        });
+      }
+      else if(act === "delchapter"){
+        var cid = btn.dataset.cid;
+        var c = DB.chapters.filter(function(x){ return x.id === cid; })[0];
+        if(!c) return;
+        askYes("Delete chapter “" + c.name + "” and its progress?", function(){
+          DB.chapters = DB.chapters.filter(function(x){ return x.id !== c.id; });
+          delete DB.progress[c.id];
+          if(PREP[c.id]) delete PREP[c.id];
+          Object.keys(DB.cache || {}).forEach(function(k){ if(k.indexOf(c.id) >= 0) delete DB.cache[k]; });
+          if(DB.cur === c.id) DB.cur = DB.chapters.length ? DB.chapters[0].id : null;
+          save(); fillSel(); clearOut();
+          toast("Deleted chapter: " + c.name);
+          m.el.remove();
+          manageBooksModal();
+        });
+      }
+    };
+  });
+}
+
+async function buildBookPacks(b, btn, statEl, modal){
+  var targets = b.chapters.filter(function(c){ return !(c.pack && c.pack.concepts && c.pack.concepts.length); });
+  if(!targets.length) targets = b.chapters; // rebuild all
+  btn.disabled = true;
+  var oldTxt = btn.textContent;
+  var done = 0;
+  for(var i = 0; i < targets.length; i++){
+    var ch = targets[i];
+    btn.textContent = "Building " + (i + 1) + " of " + targets.length + "…";
+    if(statEl) statEl.innerHTML = "<span class='status' style='color:var(--acc)'>Building pack for: <b>" + esc(ch.name) + "</b>…</span>";
+    try {
+      await buildPackFor(ch);
+      done++;
+    } catch(e){
+      console.warn("Pack build error for " + ch.name, e);
+    }
+  }
+  btn.disabled = false;
+  btn.textContent = oldTxt;
+  toast("Finished building " + done + " smart packs for “" + b.book + "”!");
+  if(modal && modal.el && modal.el.parentNode){
+    modal.el.remove();
+    manageBooksModal();
+  }
+}
 function loadTess(){ return new Promise(function(res, rej){ if(window.Tesseract) return res(); var s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js"; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
 async function ocrPages(pdf){
   await loadTess(); var wk = await Tesseract.createWorker("eng"), out = [], n = Math.min(pdf.numPages, 150);
@@ -8919,6 +9398,8 @@ RENDER.tools = function(){
   var ai = aiCfg(), spk = speechPrefs();
   var h = "<h1>Settings</h1><p class='sub'>Everything here runs on this device. Nothing leaves your phone unless you choose AI.</p><div class='toolsGrid'>";
   h += langCardHtml();
+  var bks = booksCatalog();
+  h += "<div class='card'><strong>Uploaded Books &amp; Smart Packs</strong><p class='status'>" + (DB.chapters.length ? (bks.length + " book" + (bks.length > 1 ? "s" : "") + " · " + DB.chapters.length + " chapters (" + packedChaptersCount() + " packs ready)") : "No books uploaded yet.") + "</p><button data-act='books'>Manage Books &amp; Packs</button></div>";
   h += "<div class='card'><strong>AI connection</strong><p class='status'>" + (ai ? ("Connected to <b>" + esc(aiName(ai)) + "</b>.") : "Optional: connect a free Gemini, Groq or Puter AI key for smart packs and hints.") + "</p><button data-act='ai'>" + (ai ? "Manage AI connection" : "Connect AI") + "</button></div>";
   h += "<div class='card'><strong>Read aloud &amp; voice</strong><p class='status'>Voice: <b>" + esc(spk.name || "Automatic") + "</b> · speed " + spk.rate.toFixed(2) + "×.</p><button data-act='voice'>Voice settings</button></div>";
   h += "<div class='card'><strong>Study plan</strong><p class='status'>Upload your syllabus and set a timetable with follow-up.</p><button data-v='plan'>Open study plan</button></div>";
@@ -10718,7 +11199,7 @@ function speechSettings(){
     var fi = $("fLangImport");
     if(fi) fi.click();
   }
- else if(a === "ai") connectModal(); else if(a === "voice") speechSettings(); else if(a === "foldpick" || a === "foldchg") chooseFolder().then(function(){ if(curView === "tools") RENDER.tools(); }); else if(a === "foldrec") folderReconnect(); else if(a === "foldoff") folderTurnOff(); });
+ else if(a === "books") manageBooksModal(); else if(a === "ai") connectModal(); else if(a === "voice") speechSettings(); else if(a === "foldpick" || a === "foldchg") chooseFolder().then(function(){ if(curView === "tools") RENDER.tools(); }); else if(a === "foldrec") folderReconnect(); else if(a === "foldoff") folderTurnOff(); });
   document.addEventListener("change", function(e){ var t = e.target; if(t.id === "fRs" && t.files[0]) restoreData(t.files[0]); if(t.id === "fCls" && t.files.length) classView(t.files);
     
   if(t.id === "fLangImport" && t.files[0]){
@@ -11250,7 +11731,10 @@ function setViewH(){
   var hd = $("top"), h = hd ? hd.getBoundingClientRect().height : 52;
   var bn = $("bottomNav");
   var bh = (bn && !bn.classList.contains("hidden") && getComputedStyle(bn).display !== "none") ? bn.getBoundingClientRect().height : 0;
-  var av = Math.max(300, Math.round(window.innerHeight - h - bh));
+  var shell = $("appShell");
+  var isFramed = shell && window.getComputedStyle(shell).borderStyle !== "none" && shell.clientHeight < window.innerHeight;
+  var containerH = isFramed ? shell.clientHeight : window.innerHeight;
+  var av = Math.max(300, Math.round(containerH - h - bh));
   document.documentElement.style.setProperty("--viewH", av + "px");
 }
 window.addEventListener("resize", function(){
@@ -11316,9 +11800,20 @@ else show("intro");
   document.querySelectorAll("#bottomNav .navTab").forEach(function(b){
     b.onclick = function(){
       var tab = b.getAttribute("data-tab");
-      if(tab) showView(tab);
+      if(tab){
+        if(tab === "study" && typeof methodOpen === "function" && methodOpen()){
+          closeMethod();
+        } else {
+          showView(tab);
+        }
+      }
     };
   });
+
+  // Initialize theme and WhatsApp smart pack receiver
+  initTheme();
+  checkIncomingSharedPack();
+  window.addEventListener("hashchange", checkIncomingSharedPack);
 </script>
 </body>
 </html>
