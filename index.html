@@ -514,15 +514,18 @@ h1, h2, h3 {
   left: 0;
   right: 0;
   bottom: 0;
-  height: var(--tab-bar-height);
-  padding-bottom: var(--safe-bottom);
+  height: calc(56px + env(safe-area-inset-bottom, 0px));
+  min-height: 56px;
+  padding-top: 4px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-sizing: border-box;
   background: var(--card);
   border-top: 1px solid var(--line);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  align-items: center;
+  align-items: start;
   z-index: 1000;
-  box-shadow: 0 -2px 14px rgba(31, 39, 64, 0.06);
+  box-shadow: 0 -3px 16px rgba(31, 39, 64, 0.08);
   user-select: none;
   -webkit-user-select: none;
 }
@@ -532,9 +535,8 @@ h1, h2, h3 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  height: 100%;
-  padding: 4px 0;
+  height: 48px;
+  padding: 2px 0;
   background: transparent;
   border: none;
   color: var(--mute);
@@ -550,11 +552,19 @@ h1, h2, h3 {
 }
 
 #bottomNav .navTab svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   stroke: currentColor;
   stroke-width: 2;
   flex-shrink: 0;
+}
+
+#bottomNav .navTab span {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.1;
+  margin-top: 2px;
+  display: block;
 }
 
 #bottomNav .navTab.active {
@@ -564,6 +574,88 @@ h1, h2, h3 {
 
 #bottomNav .navTab.active svg {
   stroke-width: 2.3;
+}
+
+/* Hide floating legacy speech and navFab buttons that overlap the bottom dock */
+.speechWrap, #navFab {
+  display: none !important;
+}
+
+/* Active Chapter & Pick-Up Shelf (Suggestion 1: replaces Galaxy) */
+.chapterShelfCard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 12px;
+}
+.shelfHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.shelfKicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--acc2);
+  display: block;
+  margin-bottom: 2px;
+}
+.shelfChapterName {
+  font-size: 15px;
+  font-family: Georgia, serif;
+  color: var(--ink);
+  line-height: 1.3;
+  display: block;
+}
+.shelfBadge {
+  background: var(--acc2bg);
+  color: var(--acc2ink);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.shelfReadinessBar {
+  height: 6px;
+  border-radius: 6px;
+  background: var(--line);
+  overflow: hidden;
+  margin: 6px 0 12px;
+}
+.shelfReadinessBar i {
+  display: block;
+  height: 100%;
+  background: var(--acc2);
+  border-radius: 6px;
+}
+.shelfQuickLoops {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+.shelfLoopBtn {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.shelfLoopBtn:active {
+  transform: scale(0.97);
+  border-color: var(--acc);
 }
 
 /* In Focus Mode (method open) or auth screen, hide the bottom tab bar */
@@ -3091,6 +3183,8 @@ RENDER.home = function(){
   var p = DB.profile, narrow = window.innerWidth < 620; homeNarrow = narrow;
   var gp = greetingPool(), g0 = gp[0] || {w: "Namaste", l: "English"};
   var dg = dailyGoalInfo(), st = streak(), c = cur(), due = dueReviews()[0];
+
+  // 1. Focus Hero Card
   var h = "<div class='homeHeroCard'>" +
     "<small>" + esc(g0.w) + ", " + esc(p.name) + "</small>" +
     "<b>Today’s One More</b>" +
@@ -3098,15 +3192,43 @@ RENDER.home = function(){
     "<small>" + dg.xp + " / " + dg.target + " XP · 🔥 " + st + "-day streak" + (dg.freezes ? " · 🛡️ " + dg.freezes : "") + "</small>" +
     "</div>";
 
+  // 2. Suggestion 1: Active Chapters & Pick-Up Shelf (Replacing Galaxy)
   if(c){
     var rd = readinessOf(c.id);
-    h += "<button class='btn' id='hmHeroCta' style='width:100%;margin-bottom:12px;font-size:15px'>" +
-      (due ? "Fade check: " + esc(due.c.name.slice(0, 24)) : "Continue: " + esc(c.name.slice(0, 24)) + " (" + rd.pct + "%)") +
-      "</button>";
+    var ns = nextStep(c.id);
+    var nextLabel = due ? "Fade check" : (ns && !ns.done ? ns.label : "5-Min Cram");
+    h += "<div class='chapterShelfCard'>" +
+      "<div class='shelfHeader'>" +
+        "<div class='shelfTitleWrap'>" +
+          "<span class='shelfKicker'>Current Chapter</span>" +
+          "<b class='shelfChapterName'>" + esc((c.classStd ? "Class " + c.classStd + " · " : "") + (c.subject ? c.subject + " · " : "") + c.name) + "</b>" +
+        "</div>" +
+        "<span class='shelfBadge'>" + rd.pct + "% Ready</span>" +
+      "</div>" +
+      "<div class='shelfReadinessBar'><i style='width:" + rd.pct + "%'></i></div>" +
+      "<button class='btn' id='shelfResumeBtn' style='width:100%;margin-bottom:8px;font-size:14px'>" +
+        (due ? "⏰ Review Fading Concepts" : "▶ Resume Next: " + esc(nextLabel)) +
+      "</button>" +
+      "<div class='shelfQuickLoops'>" +
+        "<button class='shelfLoopBtn' data-shelf-act='cram'>⚡ Cram</button>" +
+        "<button class='shelfLoopBtn' data-shelf-act='qa'>🧠 Recall</button>" +
+        "<button class='shelfLoopBtn' data-shelf-act='exam'>🔥 Fire Drill</button>" +
+        "<button class='shelfLoopBtn' data-shelf-act='flash'>🃏 Flashcards</button>" +
+      "</div>" +
+    "</div>";
   } else {
-    h += "<button class='btn' id='hmHeroCta' style='width:100%;margin-bottom:12px;font-size:15px'>✨ Try a sample chapter</button>";
+    h += "<div class='chapterShelfCard' style='text-align:center;padding:18px 14px'>" +
+      "<span class='shelfKicker'>Get Started</span>" +
+      "<b class='shelfChapterName' style='margin:4px 0 6px'>Pick up your first chapter</b>" +
+      "<p class='status' style='margin:0 0 12px;font-size:13px'>Load your textbook PDF or start with a sample to explore notes, flashcards, drills and mind maps.</p>" +
+      "<div class='g2'>" +
+        "<button class='btn' id='shelfSampleBtn'>✨ Try sample chapter</button>" +
+        "<button class='btn o' id='shelfUploadBtn'>＋ Choose PDF</button>" +
+      "</div>" +
+    "</div>";
   }
 
+  // 3. 2x3 Quick Navigation Tiles
   var TILES_2X3 = [
     {act:"study", icon:"📖", label:"Study"},
     {act:"plan", icon:"🗓", label:"Plan"},
@@ -3119,12 +3241,45 @@ RENDER.home = function(){
     return "<div class='qTile' data-home-act='" + t.act + "'><u>" + t.icon + "</u><span>" + t.label + "</span></div>";
   }).join("") + "</div>";
 
+  // 4. Quote Chip
   h += "<div class='quoteChip' id='hmQuoteChip'><span>" + pickQuote(false) + "</span></div>";
-  h += "<div class='card galaxyCard' style='margin-top:14px;border-radius:18px'>" + galaxySvg(narrow) + "</div>";
 
   $("homeIn").innerHTML = h;
   startGreeting(gp);
 
+  // Bind Shelf actions
+  if($("shelfResumeBtn")){
+    $("shelfResumeBtn").onclick = function(){
+      if(due) reviewChapter(due.c.id);
+      else {
+        showView("study");
+        var ns = nextStep(c.id);
+        if(ns && !ns.done) openMethod(ns.k === "teach" ? "qa" : ns.k);
+      }
+    };
+  }
+  if($("shelfSampleBtn")){
+    $("shelfSampleBtn").onclick = function(){
+      showView("study");
+      sampleChapterModal();
+    };
+  }
+  if($("shelfUploadBtn")){
+    $("shelfUploadBtn").onclick = function(){
+      showView("study");
+      var f = $("file");
+      if(f) f.click();
+    };
+  }
+  $("homeIn").querySelectorAll("[data-shelf-act]").forEach(function(btn){
+    btn.onclick = function(){
+      var act = btn.getAttribute("data-shelf-act");
+      showView("study");
+      goMethod(act, "", c ? c.id : "");
+    };
+  });
+
+  // Bind Quick Tiles
   $("homeIn").querySelectorAll("[data-home-act]").forEach(function(el){
     el.onclick = function(){
       var act = el.getAttribute("data-home-act");
@@ -3133,25 +3288,11 @@ RENDER.home = function(){
     };
   });
 
-  if($("hmHeroCta")){
-    $("hmHeroCta").onclick = function(){
-      if(c){
-        if(due) reviewChapter(due.c.id);
-        else showView("study");
-      } else {
-        showView("study");
-        sampleChapterModal();
-      }
-    };
-  }
-
   if($("hmQuoteChip")){
     $("hmQuoteChip").onclick = function(){
       this.querySelector("span").innerHTML = pickQuote(true);
     };
   }
-
-  bindGalaxy($("homeIn"));
 };
 
 /* ---------- Study: subject / semester / book / chapter ---------- */
