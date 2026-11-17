@@ -164,7 +164,11 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:8px 0 2px}
 .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 25%,transparent)}
 .chip.off .dot{background:var(--mute);box-shadow:none}
 .chip.local .dot{background:var(--acc2);box-shadow:0 0 0 2px color-mix(in srgb,var(--acc2) 25%,transparent)}
-#whoChip{max-width:18vw}
+#whoChip{max-width:18vw;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+#whoChip:active{transform:scale(0.96)}
+#aiStat{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,border-color .15s ease}
+#aiStat:active{transform:scale(0.96)}
+#aiStat:hover{border-color:var(--acc)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips button{font-size:.8rem;padding:5px 10px;border-radius:999px}
 #oDanger{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
@@ -175,8 +179,8 @@ body.method-open #v-study>h1{display:none}
   #scTitle{display:none!important}
   .barL{flex:0 0 auto!important;max-width:none!important;overflow:visible!important}
   .brand{flex-shrink:0!important;font-size:1.22rem!important;overflow:visible!important;min-width:max-content!important;letter-spacing:-0.01em!important}
-  #whoChip{max-width:24vw!important;font-size:0.75rem!important;padding:4px 8px!important}
-  #aiStat{max-width:22vw!important;font-size:0.73rem!important;padding:4px 7px!important}
+  #whoChip{max-width:22vw!important;font-size:0.75rem!important;padding:4px 8px!important}
+  #aiStat{max-width:32vw!important;font-size:0.74rem!important;padding:4px 8px!important;cursor:pointer!important}
   .bar1{gap:6px!important;justify-content:space-between!important}
   #bKey{display:none!important}
   .themeToggleBtn{width:34px!important;height:34px!important;min-width:34px!important;padding:0!important}
@@ -1379,7 +1383,7 @@ body.auth-screen #main {
 </head>
 <body>
 <div id="appShell">
-<header id="top"><div class="bar1"><div class="barL"><span class="brand">ENGRAMOS</span><span class="brandTag">Memory, engineered.</span><span id="scTitle" class="hidden"></span></div><span id="whoChip" class="chip hidden"></span><span id="aiStat" class="chip hidden"></span><button id="bTheme" class="pill themeToggleBtn" title="Switch theme" aria-label="Switch theme"></button><button id="bProf" class="avatar" title="My details" aria-label="My details"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="var(--accbg)"/><path d="M5 40c0-10 6-14 15-14s15 4 15 14z" fill="var(--acc)"/><circle cx="20" cy="21" r="7" fill="#f2c9a0"/><path d="M7 14l13-6 13 6-13 6z" fill="#2b3550"/><path d="M13 17v4c0 2 14 2 14 0v-4" fill="#2b3550"/><path d="M32 15v7" stroke="#24a99a" stroke-width="1.6"/></svg></button><button id="bKey" class="hidden">✦ Connect AI</button></div></header>
+<header id="top"><div class="bar1"><div class="barL"><span class="brand">ENGRAMOS</span><span class="brandTag">Memory, engineered.</span><span id="scTitle" class="hidden"></span></div><span id="whoChip" class="chip hidden" role="button" tabindex="0" title="Student details"></span><span id="aiStat" class="chip hidden" role="button" tabindex="0" title="AI Connection (tap to configure)"></span><button id="bTheme" class="pill themeToggleBtn" title="Switch theme" aria-label="Switch theme"></button><button id="bProf" class="avatar" title="My details" aria-label="My details"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="var(--accbg)"/><path d="M5 40c0-10 6-14 15-14s15 4 15 14z" fill="var(--acc)"/><circle cx="20" cy="21" r="7" fill="#f2c9a0"/><path d="M7 14l13-6 13 6-13 6z" fill="#2b3550"/><path d="M13 17v4c0 2 14 2 14 0v-4" fill="#2b3550"/><path d="M32 15v7" stroke="#24a99a" stroke-width="1.6"/></svg></button><button id="bKey" class="hidden">✦ Connect AI</button></div></header>
 <div id="navFab" class="hidden"><button id="bBack" class="navFabBtn" title="Go back to the previous screen" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><span class="lbl">Back</span></button><button id="bFwd" class="navFabBtn" title="Go forward" aria-label="Go forward"><span class="lbl">Forward</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
 <div id="pilotBar" class="pilotBar hidden" role="status"></div>
 <main id="main">
@@ -1928,8 +1932,16 @@ function md(t){
 }
 
 var errPop = null;
-function setMsg(t, bad, retry){
-  if(t && bad){ if(typeof anaError === "function") anaError(t); if(errPop && errPop.el.parentNode) errPop.close(); errPop = popup("<p>" + esc(t) + "</p><div class='row'>" + (retry ? "<button class='primary' id='erRt'>Try again</button>" : "") + "<button data-close>Close</button></div>"); var rb = errPop.el.querySelector("#erRt"); if(rb) rb.onclick = function(){ errPop.el.remove(); retry(); }; return; }
+function setMsg(t, bad, retry, retryLbl){
+  if(t && bad){
+    if(typeof anaError === "function") anaError(t);
+    if(errPop && errPop.el.parentNode) errPop.close();
+    var rText = retryLbl || "Try again";
+    errPop = popup("<p style='margin:0 0 12px;line-height:1.5'>" + esc(t).replace(/\n/g, "<br>") + "</p><div class='row' style='justify-content:flex-end;gap:8px'>" + (retry ? "<button class='primary' id='erRt'>" + esc(rText) + "</button>" : "") + "<button data-close>Close</button></div>");
+    var rb = errPop.el.querySelector("#erRt");
+    if(rb) rb.onclick = function(){ errPop.el.remove(); retry(); };
+    return;
+  }
   var m = $("msg"); if(!m) return; m.textContent = t || ""; m.className = "status";
 }
 function toast(t){ var d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.appendChild(d); setTimeout(function(){ d.remove(); }, 1800); }
@@ -2255,7 +2267,7 @@ function persona(){ return "You are the ENGRAMOS study companion, a warm older-s
 function base(q){ var c = cur(); q = q || EXQ; EXQ = ""; var ct = q ? excerpt(q, 4) : c.text; return persona() + "Stay faithful to the textbook text below; never contradict it. Use its wording and examples where they help. If the text does not contain the answer, say briefly what the chapter does cover instead of guessing.\n\nBOOK: " + c.book + "\nCHAPTER: " + c.name + "\nCHAPTER TEXT:\n" + ct + "\n\nTASK:\n"; }
 /* ---------- AI providers: free models, email sign-in, or your own key ---------- */
 var AI_PROVIDERS = {
-  groq: {name:"Groq", tag:"Default · 14,400/day free", desc:"Lightning-fast open models (Llama 3.3 70B). Pre-configured out of the box so you can start studying right away. Optional: add your own free key for dedicated 14,400 requests/day.", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.3-70b-versatile", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"]},
+  groq: {name:"Groq", tag:"Recommended · 14,400/day free", desc:"Lightning-fast open models (Llama 3.3 70B). Dedicated 14,400 requests/day free forever with your personal Groq key (no credit card needed).", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.3-70b-versatile", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"]},
   gemini: {name:"Google Gemini", tag:"1M Context · 1,500/day free", desc:"Google Gemini 2.0 Flash: ultra-fast, handles entire 40-page chapters at once, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.0-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-flash-latest"]},
   puter: {name:"Free AI (Puter)", tag:"Email sign-in · no key", desc:"Sign in with email for a shared monthly allowance. (Note: slower during peak hours).", model:"gpt-5.4-nano", free:true, link:"https://puter.com"},
   openrouter: {name:"OpenRouter", tag:"Free models · API key", desc:"One key opens many free models. Names ending in :free cost nothing.", api:"https://openrouter.ai/api/v1/chat/completions", kind:"openai", model:"nvidia/nemotron-3-ultra-550b-a55b:free", free:true, link:"https://openrouter.ai/keys", hint:"sk-or-…", models:["nvidia/nemotron-3-ultra-550b-a55b:free", "google/gemma-4-26b-a4b-it:free"]},
@@ -2264,24 +2276,40 @@ var AI_PROVIDERS = {
 function aierr(code, detail){ var e = new Error(code); e.code = code; if(detail) e.detail = String(detail).slice(0, 240); return e; }
 function hostOf(u){ return String(u).replace(/^https?:\/\//, "").split("/")[0]; }
 function aiCfg(){
-  if(DB.ai && DB.ai.provider && AI_PROVIDERS[DB.ai.provider]) return DB.ai;
+  if(DB.ai && DB.ai.provider && AI_PROVIDERS[DB.ai.provider] && (DB.ai.key || DB.ai.provider === "puter")) return DB.ai;
+  if(DB.groqKey) return {provider:"groq", key:DB.groqKey, model: AI_PROVIDERS.groq.model};
+  if(DB.geminiKey) return {provider:"gemini", key:DB.geminiKey, model: AI_PROVIDERS.gemini.model};
   if(DB.key){ DB.ai = {provider:"anthropic", key:DB.key, email:"", model:DB.model || AI_PROVIDERS.anthropic.model}; DB.key = ""; DB.model = ""; return DB.ai; }
-  return {provider:"groq", key:(DB.groqKey || ""), email:"", model:"llama-3.3-70b-versatile", starter:true};
+  return null;
 }
 function aiName(c){ var P = c && AI_PROVIDERS[c.provider]; return P ? P.name : "AI"; }
 function refreshKeyBtn(){
   var b = $("bKey"); if(!b) return;
   var c = aiCfg();
   b.classList.toggle("hidden", HOSTED || !DB.profile);
-  if(c){
-    b.textContent = (c.starter && !c.key) ? "✦ Groq (Default) ✓" : "✦ " + aiName(c) + " connected ✓";
+  if(c && (c.key || c.provider === "puter")){
+    b.textContent = "✦ " + aiName(c) + " connected ✓";
   } else {
     b.textContent = "✦ Connect AI";
   }
   if(typeof refreshBanner === "function") refreshBanner();
 }
-function useAI(cfg){ DB.ai = cfg; DB.key = ""; DB.model = ""; DB.engine = "ai"; sample = wrapSample(mkApi(cfg)); save(); refreshKeyBtn(); if($("engSel")) $("engSel").value = "ai"; }
-function dropAI(){ DB.ai = null; DB.key = ""; DB.model = ""; sample = null; if(DB.engine === "ai") DB.engine = "local"; save(); refreshKeyBtn(); if($("engSel")) $("engSel").value = DB.engine; }
+function useAI(cfg){
+  DB.ai = cfg;
+  if(cfg && cfg.provider === "groq") DB.groqKey = cfg.key;
+  if(cfg && cfg.provider === "gemini") DB.geminiKey = cfg.key;
+  DB.key = ""; DB.model = ""; DB.engine = "ai";
+  sample = wrapSample(mkApi(cfg));
+  save(); refreshKeyBtn();
+  if($("engSel")) $("engSel").value = "ai";
+}
+function dropAI(){
+  DB.ai = null; DB.key = ""; DB.model = "";
+  sample = null;
+  if(DB.engine === "ai") DB.engine = "local";
+  save(); refreshKeyBtn();
+  if($("engSel")) $("engSel").value = DB.engine;
+}
 function aiErrText(code){
   if(code === "bad_key") return "That key was not accepted. Please check it and try again.";
   if(code === "bad_model") return "That model name was not accepted. Try another model from the list.";
@@ -2471,7 +2499,7 @@ function mkPuter(ai){
   return call;
 }
 function mkApi(ai){
-  ai = ai || aiCfg(); if(!ai) throw aierr("signed_out");
+  ai = ai || aiCfg(); if(!ai || (!ai.key && ai.provider !== "puter")) throw aierr("bad_key", "API key required");
   if(ai.provider === "anthropic") return mkAnthropic(ai);
   if(ai.provider === "gemini") return mkGemini(ai);
   if(ai.provider === "puter") return mkPuter(ai);
@@ -2503,22 +2531,19 @@ function bestPuterModel(list){
 function connectModal(){
   return new Promise(function(res){
     var o = document.createElement("div"); o.className = "modal";
-    var old = aiCfg(), filePage = location.protocol === "file:", pick = old ? old.provider : "groq";
+    var old = aiCfg(), filePage = location.protocol === "file:", pick = (old && old.provider) ? old.provider : "groq";
     var done = function(){ o.remove(); res(); };
     var msg = function(t){ var e = o.querySelector("#kMsg"); if(e) e.textContent = t || ""; };
     if(!filePage) loadPuter().catch(function(){});
-    var intro = filePage
-      ? "AI makes questions, flashcards, tests and fun facts sharper. Groq is pre-configured by default. Everything still works offline."
-      : "AI makes questions, flashcards, tests and fun facts sharper. Groq is pre-configured by default. Everything still works offline.";
-    var fileNote = filePage
-      ? "<p class='status' style='font-size:.8rem;margin:0 0 8px'><b>Pre-configured with Groq.</b> You can use it right away, or paste your personal Groq (14,400 req/day) or Google Gemini Flash key below.</p>"
-      : "";
-    o.innerHTML = "<div><h3 style='margin-top:0'>Connect AI</h3><p class='status' style='margin-top:4px'>" + intro + "</p>" + fileNote + "<div class='row' id='pvTabs' style='margin-top:12px'></div><div id='pvBody'></div><div id='kMsg' class='status err' style='min-height:18px'></div><div class='row' style='margin-top:8px'><button class='primary' id='kOk'>Connect</button><button id='kNo'>Not now</button>" + (old ? "<button id='kOff'>Disconnect</button>" : "") + "</div><p class='status' style='font-size:.76rem;margin:10px 0 0'>Your key and sign-in stay only in this browser. Text goes only to the AI provider you choose.</p></div>";
+    var intro = "AI makes questions, flashcards, tests and smart packs sharper. Groq Cloud (14,400 free requests/day) and Google Gemini Flash are 100% free with no credit card.";
+    o.innerHTML = "<div><h3 style='margin-top:0'>Connect AI</h3><p class='status' style='margin-top:4px'>" + intro + "</p><div class='row' id='pvTabs' style='margin-top:12px;gap:6px'></div><div id='pvBody'></div><div id='kMsg' class='status err' style='min-height:18px'></div><div class='row' style='margin-top:12px;gap:8px;flex-wrap:wrap'><button class='primary' id='kOk'>Connect</button><button id='kUseLocal' title='Study 100% offline with zero setup'>📱 On-Device (Offline)</button><button id='kNo'>Cancel</button>" + (old ? "<button id='kOff'>Disconnect</button>" : "") + "</div><p class='status' style='font-size:.76rem;margin:10px 0 0'>Your key stays only on this device in your browser. Text goes only to the AI provider you choose.</p></div>";
     document.body.appendChild(o);
     o.onclick = function(e){ if(e.target === o) done(); };
     o.querySelector("#kNo").onclick = done;
     var offBtn = o.querySelector("#kOff");
-    if(offBtn) offBtn.onclick = function(){ dropAI(); done(); toast("AI disconnected. Using this device."); };
+    if(offBtn) offBtn.onclick = function(){ dropAI(); done(); toast("AI disconnected. Using on-device engine."); };
+    var localBtn = o.querySelector("#kUseLocal");
+    if(localBtn) localBtn.onclick = function(){ dropAI(); done(); toast("Using On-Device Engine — 100% offline!"); };
     var fillModels = function(names, want){
       var sel = o.querySelector("#kMod"); if(!sel) return;
       if(sel.tagName === "SELECT"){
@@ -2534,53 +2559,78 @@ function connectModal(){
     var drawTabs = function(){
       o.querySelector("#pvTabs").innerHTML = Object.keys(AI_PROVIDERS).map(function(id){
         var P = AI_PROVIDERS[id], blocked = (id === "puter" && filePage);
-        return "<button data-p='" + id + "'" + (blocked ? " disabled title='Needs the app served from a local web address'" : "") + " style='flex:1 1 46%;min-width:140px;text-align:left;padding:8px 10px;font-size:.86rem' class='" + (pick === id ? "primary" : "") + "'>" + esc(P.name) + "<br><span style='font-size:.7rem;opacity:.8'>" + esc(blocked ? "Needs http:// · use a key" : P.tag) + "</span></button>";
+        var isSel = (pick === id);
+        return "<button type='button' data-p='" + id + "'" + (blocked ? " disabled title='Needs the app served from a local web address'" : "") + " style='flex:1 1 46%;min-width:130px;text-align:left;padding:8px 10px;font-size:.86rem;border:1.5px solid " + (isSel ? "var(--acc)" : "var(--line)") + ";background:" + (isSel ? "var(--accbg)" : "var(--card)") + ";color:" + (isSel ? "var(--acc)" : "var(--ink)") + ";font-weight:" + (isSel ? "700" : "500") + "' class='" + (isSel ? "primary" : "") + "'>" + esc(P.name) + "<br><span style='font-size:.7rem;opacity:.85;font-weight:normal'>" + esc(blocked ? "Needs http:// · use a key" : P.tag) + "</span></button>";
       }).join("");
-      o.querySelectorAll("[data-p]").forEach(function(b){ b.onclick = function(){ pick = b.getAttribute("data-p"); drawTabs(); drawPanel(); }; });
+      o.querySelectorAll("[data-p]").forEach(function(b){
+        b.onclick = function(){
+          var targetP = b.getAttribute("data-p");
+          pick = targetP;
+          drawTabs();
+          drawPanel().then(function(){
+            var ki = o.querySelector("#kKey");
+            if(ki) ki.focus();
+          });
+        };
+      });
     };
     var drawPanel = async function(){
       var myPick = pick, P = AI_PROVIDERS[pick], body = o.querySelector("#pvBody");
+      var cfg = (old && old.provider === pick) ? old : (pick === "groq" && DB.groqKey ? {provider:"groq", key:DB.groqKey} : (pick === "gemini" && DB.geminiKey ? {provider:"gemini", key:DB.geminiKey} : null));
       var h = "<p style='margin:2px 0 10px'>" + esc(P.desc) + "</p>";
       if(pick === "groq"){
         h += "<div style='background:var(--accbg);border:1px solid var(--acc);border-radius:12px;padding:12px;margin:0 0 12px'>" +
-          "<div style='font-size:13px;font-weight:700;color:var(--acc);margin-bottom:6px'>⚡ Groq Cloud (Pre-Configured Default):</div>" +
+          "<div style='font-size:13px;font-weight:700;color:var(--acc);margin-bottom:6px'>⚡ Groq Cloud (Recommended — 14,400 Requests/Day Free):</div>" +
           "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--ink)'>" +
-          "<div>• <b>Pre-Configured Default:</b> Ready out-of-the-box — no sign-up or key needed.</div>" +
-          "<div>• <b>Near-Instant Speed:</b> ~1.2s response time powered by LPU inference engine.</div>" +
-          "<div>• <b>Dedicated 14,400 Requests / Day:</b> Sign up free in 60s and paste your key below for dedicated high-volume access.</div>" +
+          "<div>• <b>Ultra-Fast Speed:</b> ~1.2s response time powered by Groq LPU engine.</div>" +
+          "<div>• <b>Dedicated 14,400 Daily Quota:</b> 100% free daily allowance (Llama 3.3 70B).</div>" +
+          "<div>• <b>Free Setup in 60s:</b> No credit card required. Sign in and copy key.</div>" +
           "</div>" +
           "<div class='row' style='margin-top:10px;gap:8px;flex-wrap:wrap'>" +
           "<button type='button' id='btnGroqGuide' class='primary' style='font-size:12px;padding:6px 12px'>📘 Step-by-Step Groq Guide</button>" +
           "<a href='https://console.groq.com/keys' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Groq Console ↗</a>" +
           "</div>" +
-          "</div>";
+          "</div>" +
+          "<label style='font-weight:600;font-size:12px;color:var(--ink);margin-bottom:4px;display:block'>Groq API Key (starts with <code>gsk_…</code>):</label>" +
+          "<div class='row' style='gap:6px;margin-bottom:6px'>" +
+          "<input type='text' id='kKey' placeholder='Paste your gsk_… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
+          "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
+          "</div>" +
+          "<label style='font-size:12px;color:var(--mute)'>Model</label><input type='text' id='kMod' list='modList' style='width:100%'><datalist id='modList'></datalist>";
       } else if(pick === "gemini"){
-        h += "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 12px'>" +
+        h += "<div style='background:var(--accbg);border:1px solid var(--acc);border-radius:12px;padding:12px;margin:0 0 12px'>" +
           "<div style='font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px'>⚡ Google Gemini 2.0 Flash (Recommended for Big Books):</div>" +
-          "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--mute)'>" +
+          "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--ink)'>" +
           "<div>• <b>1M Token Context:</b> Ingests entire 40-page textbook chapters without cutting.</div>" +
-          "<div>• <b>Top Indic Accuracy:</b> Superior Hindi, Tamil, Telugu, Marathi, Malayalam comprehension.</div>" +
-          "<div>• <b>1,500 Requests / Day Free:</b> 100% free daily quota for every student forever.</div>" +
-          "<div>• <b>No Credit Card Needed:</b> Sign in with regular Gmail & copy key in 60 seconds.</div>" +
+          "<div>• <b>Top Indic Accuracy:</b> Superior Hindi, Tamil, Telugu, Marathi comprehension.</div>" +
+          "<div>• <b>1,500 Free Requests / Day:</b> 100% free forever with your Gmail account.</div>" +
+          "<div>• <b>No Credit Card Needed:</b> Sign in to Google AI Studio in 60s.</div>" +
           "</div>" +
           "<div class='row' style='margin-top:10px;gap:8px;flex-wrap:wrap'>" +
           "<button type='button' id='btnGemGuide' class='primary' style='font-size:12px;padding:6px 12px'>📘 Step-by-Step Gemini Guide</button>" +
           "<a href='https://aistudio.google.com/apikey' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Google AI Studio ↗</a>" +
           "</div>" +
-          "</div>";
-      }
-      var cfg = old && old.provider === pick ? old : null, signed = pick === "puter" && puterSignedIn();
-      if(pick === "puter"){
-        h += "<div class='row'><button id='pSign'>" + (signed ? "Signed in ✓" : "Sign in with email") + "</button><span id='pUser' class='status'>" + (cfg && cfg.email ? esc(cfg.email) : "") + "</span></div>";
-        h += "<label>Model</label><select id='kMod' style='width:100%'></select>";
-        h += "<p class='status' style='font-size:.8rem'>Puter gives you a free monthly allowance. No card. If no sign-in window opens, allow pop-ups for this page.</p>";
-        if(location.protocol === "file:") h += "<p class='status err' style='font-size:.8rem'>Email sign-in needs the page opened from a web address. From a file, use the Google Gemini or Groq free key below instead.</p>";
+          "</div>" +
+          "<label style='font-weight:600;font-size:12px;color:var(--ink);margin-bottom:4px;display:block'>Gemini API Key (starts with <code>AIza…</code>):</label>" +
+          "<div class='row' style='gap:6px;margin-bottom:6px'>" +
+          "<input type='text' id='kKey' placeholder='Paste your AIza… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
+          "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
+          "</div>" +
+          "<label style='font-size:12px;color:var(--mute)'>Model</label><input type='text' id='kMod' list='modList' style='width:100%'><datalist id='modList'></datalist>";
       } else {
-        h += "<label>Email (optional, just a label)</label><input type='email' id='kMail' placeholder='you@example.com' style='width:100%' value='" + esc(cfg && cfg.email || "") + "'>";
-        h += "<label>API key</label><input type='password' id='kKey' placeholder='" + esc(P.hint) + "' style='width:100%' value='" + esc(cfg && cfg.key || "") + "'>";
-        h += "<label>Model</label><input type='text' id='kMod' list='modList' style='width:100%'><datalist id='modList'></datalist>";
-        if(pick === "openrouter") h += "<div class='row' style='margin-top:8px'><button id='kFree'>Show free models</button></div>";
-        h += "<p class='status' style='font-size:.8rem'>Get a" + (P.free ? " free" : "n") + " key at <a target='_blank' rel='noopener' href='" + P.link + "'>" + esc(hostOf(P.link)) + "</a>. " + (P.free ? "Free tiers have daily limits." : "Billed by Anthropic, separate from a Claude chat plan.") + "</p>";
+        var signed = pick === "puter" && puterSignedIn();
+        if(pick === "puter"){
+          h += "<div class='row'><button id='pSign'>" + (signed ? "Signed in ✓" : "Sign in with email") + "</button><span id='pUser' class='status'>" + (cfg && cfg.email ? esc(cfg.email) : "") + "</span></div>";
+          h += "<label>Model</label><select id='kMod' style='width:100%'></select>";
+          h += "<p class='status' style='font-size:.8rem'>Puter gives you a free monthly allowance. No card. If no sign-in window opens, allow pop-ups for this page.</p>";
+          if(location.protocol === "file:") h += "<p class='status err' style='font-size:.8rem'>Email sign-in needs the page opened from a web address. From a file, use the Google Gemini or Groq free key below instead.</p>";
+        } else {
+          h += "<label>Email (optional, just a label)</label><input type='email' id='kMail' placeholder='you@example.com' style='width:100%' value='" + esc(cfg && cfg.email || "") + "'>";
+          h += "<label>API key</label><input type='password' id='kKey' placeholder='" + esc(P.hint) + "' style='width:100%' value='" + esc(cfg && cfg.key || "") + "'>";
+          h += "<label>Model</label><input type='text' id='kMod' list='modList' style='width:100%'><datalist id='modList'></datalist>";
+          if(pick === "openrouter") h += "<div class='row' style='margin-top:8px'><button id='kFree'>Show free models</button></div>";
+          h += "<p class='status' style='font-size:.8rem'>Get a" + (P.free ? " free" : "n") + " key at <a target='_blank' rel='noopener' href='" + P.link + "'>" + esc(hostOf(P.link)) + "</a>. " + (P.free ? "Free tiers have daily limits." : "Billed by Anthropic, separate from a Claude chat plan.") + "</p>";
+        }
       }
       body.innerHTML = h;
       if(pick === "groq"){
@@ -2590,6 +2640,22 @@ function connectModal(){
       if(pick === "gemini"){
         var gBtn = o.querySelector("#btnGemGuide");
         if(gBtn) gBtn.onclick = function(){ geminiGuideModal(); };
+      }
+      var pasteBtn = o.querySelector("#btnPasteKey");
+      if(pasteBtn){
+        pasteBtn.onclick = async function(){
+          try {
+            var txt = await navigator.clipboard.readText();
+            if(txt && txt.trim()){
+              var inp = o.querySelector("#kKey");
+              if(inp){ inp.value = txt.trim(); msg(""); toast("Key pasted!"); }
+            } else {
+              toast("Clipboard is empty");
+            }
+          } catch(e){
+            toast("Tap and hold the box to paste");
+          }
+        };
       }
       var want = cfg && cfg.model || P.model, names = P.models || [];
       if(pick === "puter"){
@@ -2649,12 +2715,18 @@ function connectModal(){
           cfg = {provider:"puter", key:"", email:userEmail(usr), model:(o.querySelector("#kMod") || {}).value || "gpt-5.4-nano"};
         } else {
           var key = (o.querySelector("#kKey") || {}).value.trim();
-          if(!key && pick === "groq"){
-            cfg = {provider:"groq", key:"", email:(o.querySelector("#kMail") || {}).value.trim(), model:(o.querySelector("#kMod") || {}).value.trim() || P.model, starter:true};
-            useAI(cfg); toast("Using pre-configured default Groq"); done(); return;
+          if(pick === "groq"){
+            if(!key){ ok.disabled = false; ok.textContent = btnOld; msg("Paste your free Groq API key (starts with gsk_…) or tap 'Step-by-Step Groq Guide' above."); return; }
+            if(key.indexOf("gsk_") !== 0){ ok.disabled = false; ok.textContent = btnOld; msg("Groq API keys start with gsk_…. Please check your copied key."); return; }
+            cfg = {provider:"groq", key:key, model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
+          } else if(pick === "gemini"){
+            if(!key){ ok.disabled = false; ok.textContent = btnOld; msg("Paste your free Gemini API key (starts with AIza…) or tap 'Step-by-Step Gemini Guide' above."); return; }
+            if(key.indexOf("AIza") !== 0){ ok.disabled = false; ok.textContent = btnOld; msg("Gemini API keys start with AIza…. Please check your copied key."); return; }
+            cfg = {provider:"gemini", key:key, model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
+          } else {
+            if(!key){ ok.disabled = false; ok.textContent = btnOld; msg("Paste your " + P.name + " API key first."); return; }
+            cfg = {provider:pick, key:key, email:(o.querySelector("#kMail") || {}).value.trim(), model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
           }
-          if(!key){ ok.disabled = false; ok.textContent = btnOld; msg("Paste your " + P.name + " API key first."); return; }
-          cfg = {provider:pick, key:key, email:(o.querySelector("#kMail") || {}).value.trim(), model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
         }
         var api = mkApi(cfg), t = await api("Reply with the single word OK.", {});
         if(!/ok/i.test(String(t && t.text || ""))) throw aierr("api");
@@ -2683,10 +2755,13 @@ async function saveFile(name, text){
     setTimeout(function(){ try { URL.revokeObjectURL(url); } catch(e){} }, 1500);
   } catch(e){ toast("The file was not saved"); }
 }
-function aiErr(e, retry){ var _sm = setMsg; setMsg = function(t, b){ _sm(t, b, retry); }; try { aiErr0(e); } finally { setMsg = _sm; } }
+function aiErr(e, retry, retryLbl){ var _sm = setMsg; setMsg = function(t, b){ _sm(t, b, retry, retryLbl); }; try { aiErr0(e); } finally { setMsg = _sm; } }
 function aiErr0(e){
   var code = e && e.code;
-  if(code === "bad_key" || code === "signed_out"){ dropAI(); setMsg("That AI connection did not work. Please connect again with “Connect AI” at the top, or switch Prepare questions to On this device.", true); }
+  if(code === "bad_key" || code === "signed_out"){
+    dropAI();
+    setMsg("That AI key was not accepted or has expired. We safely switched your study engine to 'On this device' so your studies are never interrupted.\n\nTo connect or update your free Groq or Gemini key, tap below:", true, function(){ connectModal(); }, "🔑 Connect AI Key");
+  }
   else if(code === "no_net" || (!code && /fetch|network|load failed/i.test(String(e)))) setMsg("The internet is not reachable right now. I can still make questions on this device — switch Prepare questions to On this device.", true);
   else if(code === "origin") setMsg("AI sign-in needs the page opened from a web address. Use the free Gemini or Groq key instead.", true);
   else if(code === "popup") setMsg("The sign-in window was blocked. Allow pop-ups for this page, then connect AI again.", true);
@@ -2697,7 +2772,7 @@ function aiErr0(e){
   else setMsg("Something went wrong. Please try again.", true);
 }
 async function run(prompt, outEl, btn, opt){
-  opt = opt || {}; if(DB.engine !== "ai" && opt.local){ var lt = opt.local(); outEl.innerHTML = md(lt); addSaveBtn(outEl, opt, lt); if(opt.next !== false){ outEl.insertAdjacentHTML("beforeend", nextBar(opt.ctx || "")); bindNext(outEl); } revealResult(outEl); return lt; }
+  opt = opt || {}; var cAi = aiCfg(); if((DB.engine !== "ai" || !cAi || (!cAi.key && cAi.provider !== "puter")) && opt.local){ var lt = opt.local(); outEl.innerHTML = md(lt); addSaveBtn(outEl, opt, lt); if(opt.next !== false){ outEl.insertAdjacentHTML("beforeend", nextBar(opt.ctx || "")); bindNext(outEl); } revealResult(outEl); return lt; }
   var c0 = cur(), ck = (opt.key && c0 && !opt.general) ? "out|" + c0.id + "|" + opt.key : null;
   if(ck && DB.cache[ck] && !opt.fresh){ outEl.innerHTML = md(DB.cache[ck]) + "<div class='row'><button id='rgBtn'>Regenerate</button></div>"; document.getElementById("rgBtn").onclick = function(){ run(prompt, outEl, btn, Object.assign({}, opt, {fresh: true})); }; addSaveBtn(outEl, opt, DB.cache[ck]); outEl.insertAdjacentHTML("beforeend", nextBar(opt.ctx || "")); bindNext(outEl); revealResult(outEl); return DB.cache[ck]; }
   RETRY = function(){ btn.click(); }; var s = await getSample(); if(!s) return;
@@ -2898,6 +2973,14 @@ $("bBack").onclick = function(){
 $("bFwd").onclick = function(){ if(NIDX >= 0 && NIDX < NAV.length - 1){ NIDX++; showView(NAV[NIDX]); } };
 $("bProf").onclick = function(){ if(DB.profile) show("onb"); };
 $("bKey").onclick = function(){ connectModal(); };
+if($("aiStat")){
+  $("aiStat").onclick = function(){ connectModal(); };
+  $("aiStat").onkeydown = function(e){ if(e.key === "Enter" || e.key === " ") connectModal(); };
+}
+if($("whoChip")){
+  $("whoChip").onclick = function(){ if(DB.profile) show("onb"); };
+  $("whoChip").onkeydown = function(e){ if((e.key === "Enter" || e.key === " ") && DB.profile) show("onb"); };
+}
 /* Class/Standard is no longer collected — students build their own books and chapters across subjects and semesters. */
 $("oLang").innerHTML = LANGS.map(function(c){return "<option>" + c + "</option>"}).join("");
 
@@ -2950,10 +3033,13 @@ function refreshBanner(){
   if(w){ w.textContent = DB.profile ? DB.profile.name : ""; w.classList.toggle("hidden", onb); }
   var a = $("aiStat");
   if(a){
-    var c = aiCfg(), on = navigator.onLine, txt = onb ? "" : (!on ? "Offline" : (c ? aiName(c) : "On device"));
-    a.className = "chip" + (c ? "" : " local") + (on ? "" : " off") + (txt ? "" : " hidden");
+    var c = aiCfg(), on = navigator.onLine;
+    var hasKey = !!(c && (c.key || c.provider === "puter"));
+    var txt = onb ? "" : (!on ? "Offline" : (hasKey ? (aiName(c) + " ✓") : "✦ Connect AI"));
+    a.className = "chip" + (hasKey ? " on" : " local") + (on ? "" : " off") + (txt ? "" : " hidden");
     a.innerHTML = txt ? "<span class='dot'></span>" + esc(txt) : "";
-    a.title = txt ? "AI connection: " + txt : "";
+    a.title = txt ? "AI connection: " + txt + " (tap to configure)" : "";
+    a.setAttribute("aria-label", "AI connection: " + txt);
   }
 }
 function startSession(u){
@@ -3824,16 +3910,20 @@ function buildPack(){
     toast("Go online first");
     return;
   }
+  var cAi = aiCfg();
+  if(!cAi || (!cAi.key && cAi.provider !== "puter")){
+    connectModal().then(function(){
+      var cAi2 = aiCfg();
+      if(cAi2 && (cAi2.key || cAi2.provider === "puter")) buildPack();
+      else toast("Connect a free Groq or Gemini key first");
+    });
+    return;
+  }
   var has = c.pack && c.pack.concepts && c.pack.concepts.length;
-  var m = popup("<h3 style='margin-top:0'>Build a smart pack?</h3><p>This uses <b>the internet</b> and your connected AI. Press it <b>only when you are online</b>.</p><p class='status'>I will search for this chapter’s key concepts, examples and exam-style Q&amp;As at your class level, then save them on this device in a compact pack. It can take a minute.</p>" + (has ? "<p class='status'>A pack is already saved for this chapter. Building again will replace it.</p>" : "") + "<div class='row' style='margin-top:12px'><button class='primary' id='pkGo'>Yes, build it (online)</button><button data-close>Not now</button></div>");
+  var m = popup("<h3 style='margin-top:0'>Build a smart pack?</h3><p>This uses <b>the internet</b> and your connected AI (" + esc(aiName(cAi)) + "). Press it <b>only when you are online</b>.</p><p class='status'>I will search for this chapter’s key concepts, examples and exam-style Q&amp;As at your class level, then save them on this device in a compact pack. It can take a minute.</p>" + (has ? "<p class='status'>A pack is already saved for this chapter. Building again will replace it.</p>" : "") + "<div class='row' style='margin-top:12px'><button class='primary' id='pkGo'>Yes, build it (online)</button><button data-close>Not now</button></div>");
   m.el.querySelector("#pkGo").onclick = function(){
     m.el.remove();
-    if(!aiCfg()){
-      connectModal().then(function(){
-        if(aiCfg()) runPack(c.id);
-        else toast("Connect AI first, then build the smart pack");
-      });
-    } else runPack(c.id);
+    runPack(c.id);
   };
 }
 async function buildPackFor(c){
@@ -9328,7 +9418,8 @@ function pickMcq(bank, n, lvl, focus){
 }
 async function startTest(kind){
   RETRY = function(){ startTest(kind); };
-  if(DB.engine !== "ai"){ var li = genMcqLocal(+$("qzN").value, $("qzD").value, FOCUS); FOCUS = ""; if(!li.length){ $("qzScore").textContent = "This chapter has too little readable English text for on-device questions. Switch Prepare questions to With AI in the Study screen."; return; } buildTest(kind, li, null); return; }
+  var cAi = aiCfg();
+  if(DB.engine !== "ai" || !cAi || (!cAi.key && cAi.provider !== "puter")){ var li = genMcqLocal(+$("qzN").value, $("qzD").value, FOCUS); FOCUS = ""; if(!li.length){ $("qzScore").textContent = "This chapter has too little readable English text for on-device questions. Switch Prepare questions to With AI in the Study screen."; return; } buildTest(kind, li, null); return; }
   var btn = $("qzGo"), n = +$("qzN").value, lvl = $("qzD").value, bank = DB.cache[bankKey("mcq")] || [];
   var want = lvl.indexOf("easy") === 0 ? "easy" : lvl.indexOf("hard") === 0 ? "hard" : "";
   btn.disabled = true; btn.textContent = "Preparing…"; $("qzOut").innerHTML = ""; $("qzRes").innerHTML = ""; $("qzScore").textContent = "";
