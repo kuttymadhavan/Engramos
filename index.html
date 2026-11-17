@@ -2267,11 +2267,27 @@ function persona(){ return "You are the ENGRAMOS study companion, a warm older-s
 function base(q){ var c = cur(); q = q || EXQ; EXQ = ""; var ct = q ? excerpt(q, 4) : c.text; return persona() + "Stay faithful to the textbook text below; never contradict it. Use its wording and examples where they help. If the text does not contain the answer, say briefly what the chapter does cover instead of guessing.\n\nBOOK: " + c.book + "\nCHAPTER: " + c.name + "\nCHAPTER TEXT:\n" + ct + "\n\nTASK:\n"; }
 /* ---------- AI providers: free models, email sign-in, or your own key ---------- */
 var AI_PROVIDERS = {
-  groq: {name:"Groq", tag:"Recommended · 14,400/day free", desc:"Lightning-fast open models (Llama 3.3 70B). Dedicated 14,400 requests/day free forever with your personal Groq key (no credit card needed).", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.3-70b-versatile", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"]},
-  gemini: {name:"Google Gemini", tag:"1M Context · 1,500/day free", desc:"Google Gemini 2.0 Flash: ultra-fast, handles entire 40-page chapters at once, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.0-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-flash-latest"]},
+  groq: {name:"Groq", tag:"Recommended · 14,400/day free", desc:"Lightning-fast open models (Llama 3.1 8B & Llama 3.3 70B). Dedicated 14,400 requests/day free forever with your personal Groq key (no credit card needed).", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.1-8b-instant", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:[
+    {id:"llama-3.1-8b-instant", label:"⚡ Llama 3.1 8B Instant (Ultra-Fast · Recommended)"},
+    {id:"llama-3.3-70b-versatile", label:"🧠 Llama 3.3 70B Versatile (Deep Reasoning)"},
+    {id:"openai/gpt-oss-120b", label:"🌟 OpenAI GPT-OSS 120B (High Capability)"},
+    {id:"openai/gpt-oss-20b", label:"⚡ OpenAI GPT-OSS 20B (Fast Open Model)"}
+  ]},
+  gemini: {name:"Google Gemini", tag:"1M Context · 1,500/day free", desc:"Google Gemini 2.0 Flash: ultra-fast, handles entire 40-page chapters at once, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.0-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:[
+    {id:"gemini-2.0-flash", label:"⚡ Gemini 2.0 Flash (Recommended · 1M Context)"},
+    {id:"gemini-1.5-flash", label:"📚 Gemini 1.5 Flash (Fast & Stable)"},
+    {id:"gemini-1.5-pro", label:"🧠 Gemini 1.5 Pro (Deep Analysis)"}
+  ]},
   puter: {name:"Free AI (Puter)", tag:"Email sign-in · no key", desc:"Sign in with email for a shared monthly allowance. (Note: slower during peak hours).", model:"gpt-5.4-nano", free:true, link:"https://puter.com"},
-  openrouter: {name:"OpenRouter", tag:"Free models · API key", desc:"One key opens many free models. Names ending in :free cost nothing.", api:"https://openrouter.ai/api/v1/chat/completions", kind:"openai", model:"nvidia/nemotron-3-ultra-550b-a55b:free", free:true, link:"https://openrouter.ai/keys", hint:"sk-or-…", models:["nvidia/nemotron-3-ultra-550b-a55b:free", "google/gemma-4-26b-a4b-it:free"]},
-  anthropic: {name:"Claude", tag:"Paid · API key", desc:"Claude’s own models. Needs a paid API key from Anthropic Console.", api:"https://api.anthropic.com/v1/messages", kind:"anthropic", model:"claude-sonnet-5-5", free:false, link:"https://console.anthropic.com/settings/keys", hint:"sk-ant-…", models:["claude-sonnet-5-5", "claude-sonnet-4-5", "claude-opus-4-5", "claude-haiku-4-5"]}
+  openrouter: {name:"OpenRouter", tag:"Free models · API key", desc:"One key opens many free models. Names ending in :free cost nothing.", api:"https://openrouter.ai/api/v1/chat/completions", kind:"openai", model:"nvidia/nemotron-3-ultra-550b-a55b:free", free:true, link:"https://openrouter.ai/keys", hint:"sk-or-…", models:[
+    {id:"nvidia/nemotron-3-ultra-550b-a55b:free", label:"Nvidia Nemotron 3 550B (Free)"},
+    {id:"google/gemma-4-26b-a4b-it:free", label:"Google Gemma 4 26B (Free)"}
+  ]},
+  anthropic: {name:"Claude", tag:"Paid · API key", desc:"Claude’s own models. Needs a paid API key from Anthropic Console.", api:"https://api.anthropic.com/v1/messages", kind:"anthropic", model:"claude-sonnet-5-5", free:false, link:"https://console.anthropic.com/settings/keys", hint:"sk-ant-…", models:[
+    {id:"claude-sonnet-5-5", label:"Claude Sonnet 5.5 (Recommended)"},
+    {id:"claude-sonnet-4-5", label:"Claude Sonnet 4.5"},
+    {id:"claude-haiku-4-5", label:"Claude Haiku 4.5 (Fast)"}
+  ]}
 };
 function aierr(code, detail){ var e = new Error(code); e.code = code; if(detail) e.detail = String(detail).slice(0, 240); return e; }
 function hostOf(u){ return String(u).replace(/^https?:\/\//, "").split("/")[0]; }
@@ -2359,7 +2375,7 @@ function mkOpenAI(ai){
     catch(e){ throw aierr("no_net", e); }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
-      throw aierr(r.status === 401 || r.status === 403 ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 402 ? "no_credit" : r.status === 404 ? "bad_model" : "api", t);
+      throw aierr(r.status === 401 || r.status === 403 ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 402 ? "no_credit" : (r.status === 404 || (r.status === 400 && /model|decommissioned/i.test(t))) ? "bad_model" : "api", t);
     }
     if(opts.onText && r.body && r.body.getReader){
       var rd = r.body.getReader(), dec = new TextDecoder(), buf = "", acc = "";
@@ -2544,16 +2560,52 @@ function connectModal(){
     if(offBtn) offBtn.onclick = function(){ dropAI(); done(); toast("AI disconnected. Using on-device engine."); };
     var localBtn = o.querySelector("#kUseLocal");
     if(localBtn) localBtn.onclick = function(){ dropAI(); done(); toast("Using On-Device Engine — 100% offline!"); };
-    var fillModels = function(names, want){
+    var fillModels = function(items, want){
       var sel = o.querySelector("#kMod"); if(!sel) return;
-      if(sel.tagName === "SELECT"){
-        var list = names.slice(); if(want && list.indexOf(want) < 0) list.unshift(want);
-        sel.innerHTML = list.map(function(n){ return "<option value='" + esc(n) + "'>" + esc(n) + "</option>"; }).join("");
-        sel.value = want || list[0] || "";
-      } else {
-        var dl = o.querySelector("#modList");
-        if(dl) dl.innerHTML = names.map(function(n){ return "<option value='" + esc(n) + "'>"; }).join("");
-        if(want) sel.value = want;
+      var norm = (items || []).map(function(x){
+        if(typeof x === "string") return {id: x, label: x};
+        return {id: x.id, label: x.label || x.id};
+      });
+      if(want && !norm.some(function(x){ return x.id === want; })){
+        norm.unshift({id: want, label: want});
+      }
+      sel.innerHTML = norm.map(function(x){
+        return "<option value='" + esc(x.id) + "'" + (x.id === want ? " selected" : "") + ">" + esc(x.label) + "</option>";
+      }).join("");
+      sel.value = want || (norm[0] ? norm[0].id : "");
+    };
+    var fetchGroqModels = async function(key, showToast){
+      key = (key || "").trim();
+      if(!key || key.indexOf("gsk_") !== 0) return;
+      var refBtn = o.querySelector("#btnRefreshModels");
+      if(refBtn){ refBtn.disabled = true; refBtn.textContent = "⏳…"; }
+      try {
+        var r = await fetch("https://api.groq.com/openai/v1/models", {
+          headers: {"Authorization": "Bearer " + key}
+        });
+        if(r.ok){
+          var j = await r.json();
+          if(j && Array.isArray(j.data)){
+            var activeIds = j.data.map(function(m){ return m.id; }).filter(function(id){
+              return id && !/whisper|tts|embed|guard/i.test(id) && (id.includes("llama") || id.includes("gpt") || id.includes("mixtral") || id.includes("gemma") || id.includes("qwen"));
+            });
+            if(activeIds.length){
+              var curVal = (o.querySelector("#kMod") || {}).value;
+              var friendly = activeIds.map(function(id){
+                var lbl = id;
+                if(id.includes("3.1-8b-instant")) lbl = "⚡ " + id + " (Ultra-Fast · Recommended)";
+                else if(id.includes("3.3-70b-versatile")) lbl = "🧠 " + id + " (Deep Reasoning)";
+                else if(id.includes("gpt-oss")) lbl = "🌟 " + id;
+                return {id: id, label: lbl};
+              });
+              fillModels(friendly, activeIds.indexOf(curVal) >= 0 ? curVal : friendly[0].id);
+              if(showToast) toast("Loaded " + activeIds.length + " Groq models for your key");
+            }
+          }
+        }
+      } catch(e){}
+      finally {
+        if(refBtn){ refBtn.disabled = false; refBtn.textContent = "🔄 Refresh"; }
       }
     };
     var drawTabs = function(){
@@ -2583,7 +2635,7 @@ function connectModal(){
           "<div style='font-size:13px;font-weight:700;color:var(--acc);margin-bottom:6px'>⚡ Groq Cloud (Recommended — 14,400 Requests/Day Free):</div>" +
           "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--ink)'>" +
           "<div>• <b>Ultra-Fast Speed:</b> ~1.2s response time powered by Groq LPU engine.</div>" +
-          "<div>• <b>Dedicated 14,400 Daily Quota:</b> 100% free daily allowance (Llama 3.3 70B).</div>" +
+          "<div>• <b>Dedicated 14,400 Daily Quota:</b> 100% free daily allowance (Llama 3.1 8B & 3.3 70B).</div>" +
           "<div>• <b>Free Setup in 60s:</b> No credit card required. Sign in and copy key.</div>" +
           "</div>" +
           "<div class='row' style='margin-top:10px;gap:8px;flex-wrap:wrap'>" +
@@ -2596,7 +2648,11 @@ function connectModal(){
           "<input type='text' id='kKey' placeholder='Paste your gsk_… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
           "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
           "</div>" +
-          "<label style='font-size:12px;color:var(--mute)'>Model</label><input type='text' id='kMod' list='modList' style='width:100%'><datalist id='modList'></datalist>";
+          "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from list):</label>" +
+          "<div class='row' style='gap:6px;margin-bottom:6px'>" +
+          "<select id='kMod' style='flex:1;min-width:0;padding:9px 11px;font-size:13px;border-radius:10px;background:var(--card);color:var(--ink);border:1px solid var(--line)'></select>" +
+          "<button type='button' id='btnRefreshModels' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0' title='Check live models for this key'>🔄 Refresh</button>" +
+          "</div>";
       } else if(pick === "gemini"){
         h += "<div style='background:var(--accbg);border:1px solid var(--acc);border-radius:12px;padding:12px;margin:0 0 12px'>" +
           "<div style='font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px'>⚡ Google Gemini 2.0 Flash (Recommended for Big Books):</div>" +
@@ -2616,18 +2672,19 @@ function connectModal(){
           "<input type='text' id='kKey' placeholder='Paste your AIza… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
           "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
           "</div>" +
-          "<label style='font-size:12px;color:var(--mute)'>Model</label><input type='text' id='kMod' list='modList' style='width:100%'><datalist id='modList'></datalist>";
+          "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from list):</label>" +
+          "<select id='kMod' style='width:100%;padding:9px 11px;font-size:13px;border-radius:10px;background:var(--card);color:var(--ink);border:1px solid var(--line);margin-bottom:6px'></select>";
       } else {
         var signed = pick === "puter" && puterSignedIn();
         if(pick === "puter"){
           h += "<div class='row'><button id='pSign'>" + (signed ? "Signed in ✓" : "Sign in with email") + "</button><span id='pUser' class='status'>" + (cfg && cfg.email ? esc(cfg.email) : "") + "</span></div>";
-          h += "<label>Model</label><select id='kMod' style='width:100%'></select>";
+          h += "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model</label><select id='kMod' style='width:100%;padding:9px 11px;font-size:13px;border-radius:10px;background:var(--card);color:var(--ink);border:1px solid var(--line);margin-bottom:6px'></select>";
           h += "<p class='status' style='font-size:.8rem'>Puter gives you a free monthly allowance. No card. If no sign-in window opens, allow pop-ups for this page.</p>";
           if(location.protocol === "file:") h += "<p class='status err' style='font-size:.8rem'>Email sign-in needs the page opened from a web address. From a file, use the Google Gemini or Groq free key below instead.</p>";
         } else {
           h += "<label>Email (optional, just a label)</label><input type='email' id='kMail' placeholder='you@example.com' style='width:100%' value='" + esc(cfg && cfg.email || "") + "'>";
           h += "<label>API key</label><input type='password' id='kKey' placeholder='" + esc(P.hint) + "' style='width:100%' value='" + esc(cfg && cfg.key || "") + "'>";
-          h += "<label>Model</label><input type='text' id='kMod' list='modList' style='width:100%'><datalist id='modList'></datalist>";
+          h += "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model</label><select id='kMod' style='width:100%;padding:9px 11px;font-size:13px;border-radius:10px;background:var(--card);color:var(--ink);border:1px solid var(--line);margin-bottom:6px'></select>";
           if(pick === "openrouter") h += "<div class='row' style='margin-top:8px'><button id='kFree'>Show free models</button></div>";
           h += "<p class='status' style='font-size:.8rem'>Get a" + (P.free ? " free" : "n") + " key at <a target='_blank' rel='noopener' href='" + P.link + "'>" + esc(hostOf(P.link)) + "</a>. " + (P.free ? "Free tiers have daily limits." : "Billed by Anthropic, separate from a Claude chat plan.") + "</p>";
         }
@@ -2636,6 +2693,22 @@ function connectModal(){
       if(pick === "groq"){
         var qBtn = o.querySelector("#btnGroqGuide");
         if(qBtn) qBtn.onclick = function(){ groqGuideModal(); };
+        var ki = o.querySelector("#kKey");
+        if(ki){
+          ki.onchange = function(){ fetchGroqModels(ki.value, false); };
+          ki.onblur = function(){ fetchGroqModels(ki.value, false); };
+        }
+        var refBtn = o.querySelector("#btnRefreshModels");
+        if(refBtn){
+          refBtn.onclick = function(){
+            var keyInp = o.querySelector("#kKey");
+            if(keyInp && keyInp.value.trim()){
+              fetchGroqModels(keyInp.value.trim(), true);
+            } else {
+              toast("Paste your Groq key first");
+            }
+          };
+        }
       }
       if(pick === "gemini"){
         var gBtn = o.querySelector("#btnGemGuide");
@@ -2648,7 +2721,12 @@ function connectModal(){
             var txt = await navigator.clipboard.readText();
             if(txt && txt.trim()){
               var inp = o.querySelector("#kKey");
-              if(inp){ inp.value = txt.trim(); msg(""); toast("Key pasted!"); }
+              if(inp){
+                inp.value = txt.trim();
+                msg("");
+                toast("Key pasted!");
+                if(pick === "groq") fetchGroqModels(inp.value, true);
+              }
             } else {
               toast("Clipboard is empty");
             }
@@ -2663,6 +2741,7 @@ function connectModal(){
         else names = ["gpt-5.4-nano", "gemini-3.5-flash-lite"];
       }
       fillModels(names, want);
+      if(cfg && cfg.key && pick === "groq") fetchGroqModels(cfg.key, false);
       var okBtn = o.querySelector("#kOk"); if(okBtn) okBtn.textContent = old ? "Save" : "Connect";
       if(pick === "puter"){
         o.querySelector("#pSign").onclick = async function(){
@@ -2728,8 +2807,34 @@ function connectModal(){
             cfg = {provider:pick, key:key, email:(o.querySelector("#kMail") || {}).value.trim(), model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
           }
         }
-        var api = mkApi(cfg), t = await api("Reply with the single word OK.", {});
-        if(!/ok/i.test(String(t && t.text || ""))) throw aierr("api");
+        var api = mkApi(cfg), t = null;
+        try {
+          t = await api("Reply with the single word OK.", {});
+          if(!/ok/i.test(String(t && t.text || ""))) throw aierr("api");
+        } catch(err){
+          if(pick === "groq" && err && (err.code === "bad_model" || err.code === "api")){
+            var fallbacks = ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "llama3-8b-8192"].filter(function(m){ return m !== cfg.model; });
+            var healed = false;
+            for(var fi = 0; fi < fallbacks.length; fi++){
+              var altModel = fallbacks[fi];
+              try {
+                var altCfg = Object.assign({}, cfg, {model: altModel});
+                var altApi = mkApi(altCfg);
+                var altT = await altApi("Reply with the single word OK.", {});
+                if(/ok/i.test(String(altT && altT.text || ""))){
+                  cfg = altCfg;
+                  var selMod = o.querySelector("#kMod");
+                  if(selMod) selMod.value = altModel;
+                  healed = true;
+                  break;
+                }
+              } catch(e2){}
+            }
+            if(!healed) throw err;
+          } else {
+            throw err;
+          }
+        }
         useAI(cfg); toast(aiName(cfg) + " connected — AI is on"); done();
       } catch(e){
         ok.disabled = false; ok.textContent = btnOld;
