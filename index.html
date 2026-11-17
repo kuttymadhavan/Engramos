@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#eef2fa" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#101625" media="(prefers-color-scheme: dark)">
-<title>ENGRAMOS</title>
+<title>ENGRAMOS — Memory, engineered.</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%235265da'/%3E%3Cpath d='M16 20h12a5 5 0 0 1 4 2 5 5 0 0 1 4-2h12v24H36a4 4 0 0 0-4 2 4 4 0 0 0-4-2H16z' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linejoin='round'/%3E%3Ccircle cx='46' cy='17' r='3.5' fill='%23ffd36b'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
@@ -414,55 +414,740 @@ body:not(.method-open) #v-study>#stBody>#mp{flex:0 0 auto;padding:8px 12px}
 .subTabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .subTabs button{flex:1 1 130px}
 .subPerk{margin:6px 0;padding-left:18px;font-size:.9rem;line-height:1.55}
-</style>
-<style id="mobile-redesign">
-/* ===== ENGRAMOS mobile & tablet redesign layer (added; original rules untouched) ===== */
-:root{--acc:#4a5bd0;--accbg:#e8ebff;--acc2:#1f9d8f;--navy:#2c3a8f;--gold:#c9a24a;--rad:18px;--tabh:64px}
-h1,h2,.brand{font-family:Georgia,"Times New Roman",serif}
-.brand{color:var(--navy);letter-spacing:.08em;font-size:1.25rem}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .brand{color:var(--acc)}}
-.card{border-radius:var(--rad)}
-button,select,input[type=text],input[type=password],textarea{min-height:44px;font-size:16px;border-radius:14px}
-button.primary{box-shadow:0 6px 14px rgba(74,91,208,.28)}
-#tabbar{position:fixed;left:0;right:0;bottom:0;z-index:7;display:none;justify-content:space-around;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(8px + env(safe-area-inset-bottom,0px))}
-#tabbar button{flex:1;min-height:var(--tabh);border:0;background:none;box-shadow:none;border-radius:12px;color:var(--mute);font-size:.68rem;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px}
-#tabbar button i{font-style:normal;font-size:1.35rem;line-height:1}
-#tabbar button.on{color:var(--acc)}#tabbar button.on i{background:var(--accbg);border-radius:12px;padding:2px 14px}
-body.has-tabs #tabbar{display:flex}body.method-open #tabbar{display:none}
-html{scroll-padding-bottom:calc(var(--tabH,64px) + 24px);scroll-padding-top:72px}
-body.has-tabs main{padding-bottom:calc(var(--tabH,64px) + 130px + env(safe-area-inset-bottom,0px))}
-body.has-tabs.fit main{padding-bottom:16px}
-#v-study{overflow-y:auto;overscroll-behavior:contain;padding-bottom:76px}
-#pgIn,#pfIn,#hsIn,#rpIn,#rcIn,#fnIn,#nbIn,#miIn,#tlIn,#plIn,#tpIn,#spIn,#v-study>#stBody{padding-bottom:76px}
-#top .bar1{align-items:center}
-#navFab{position:static;margin-right:2px}#navFab .lbl,#navFab #bFwd{display:none!important}
-#navFab .navFabBtn{width:40px;height:40px;min-height:40px;padding:0;border:1.5px solid var(--acc);box-shadow:none}
-#whoChip,#aiStat,#bHome,.brandTag,#bKey{display:none!important}
-.speechWrap{bottom:calc(var(--tabh) + 14px + env(safe-area-inset-bottom,0px))!important;right:10px!important;left:auto!important;transform:scale(.9);transform-origin:bottom right}
-body.method-open .speechWrap{bottom:calc(14px + env(safe-area-inset-bottom,0px))!important}
-#v-study .methodsGrid,.methodsGrid{grid-template-columns:1fr 1fr!important;gap:10px!important}
-.mth{min-height:84px;border-radius:var(--rad)}
-body.method-open #stBody>h3{display:none}
-body.method-open #mp{margin-top:0!important;border-radius:var(--rad)}
-body.method-open #mp button.primary{width:100%}
-#moreSheet{position:fixed;inset:0;z-index:9;display:none;background:rgba(20,26,48,.45);align-items:flex-end}
-#moreSheet.open{display:flex}
-#moreSheet div{width:100%;background:var(--card);border-radius:24px 24px 0 0;padding:16px 14px calc(20px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:1fr 1fr;gap:10px}
-#moreSheet h3{grid-column:1/-1;margin:0 0 2px}
-#moreSheet button{display:flex;align-items:center;gap:10px;justify-content:flex-start;min-height:54px;text-align:left}
-.toast{bottom:calc(var(--tabh) + 70px + env(safe-area-inset-bottom,0px))!important}
-/* proposed home: hero card + 3-column tiles */
-.homeWish{background:linear-gradient(135deg,#4a5bd0,#2c3a8f)!important;border:0!important;color:#fff!important}
-.homeWish *{color:#fff!important;background:transparent!important;border-color:rgba(255,255,255,.25)!important}
-.homeSecs{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important}
-.homeSecs>*{min-width:0}
-#chChip{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px;cursor:pointer;font-weight:600;padding:4px 2px}#chChip em{font-style:normal;color:var(--acc2);font-size:.8rem}
-#chCard.cc-collapsed>*:not(#chChip){display:none!important}
-/* proposed activity progress bar */
-#actProg{display:none;height:4px;background:var(--line);overflow:hidden}#actProg i{display:block;height:100%;width:0;background:var(--acc2);transition:width .3s}
-body.method-open #actProg{display:block}
-/* tablet = the same phone layout, enlarged */
-@media (min-width:700px){html{font-size:19px}main{max-width:780px}#tabbar{max-width:780px;margin:0 auto;border-radius:22px 22px 0 0;border:1px solid var(--line);border-bottom:0}#moreSheet div{max-width:780px;margin:0 auto}}
+
+/* ==========================================================================
+   ENGRAMOS Mobile & Tablet Design System (Calm, Premium, Easy on the Eyes)
+   ========================================================================== */
+:root {
+  --bg: #f3f5fb;
+  --card: #ffffff;
+  --ink: #1f2740;
+  --mute: #5d6a82;
+  --line: #dfe5f2;
+  --acc: #4a5bd0;
+  --acc-dark: #2c3a8f;
+  --accbg: #e8ebff;
+  --acc2: #1f9d8f;
+  --acc2bg: #e1f6f2;
+  --acc2ink: #14776c;
+  --gold: #c9a24a;
+  --ok: #237a56;
+  --okbg: #ddf4ea;
+  --bad: #d9434e;
+  --badbg: #fbe7ea;
+  --onacc: #ffffff;
+  --onacc2: #06352f;
+  --shadow: 0 10px 30px rgba(31, 39, 64, 0.08);
+  --shadow-sm: 0 4px 14px rgba(31, 39, 64, 0.06);
+  --tab-bar-height: 58px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --bottom-dock-total: calc(var(--tab-bar-height) + var(--safe-bottom));
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) {
+    --bg: #0f1524;
+    --card: #182036;
+    --ink: #e8ecf8;
+    --mute: #a0abc4;
+    --line: #2a3552;
+    --acc: #98a6ff;
+    --acc-dark: #7a8bff;
+    --accbg: #222d4a;
+    --acc2: #5fd6c6;
+    --acc2bg: #163636;
+    --acc2ink: #a7f3e8;
+    --gold: #ffd36b;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme=dark] {
+  --bg: #0f1524;
+  --card: #182036;
+  --ink: #e8ecf8;
+  --mute: #a0abc4;
+  --line: #2a3552;
+  --acc: #98a6ff;
+  --acc-dark: #7a8bff;
+  --accbg: #222d4a;
+  --acc2: #5fd6c6;
+  --acc2bg: #163636;
+  --acc2ink: #a7f3e8;
+  --gold: #ffd36b;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0.2px;
+  color: var(--ink);
+}
+
+/* Ensure #main always has bottom scroll padding so bottom menu never obscures anything */
+#main, main {
+  padding-bottom: calc(var(--bottom-dock-total) + 24px) !important;
+  box-sizing: border-box;
+}
+
+/* Floating navFab hidden on mobile/tablet since bottomNav provides persistent navigation */
+#navFab {
+  display: none !important;
+}
+
+/* Permanent Fixed 5-Tab Bottom Navigation */
+#bottomNav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--tab-bar-height);
+  padding-bottom: var(--safe-bottom);
+  background: var(--card);
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 -2px 14px rgba(31, 39, 64, 0.06);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#bottomNav .navTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 100%;
+  padding: 4px 0;
+  background: transparent;
+  border: none;
+  color: var(--mute);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s ease;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#bottomNav .navTab svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+#bottomNav .navTab.active {
+  color: var(--acc);
+  font-weight: 700;
+}
+
+#bottomNav .navTab.active svg {
+  stroke-width: 2.3;
+}
+
+/* In Focus Mode (method open) or auth screen, hide the bottom tab bar */
+body.method-open #bottomNav,
+body.auth-screen #bottomNav,
+#bottomNav.hidden {
+  display: none !important;
+}
+
+body.method-open #main,
+body.auth-screen #main {
+  padding-bottom: calc(var(--safe-bottom) + 24px) !important;
+}
+
+/* Top Header Bar */
+#top {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  padding: calc(var(--safe-top) + 8px) 14px 8px;
+}
+#top .bar1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+#top .brand {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--acc-dark);
+}
+#top .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--acc);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Button & Grid Utilities from Redesign */
+.btn {
+  background: var(--acc);
+  color: #fff;
+  border-radius: 14px;
+  padding: 12px 16px;
+  text-align: center;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(74, 91, 208, 0.28);
+  font-size: 14px;
+  transition: transform 0.1s ease;
+  display: inline-block;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn.o {
+  background: var(--card);
+  color: var(--acc);
+  border: 1.5px solid var(--acc);
+  box-shadow: none;
+}
+.g2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.g3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* Screen 1: Single-viewport Welcome / First Page */
+.introSingleView {
+  min-height: calc(100dvh - 100px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.introBrand {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--acc-dark);
+  letter-spacing: 1px;
+}
+.introTitle {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+.introSubtitle {
+  color: var(--mute);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 36ch;
+  margin: 0;
+}
+.introActionsCol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 8px;
+}
+.introFeaturePills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 10px;
+}
+.introPill {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Screen 2: Home Focus Hero & 2x3 Quick Tiles */
+.homeHeroCard {
+  background: linear-gradient(135deg, var(--acc), var(--acc-dark));
+  color: #fff;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 12px;
+}
+.homeHeroCard small {
+  opacity: 0.85;
+  font-size: 12px;
+}
+.homeHeroCard b {
+  font-family: Georgia, serif;
+  font-size: 18px;
+  display: block;
+  margin: 2px 0 8px;
+}
+.homeProgressBar {
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.homeProgressBar i {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+  border-radius: 6px;
+}
+.quickGrid2x3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 12px 0;
+}
+.qTile {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 6px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.1s ease, border-color 0.15s ease;
+}
+.qTile:active {
+  transform: scale(0.97);
+  border-color: var(--acc);
+}
+.qTile u {
+  text-decoration: none;
+  font-size: 22px;
+  line-height: 1;
+}
+.qTile span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.quoteChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  margin-top: 10px;
+}
+.quoteChip em {
+  font-style: normal;
+  color: var(--acc2);
+  font-weight: 600;
+}
+
+/* Screen 3: Study Consolidated Chapter Chip & 2x4 Activity Grid */
+.chapterChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+.chapterChipInfo {
+  min-width: 0;
+  flex: 1;
+}
+.chapterChipInfo b {
+  display: block;
+  font-size: 13px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chapterChipChange {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--acc);
+  background: var(--accbg);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.methodsGrid2x4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 12px 0;
+}
+.mthTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  min-height: 64px;
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.1s ease, border-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.mthTile:active {
+  transform: scale(0.97);
+  border-color: var(--acc);
+}
+.mthTile .mthIcon {
+  font-size: 22px;
+  line-height: 1;
+}
+.mthTile .mthName {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.videoChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+.badgeOnline {
+  font-style: normal;
+  color: var(--acc2);
+  background: var(--acc2bg);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* Screen 4, 5, 6: Focus Mode Top Bar & Activities */
+.focusTopBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0 12px;
+  margin-bottom: 8px;
+}
+.focusCloseBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--mute);
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.focusProgressBar {
+  flex: 1;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--line);
+  overflow: hidden;
+}
+.focusProgressBar i {
+  display: block;
+  height: 100%;
+  background: var(--acc2);
+  transition: width 0.25s ease;
+}
+.focusStepCount {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mute);
+  flex-shrink: 0;
+}
+.focusTtsBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Screen 4: Recall (Q&A Focus) */
+.qCard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 10px;
+}
+.conceptBadge {
+  color: var(--acc2);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+.qTitle {
+  font-size: 16px;
+  font-family: Georgia, serif;
+  display: block;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.qFormatChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.qFormatChip select {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--acc);
+}
+.qTextarea {
+  width: 100%;
+  min-height: 90px;
+  border: 1.5px dashed #b9c3e6;
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 14px;
+  color: var(--ink);
+  background: #fafbff;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+}
+.qNotice {
+  background: var(--okbg);
+  color: var(--ok);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.stickyBottomBar {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, var(--bg) 85%, rgba(243, 245, 251, 0));
+  padding: 12px 0 calc(var(--safe-bottom) + 12px);
+  margin-top: 14px;
+  z-index: 50;
+}
+
+/* Screen 5: Flashcards (250px centered tactile flip card) */
+.flipCard250 {
+  height: 250px;
+  background: var(--accbg);
+  border: 1.5px solid var(--acc);
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px 18px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  user-select: none;
+  margin: 14px 0;
+  transition: transform 0.15s ease, background 0.15s ease;
+  box-sizing: border-box;
+}
+.flipCard250:active {
+  transform: scale(0.98);
+}
+.flipHint {
+  color: var(--mute);
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+.flipText {
+  font-size: 19px;
+  font-family: Georgia, serif;
+  display: block;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.thumbDock {
+  margin-top: 14px;
+}
+
+/* Screen 6: Mind Map full height & bottom sheet */
+.mindMapContainer {
+  height: calc(100dvh - 180px);
+  min-height: 380px;
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.nodeSheet {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+  margin-top: 10px;
+}
+.nodeSheet b {
+  font-size: 14px;
+  font-family: Georgia, serif;
+  color: var(--acc-dark);
+  display: block;
+  margin-bottom: 4px;
+}
+.nodeSheet p {
+  font-size: 13px;
+  color: var(--mute);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Screen 7: Plan Step Cards */
+.stepCard {
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+.stepBadge {
+  color: var(--acc2);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  display: block;
+  margin-bottom: 4px;
+}
+.stepCard b {
+  font-size: 15px;
+  font-family: Georgia, serif;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Screen 8: Progress Plant State */
+.plantCard {
+  border-radius: 18px;
+  padding: 24px 16px;
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Tablet responsiveness: expand slightly on >= 768px */
+@media (min-width: 768px) {
+  #main, main {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  #bottomNav {
+    max-width: 680px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px 20px 0 0;
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+  .methodsGrid2x4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -470,29 +1155,22 @@ body.method-open #actProg{display:block}
 <div id="navFab" class="hidden"><button id="bBack" class="navFabBtn" title="Go back to the previous screen" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><span class="lbl">Back</span></button><button id="bFwd" class="navFabBtn" title="Go forward" aria-label="Go forward"><span class="lbl">Forward</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
 <div id="pilotBar" class="pilotBar hidden" role="status"></div>
 <main id="main">
-<section id="v-intro" class="hidden"><div class="center authWide">
-<!-- OWNER-COPY-START -->
-<div class="card ownerOnly" id="ownerNote">
-<strong>Owner copy — students never receive this file.</strong>
-<p class="status" style="margin:4px 0 10px">This is the readable student app. To review access requests and issue invite codes, open the owner console. It never asks for a student code.</p>
-<button type="button" id="inOwner">Open ENGRAMOS - Owner.html</button>
+<section id="v-intro" class="hidden">
+<div class="introSingleView">
+  <div class="introBrand">ENGRAMOS</div>
+  <h1 class="introTitle">Drop a book.<br>Remember everything.</h1>
+  <p class="introSubtitle">Notes, flashcards and drills from your own textbook. Works offline. Private on your device.</p>
+  <div class="introActionsCol">
+    <button class="btn" id="inReq" style="width:100%">Create student account</button>
+    <button class="btn o" id="inCode" style="width:100%">I already have an account</button>
+  </div>
+  <div class="introFeaturePills">
+    <div class="introPill"><span>📚</span> Your book</div>
+    <div class="introPill"><span>🧮</span> Maths coach</div>
+  </div>
+  <p class="status" id="inLoginWrap" style="margin:8px 0 0"></p>
 </div>
-<!-- OWNER-COPY-END -->
-<div class="card hero introHero">
-<span class="introKicker">Welcome to ENGRAMOS</span>
-<h1>Drop a book. Remember everything.</h1>
-<p>ENGRAMOS turns your textbook into notes, flashcards, recall drills, fire drills and a step-by-step maths coach. It keeps working when the internet doesn't, and your work stays private — on your device.</p>
-<div class="introActions"><button class="primary" id="inReq">Request access</button><button id="inCode">I have an invite code</button></div>
-<p class="status" id="inLoginWrap" style="margin:12px 0 0"></p>
-</div>
-<div class="introGrid">
-<div class="introCard"><b>📚 Your book, made yours</b><p>Add a book or chapter and get notes, explanations, recall drills, flashcards and a test built around it.</p></div>
-<div class="introCard"><b>🧮 Practice that explains</b><p>The maths workbench shows one step at a time, with hints, a second method and a question for you to try.</p></div>
-<div class="introCard"><b>🌱 Progress you can see</b><p>A study galaxy, a daily One More, an error ledger and debriefs show what's improving and what needs another pass.</p></div>
-<div class="introCard"><b>🔒 Private by design</b><p>Your books, notes and progress stay on this device. AI is optional. Nothing is sold or shown to advertisers.</p></div>
-</div>
-<div class="card" id="inHowJoin"><strong>How joining works</strong><p class="status" style="margin:6px 0 0">Ask for access with your details. Your organiser checks the request and emails you an invite code. Enter that code once to activate ENGRAMOS, then create your local account and start studying.</p></div>
-</div></section>
+</section>
 
 <section id="v-request" class="hidden"><div class="center authWide">
 <div class="card hero"><span class="introKicker">Step 1 of 2</span><h1>Ask for access</h1><p>Tell us who you are and who is giving consent. Your organiser will review the request and email you an invite code.</p></div>
@@ -599,6 +1277,30 @@ body.method-open #actProg{display:block}
 <section id="v-play" class="hidden"><div id="plIn"></div></section>
 <section id="v-tips" class="hidden"><div id="tpIn"></div></section>
 </main>
+
+<nav id="bottomNav" role="navigation" aria-label="Main navigation">
+  <button class="navTab" data-tab="home" id="tabHome">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="navTab" data-tab="study" id="tabStudy">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    <span>Study</span>
+  </button>
+  <button class="navTab" data-tab="plan" id="tabPlan">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>Plan</span>
+  </button>
+  <button class="navTab" data-tab="progress" id="tabProgress">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <span>Progress</span>
+  </button>
+  <button class="navTab" data-tab="tools" id="tabMore">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <span>More</span>
+  </button>
+</nav>
+
 <script>
 var $ = function(id){return document.getElementById(id)};
 var PDF_SRC = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", pdfReady = null;
@@ -1566,7 +2268,7 @@ function focusRegion(el, block){
   try { el.focus({preventScroll: true}); } catch(e){ try { el.focus(); } catch(_e){} }
   var rect = el.getBoundingClientRect(), vh = window.innerHeight || 0, target = null;
   if(block === "nearest"){
-    if(!(rect.top >= 76 && rect.bottom <= vh - 12 - (window.__tabH||0))) target = (window.pageYOffset || window.scrollY || 0) + rect.top - 80;
+    if(!(rect.top >= 76 && rect.bottom <= vh - 12)) target = (window.pageYOffset || window.scrollY || 0) + rect.top - 80;
   } else {
     target = (window.pageYOffset || window.scrollY || 0) + rect.top - 84;
   }
@@ -1616,12 +2318,15 @@ function setMethodOpen(on, name){
   document.body.classList.toggle("method-open", on);
   var hasCh = !!cur(), sp = (typeof pend !== "undefined" && !!pend);
   if($("chCard")) $("chCard").classList.toggle("hidden", on);
+  if($("chapterChipWrap")) $("chapterChipWrap").classList.toggle("hidden", on);
   if($("methods")) $("methods").classList.toggle("hidden", on);
   if($("path")) $("path").classList.toggle("hidden", on || !hasCh);
   if($("vidAsk")) $("vidAsk").classList.toggle("hidden", on || !hasCh);
   if($("upl")) $("upl").classList.toggle("hidden", on || hasCh || sp);
   if($("stBody")) $("stBody").classList.toggle("hidden", on ? false : (!hasCh || sp));
   setScreenTitle(on ? (name || methodLabel("")) : (SCREEN_NAMES[curView] || ""));
+  var bn = $("bottomNav");
+  if(bn) bn.classList.toggle("hidden", on || curView === "intro" || curView === "request" || curView === "activate");
   updateBackBtn();
 }
 function closeMethod(){
@@ -1654,6 +2359,27 @@ function showView(v){
   $("bProf").classList.toggle("hidden", hideNav);
   $("bKey").classList.toggle("hidden", HOSTED || !authed || hideNav);
   setScreenTitle(SCREEN_NAMES[v] || "");
+
+  // Update avatar display with user initial
+  if($("bProf") && DB.profile && DB.profile.name){
+    $("bProf").innerHTML = "<span style='font-size:14px;font-weight:700'>" + esc(DB.profile.name.charAt(0).toUpperCase()) + "</span>";
+  }
+
+  // Update bottomNav active state and visibility
+  var tabMap = {
+    home: "tabHome",
+    study: "tabStudy",
+    plan: "tabPlan",
+    progress: "tabProgress", perf: "tabProgress", hist: "tabProgress", rep: "tabProgress",
+    tools: "tabMore", note: "tabMore", mist: "tabMore", play: "tabMore", tips: "tabMore"
+  };
+  var targetTabId = tabMap[v] || "";
+  document.querySelectorAll("#bottomNav .navTab").forEach(function(b){
+    b.classList.toggle("active", b.id === targetTabId);
+  });
+  var bn = $("bottomNav");
+  if(bn) bn.classList.toggle("hidden", hideNav || (typeof methodOpen === "function" && methodOpen()));
+
   if(typeof anaView === "function") anaView(v);
   if(typeof refreshPilotBar === "function") refreshPilotBar();
   document.body.classList.toggle("fit", ["study","progress","plan","perf","hist","rep","rec","fun","note","mist","tools","play","tips"].indexOf(v) >= 0);
@@ -1701,7 +2427,13 @@ var PROF_SVG = null;
 function refreshAvatar(){
   var pic = safePic(DB.profile && DB.profile.pic);
   var b = $("bProf");
-  if(b){ if(PROF_SVG === null) PROF_SVG = b.innerHTML; b.innerHTML = pic ? "<img src='" + pic + "' alt=''>" : PROF_SVG; }
+  if(b){
+    if(pic) b.innerHTML = "<img src='" + pic + "' alt=''>";
+    else {
+      var init = ((DB.profile && DB.profile.name) || "S").trim().charAt(0).toUpperCase();
+      b.innerHTML = "<span style='font-size:14px;font-weight:700;color:#fff'>" + esc(init) + "</span>";
+    }
+  }
   var ai = $("authInitial");
   if(ai){
     if(pic) ai.innerHTML = "<img src='" + pic + "' alt=''>";
@@ -2359,47 +3091,66 @@ RENDER.home = function(){
   var p = DB.profile, narrow = window.innerWidth < 620; homeNarrow = narrow;
   var gp = greetingPool(), g0 = gp[0] || {w: "Namaste", l: "English"};
   var dg = dailyGoalInfo(), st = streak(), c = cur(), due = dueReviews()[0];
-  var h = "<div class='card hero homeWish'><h1><span id='greetWord' class='greetWord'>" + esc(g0.w) + "</span>, " + esc(p.name) + "!</h1><p class='greetNote' id='greetNote'>\uD83D\uDC4B Wishing you in <b>" + esc(g0.l) + "</b></p><p class='tagline'>A Trace Your Brain Leaves When It Learns &mdash; Memory Engineered.</p><p>Let&rsquo;s stack today&rsquo;s One More.</p><div id='homeQuote' class='homeQuote'>" + pickQuote(false) + "</div></div>";
-  h += "<div class='card focusCard'><div class='focusTop'><strong>Today's One More</strong><div class='row' style='margin:0;gap:6px'><span class='chip" + (st ? "" : " local") + "'>🔥 Unbroken · " + st + " day" + (st === 1 ? "" : "s") + "</span>" + (dg.freezes ? "<span class='chip' title='Stasis shields protect your streak if you miss 1 day'>🛡️ " + dg.freezes + "</span>" : "") + "</div></div>";
-  h += "<div class='xpRow'><span class='status'>" + (dg.done ? "✓ One More done!" : "One More: " + dg.xp + " / " + dg.target + " XP") + "</span><div class='xpBar'><i style='width:" + dg.pct + "%'></i></div><strong style='font-size:.82rem'>" + dg.pct + "%</strong></div>";
+  var h = "<div class='homeHeroCard'>" +
+    "<small>" + esc(g0.w) + ", " + esc(p.name) + "</small>" +
+    "<b>Today’s One More</b>" +
+    "<div class='homeProgressBar'><i style='width:" + dg.pct + "%'></i></div>" +
+    "<small>" + dg.xp + " / " + dg.target + " XP · 🔥 " + st + "-day streak" + (dg.freezes ? " · 🛡️ " + dg.freezes : "") + "</small>" +
+    "</div>";
+
   if(c){
     var rd = readinessOf(c.id);
-    h += "<div class='row' style='margin:10px 0 0'>" +
-      (due ? "<button class='primary' data-rev='" + due.c.id + "'>Fade check: " + esc(due.c.name.slice(0, 24)) + "</button>" : "<button class='primary' id='hmContinue'>Pick up: " + esc(c.name.slice(0, 22)) + " (" + rd.pct + "% locked in)</button>") +
-      "<button id='hmCram'>⚡ 5-Min Cram</button><button id='hmExam'>⏱ Fire Drill</button><button id='hmMaths'>Maths Solver</button></div>";
+    h += "<button class='btn' id='hmHeroCta' style='width:100%;margin-bottom:12px;font-size:15px'>" +
+      (due ? "Fade check: " + esc(due.c.name.slice(0, 24)) : "Continue: " + esc(c.name.slice(0, 24)) + " (" + rd.pct + "%)") +
+      "</button>";
   } else {
-    h += "<div class='row' style='margin:10px 0 0'><button class='primary' id='hmSample'>✨ Try a sample chapter</button><button data-v='study'>＋ Add book / paste text</button><button id='hmMaths'>Maths practice</button></div>";
+    h += "<button class='btn' id='hmHeroCta' style='width:100%;margin-bottom:12px;font-size:15px'>✨ Try a sample chapter</button>";
   }
-  var ss = subStatus();
-  if(ss.pendingPayment){
-    h += "<div class='row' style='margin:8px 0 0;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(82,101,218,.08);align-items:center'><span class='status' style='flex:1;min-width:170px'><b>Payment pending:</b> <code>" + esc(ss.pendingPayment.paymentId) + "</code> — awaiting organiser confirmation.</span><button data-act='subchk'>Check payment status</button></div>";
-  } else if(!ss.unlocked && !ss.paidActive && !ss.pilotActive){
-    h += "<div class='row' style='margin:8px 0 0;align-items:center'><span class='proBadge free'>Free · " + ss.chaptersUsed + "/" + FREE_CHAPTER_LIMIT + " books</span><button type='button' class='linkish' id='hmUpgrade'>Go Pro · ₹" + SUB_PLAN.priceInr + "/yr or ₹" + SUB_PLAN.monthlyInr + "/mo</button></div>";
-  }
-  h += "</div>";
-  h += "<div class='card galaxyCard'>" + galaxySvg(narrow) + "</div>";
-  var HOME_CORE = [
-    {v:"study", ic:"study", n:"Study"},
-    {v:"plan", ic:"plan", n:"Plan"},
-    {v:"progress", ic:"progress", n:"Neural Map"},
-    {v:"maths", ic:"maths", n:"Maths"},
-    {v:"mist", ic:"mist", n:"Errors"},
-    {v:"tools", ic:"tools", n:"Settings"}
+
+  var TILES_2X3 = [
+    {act:"study", icon:"📖", label:"Study"},
+    {act:"plan", icon:"🗓", label:"Plan"},
+    {act:"progress", icon:"📈", label:"Neural Map"},
+    {act:"maths", icon:"🧮", label:"Maths"},
+    {act:"mist", icon:"✗", label:"Errors"},
+    {act:"note", icon:"📓", label:"Notebook"}
   ];
-  h += "<div class='homeSecs'>" + HOME_CORE.map(function(s){ return "<button class='mth tile' data-v='" + s.v + "'><span class='ic'>" + svgIc(s.ic) + "</span><b>" + s.n + "</b></button>"; }).join("") + "</div>";
-  h += "<div class='homeExtras'><button data-v='note'>📓 Notebook</button><button data-v='play'>🎮 Play</button><button data-v='fun'>✨ Fun Facts</button><button data-v='tips'>💡 Hacks &amp; Tips</button></div>";
+  h += "<div class='quickGrid2x3'>" + TILES_2X3.map(function(t){
+    return "<div class='qTile' data-home-act='" + t.act + "'><u>" + t.icon + "</u><span>" + t.label + "</span></div>";
+  }).join("") + "</div>";
+
+  h += "<div class='quoteChip' id='hmQuoteChip'><span>" + pickQuote(false) + "</span></div>";
+  h += "<div class='card galaxyCard' style='margin-top:14px;border-radius:18px'>" + galaxySvg(narrow) + "</div>";
+
   $("homeIn").innerHTML = h;
   startGreeting(gp);
-  $("homeIn").querySelectorAll("[data-v]").forEach(function(n){ n.onclick = function(){ var v = n.dataset.v; if(v === "mindmap") openMindmap(); else if(v === "maths") openMaths(); else show(v); }; });
-  $("homeIn").querySelectorAll("[data-rev]").forEach(function(n){ n.onclick = function(){ reviewChapter(n.getAttribute("data-rev")); }; });
-  if($("hmContinue")) $("hmContinue").onclick = function(){ show("study"); };
-  if($("hmCram")) $("hmCram").onclick = function(){ show("study"); goMethod("cram", "", c ? c.id : ""); };
-  if($("hmExam")) $("hmExam").onclick = function(){ show("study"); goMethod("exam", "", c ? c.id : ""); };
-  if($("hmSample")) $("hmSample").onclick = function(){ show("study"); sampleChapterModal(); };
-  if($("hmMaths")) $("hmMaths").onclick = openMaths;
-  if($("hmUpgrade")) $("hmUpgrade").onclick = function(){ upgradeModal(""); };
-  var hSubChk = $("homeIn").querySelector("[data-act='subchk']");
-  if(hSubChk) hSubChk.onclick = function(){ subCheckStatus(false); };
+
+  $("homeIn").querySelectorAll("[data-home-act]").forEach(function(el){
+    el.onclick = function(){
+      var act = el.getAttribute("data-home-act");
+      if(act === "maths") openMaths();
+      else showView(act);
+    };
+  });
+
+  if($("hmHeroCta")){
+    $("hmHeroCta").onclick = function(){
+      if(c){
+        if(due) reviewChapter(due.c.id);
+        else showView("study");
+      } else {
+        showView("study");
+        sampleChapterModal();
+      }
+    };
+  }
+
+  if($("hmQuoteChip")){
+    $("hmQuoteChip").onclick = function(){
+      this.querySelector("span").innerHTML = pickQuote(true);
+    };
+  }
+
   bindGalaxy($("homeIn"));
 };
 
@@ -2480,6 +3231,30 @@ RENDER.study = function(){
   if($("chSyll")) $("chSyll").textContent = narrow ? "📋 Syllabus" : "📋 Syllabus & plan";
   $("engSel").value = DB.engine; fillSel();
   if(narrow && $("chPack")) $("chPack").textContent = /^✓/.test($("chPack").textContent) ? $("chPack").textContent.replace("✓ Smart pack", "✓ Pack") : "⚡ Pack";
+  
+  var c = cur();
+  var chipEl = $("chapterChipWrap");
+  if(!chipEl){
+    var wrap = document.createElement("div");
+    wrap.id = "chapterChipWrap";
+    var chCard = $("chCard");
+    if(chCard && chCard.parentNode){
+      chCard.parentNode.insertBefore(wrap, chCard);
+    }
+    chipEl = wrap;
+  }
+  if(chipEl){
+    var label = c ? ((c.classStd ? "Class " + c.classStd + " · " : "") + (c.subject ? c.subject + " · " : "") + c.name) : "No chapter selected";
+    chipEl.innerHTML = "<div class='chapterChip' id='chChip'><div class='chapterChipInfo'><b>" + esc(label) + "</b></div><button type='button' class='chapterChipChange' id='chChipChange'>" + (c ? "Change" : "Choose") + "</button></div>";
+    var chChip = $("chChip");
+    if(chChip){
+      chChip.onclick = function(){
+        var cd = $("chCard");
+        if(cd) cd.classList.toggle("hidden");
+      };
+    }
+  }
+  if($("chCard")) $("chCard").classList.toggle("hidden", !!c);
   renderMethods(); renderPath();
 };
 $("engSel").onchange = function(){
@@ -2946,12 +3721,31 @@ async function vids(){ RETRY = vids;
 }
 /* ---------- Study: methods ---------- */
 var GROUPS = [["Learn the chapter", ["explain","notes","mindmap","maths","doubt"]], ["Practise and test", ["qa","mcq","exam"]], ["Quick revision", ["cram","flash"]]];
-function renderMethods(){ var nc = cur(), nsx = nc ? nextStep(nc.id) : null, nsK = nsx && !nsx.done ? nsx.k : "";
-  if(nsK === "teach") nsK = "qa";
-  var all = [].concat.apply([], GROUPS.map(function(g){ return g[1]; }));
-  $("methods").innerHTML = "<div class='grid methodsGrid'>" + all.map(function(k){ var m = METHODS.filter(function(x){return x.k === k})[0]; return "<button class='mth tile' data-m='" + k + "' title='" + esc(m.d) + "'>" + (nsK === k ? "<span class='badge'>Next</span>" : "") + "<span class='ic'>" + svgIc(k) + "</span><b>" + m.n + "</b><small>" + m.d + "</small></button>"; }).join("") + "<button class='mth tile' data-video='1' title='Find explanatory videos for this chapter'><span class='ic'>" + svgIc("play") + "</span><b>Watch videos</b><small>YouTube · most-viewed first</small></button></div>";
-  $("methods").querySelectorAll(".mth").forEach(function(b){ b.onclick = function(){ document.querySelectorAll("#methods .mth").forEach(function(x){ x.classList.toggle("on", x === b); }); openMethod(b.dataset.m); }; });
-  $("methods").querySelectorAll("[data-video]").forEach(function(b){ b.onclick = vids; });
+function renderMethods(){
+  var nc = cur();
+  var acts = [
+    {k:"explain", icon:"💡", n:"Explain it"},
+    {k:"notes", icon:"📝", n:"Quick Notes"},
+    {k:"mindmap", icon:"🕸", n:"Mind Map"},
+    {k:"doubt", icon:"💬", n:"Ask Anything"},
+    {k:"qa", icon:"🧠", n:"Recall"},
+    {k:"exam", icon:"🔥", n:"Fire Drill"},
+    {k:"cram", icon:"⚡", n:"5-Min Cram"},
+    {k:"flash", icon:"🃏", n:"Flashcards"}
+  ];
+  var h = "<div class='methodsGrid2x4' id='methodsGrid'>" + acts.map(function(m){
+    return "<button class='mthTile' data-m='" + m.k + "'><span class='mthIcon'>" + m.icon + "</span><span class='mthName'>" + m.n + "</span></button>";
+  }).join("") + "</div>";
+  h += "<div class='videoChip' id='videoChip'><span>▶ Watch videos</span><em class='badgeOnline'>Online</em></div>";
+  $("methods").innerHTML = h;
+  $("methods").querySelectorAll(".mthTile").forEach(function(b){
+    b.onclick = function(){
+      document.querySelectorAll("#methods .mthTile").forEach(function(x){ x.classList.toggle("on", x === b); });
+      openMethod(b.dataset.m);
+    };
+  });
+  var vc = $("videoChip");
+  if(vc) vc.onclick = vids;
 }
 var lastDoubtQ = "";
 function openMethod(k){
@@ -3183,7 +3977,16 @@ function mindmapStart(mode){
   var c = cur(); if(!c) return;
   if(mode === "concept"){
     var P = prep(c), secs = (P.secs || []).map(function(s, i){ return {i: i, label: s.label}; }).filter(function(x){ return x.label && x.label.length < 40 && secNodeCount(P, x.i) >= 3; });
-    $("mp").innerHTML = "<div class='subTabs' style='margin:0 0 10px'><button id='mmModeRad'>Radial Mind Map</button><button id='mmModeCon' class='primary'>Concept Connections</button></div><p class='status'>A picture of how important ideas in this chapter connect. Tap any node to read it.</p><div class='row'><select id='mapScope' style='flex:1;min-width:180px'><option value='all'>Whole chapter</option>" + secs.map(function(x){ return "<option value='" + x.i + "'>" + esc(x.label) + "</option>"; }).join("") + "</select><button class='primary' id='mapGo'>Draw my map</button></div><div id='mapOut'></div>";
+    var h = "<div class='focusTopBar'>" +
+      "<button class='focusCloseBtn' id='mmClose' title='Back to Study'>✕</button>" +
+      "<span class='focusTitle' style='font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--acc-dark)'>Mind Map</span>" +
+      "</div>";
+    h += "<div class='g2' style='margin-bottom:10px'>" +
+      "<button class='btn o' id='mmModeRad'>Radial</button>" +
+      "<button class='btn' id='mmModeCon'>Connections</button>" +
+      "</div><p class='status'>A picture of how important ideas in this chapter connect. Tap any node to read it.</p><div class='row'><select id='mapScope' style='flex:1;min-width:180px'><option value='all'>Whole chapter</option>" + secs.map(function(x){ return "<option value='" + x.i + "'>" + esc(x.label) + "</option>"; }).join("") + "</select><button class='btn' id='mapGo'>Draw my map</button></div><div id='mapOut' style='margin-top:10px'></div>";
+    $("mp").innerHTML = h;
+    $("mmClose").onclick = function(){ closeMethod(); };
     $("mmModeRad").onclick = function(){ mindmapStart("radial"); };
     $("mapGo").onclick = function(){ drawMap($("mapScope").value); };
     drawMap("all");
@@ -3191,14 +3994,26 @@ function mindmapStart(mode){
     return;
   }
   var data = mmData();
-  var tabs = "<div class='subTabs' style='margin:0 0 10px'><button id='mmModeRad' class='primary'>Radial Mind Map</button><button id='mmModeCon'>Concept Connections</button></div>";
+  var h = "<div class='focusTopBar'>" +
+    "<button class='focusCloseBtn' id='mmClose' title='Back to Study'>✕</button>" +
+    "<span class='focusTitle' style='font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--acc-dark)'>Mind Map</span>" +
+    "</div>";
+  h += "<div class='g2' style='margin-bottom:10px'>" +
+    "<button class='btn' id='mmModeRad'>Radial</button>" +
+    "<button class='btn o' id='mmModeCon'>Connections</button>" +
+    "</div>";
   if(data.length < 2){
-    $("mp").innerHTML = tabs + "<p class='status'>This chapter is too short to grow a mind map yet. Add more of its text, or open another chapter.</p>";
+    $("mp").innerHTML = h + "<p class='status'>This chapter is too short to grow a mind map yet. Add more of its text, or open another chapter.</p>";
+    $("mmClose").onclick = function(){ closeMethod(); };
     $("mmModeCon").onclick = function(){ mindmapStart("concept"); };
     return;
   }
   MM = {data: data, sel: -1, vb: {x: 0, y: 0, w: 900, h: 640}};
-  $("mp").innerHTML = tabs + "<p class='status'>Tap a branch to read it. Drag to move, scroll or use + / − to zoom.</p><div class='mmWrap'><div class='mmTools'><button id='mmIn' title='Zoom in'>＋</button><button id='mmOut' title='Zoom out'>−</button><button id='mmFit' title='Fit'>Fit</button></div><svg class='mmSvg' id='mmSvg'></svg></div><div id='mmDetail' class='card' style='margin-top:10px'><p class='status'>Tap any branch to see its explanation here.</p></div>";
+  h += "<p class='status' style='margin:4px 0 8px'>Tap a branch to read it. Pinch or drag to explore.</p>" +
+    "<div class='mmWrap' style='border-radius:16px;overflow:hidden'><div class='mmTools'><button id='mmIn' title='Zoom in'>＋</button><button id='mmOut' title='Zoom out'>−</button><button id='mmFit' title='Fit'>Fit</button></div><svg class='mmSvg' id='mmSvg'></svg></div>" +
+    "<div id='mmDetail' class='nodeSheet'><b id='mmDetailTitle'>Mind Map Branch</b><p id='mmDetailDesc'>Tap any branch above to see its clear explanation here.</p></div>";
+  $("mp").innerHTML = h;
+  $("mmClose").onclick = function(){ closeMethod(); };
   $("mmModeCon").onclick = function(){ mindmapStart("concept"); };
   mmDraw();
   mmBindPan();
@@ -5028,21 +5843,41 @@ function qaShow(){
   var mp = $("mp"), s = QA, it = s.items[s.i];
   if(!it){
     var avg = s.scores.length ? Math.round(s.scores.reduce(function(a, b){return a + b}, 0) / s.scores.length * 10) / 10 : 0;
-    DB.sess = null; var gr = recordPrac(s.kind, avg * 10); mp.innerHTML = "<div class='hero card' style='text-align:center'><div class='big'>" + avg + " / 10</div><p>" + (avg >= 8 ? "Shabash! You really know this " : avg >= 5 ? "Good going! A little more practice and you’ll shine " : "Nice try! Read the notes once more and try again, you’ll get there ") + "</p>" + growthHtml(gr) + "<button class='primary' id='qaAgain'>Practise again</button></div>" + nextBar(s.kind);
+    DB.sess = null; var gr = recordPrac(s.kind, avg * 10);
+    mp.innerHTML = "<div class='hero card' style='text-align:center'><div class='big'>" + avg + " / 10</div><p>" + (avg >= 8 ? "Shabash! You really know this " : avg >= 5 ? "Good going! A little more practice and you’ll shine " : "Nice try! Read the notes once more and try again, you’ll get there ") + "</p>" + growthHtml(gr) + "<button class='btn' id='qaAgain' style='margin-top:10px'>Practise again</button></div>" + nextBar(s.kind);
     $("qaAgain").onclick = function(){ qaStart(s.kind); }; bindNext(mp); logEv(s.kind, (s.kind === "teach" ? "Teach-it-back" : "Q&A coach") + ": average " + avg + "/10 over " + s.scores.length + " answers"); markDone(s.kind); focusRegion(mp, "start"); return;
   }
-  var tabs = "<div class='subTabs' style='margin:0 0 10px'><button id='qaModeQ'" + (s.kind !== "teach" ? " class='primary'" : "") + ">Q&amp;A Coach</button><button id='qaModeT'" + (s.kind === "teach" ? " class='primary'" : "") + ">Teach It Back</button></div>";
-  var mk = s.kind === "teach" ? "" : "<div class='row'><label style='margin:0'>Answer as a</label><select id='qaM'>" + [2, 3, 4].map(function(m){ return "<option value='" + m + "'" + (m === (DB.qaMarks || 3) ? " selected" : "") + ">" + m + "-mark answer</option>"; }).join("") + "</select><span class='status'>One clear point for each mark.</span></div>";
-  mp.innerHTML = tabs + "<div class='q'><div class='status'>" + (s.kind === "teach" ? "Teach it back" : "Question") + " " + (s.i + 1) + " of " + s.items.length + " · " + esc(it.topic || "") + "</div><p><strong>" + inline(String(it.q)) + "</strong></p>" + mk + "<textarea id='qaA' placeholder='Write in your own words…'></textarea><div class='row'><button class='primary' id='qaChk'>Check my answer</button></div><div id='qaFb'></div></div>";
-  $("qaModeQ").onclick = function(){ if(s.kind !== "qa") qaStart("qa"); };
-  $("qaModeT").onclick = function(){ if(s.kind !== "teach") qaStart("teach"); };
+  var c = cur();
+  var pct = Math.round((s.i + 1) * 100 / s.items.length);
+  var h = "<div class='focusTopBar'>" +
+    "<button class='focusCloseBtn' id='qaClose' title='Back to Study'>✕</button>" +
+    "<div class='focusProgressBar'><i style='width:" + pct + "%'></i></div>" +
+    "<span class='focusStepCount'>" + (s.i + 1) + "/" + s.items.length + "</span>" +
+    "<button class='focusTtsBtn' id='qaTts' title='Read aloud'>🔊</button>" +
+    "</div>";
+  h += "<div class='qCard'>" +
+    "<small class='conceptBadge'>" + esc(it.topic || (c ? c.name : "RECALL")).toUpperCase() + "</small>" +
+    "<b class='qTitle'>" + inline(String(it.q)) + "</b>" +
+    "</div>";
+  h += "<div class='qFormatChip'><span>Answer as a: " + (DB.qaMarks || 3) + "-mark answer</span>" +
+    "<select id='qaM'>" + [2, 3, 4].map(function(m){ return "<option value='" + m + "'" + (m === (DB.qaMarks || 3) ? " selected" : "") + ">" + m + "-mark answer</option>"; }).join("") + "</select>" +
+    "</div>";
+  h += "<textarea id='qaA' class='qTextarea' placeholder='Write in your own words…'></textarea>";
+  h += "<div class='qNotice'>After you check, a small window explains the answer.</div>";
+  h += "<div class='stickyBottomBar'><button class='btn' id='qaChk' style='width:100%'>Check my answer</button></div>";
+  h += "<div id='qaFb'></div>";
+  mp.innerHTML = h;
+
+  $("qaClose").onclick = function(){ closeMethod(); };
+  $("qaTts").onclick = function(){ speakText(it.q); };
+  $("qaM").onchange = function(){ DB.qaMarks = +this.value; };
   $("qaChk").onclick = async function(){
     var a = $("qaA").value.trim(); if(a.length < 3){ toast("Write something first "); return; }
     var b = this, M = $("qaM") ? +$("qaM").value : 0; if(M) DB.qaMarks = M; b.disabled = true; b.textContent = "Checking…";
     var r = await evalAnswer(it, a, "Question: " + it.q + "\nStudent’s answer: " + a + (M ? "\nThis is a " + M + "-mark board-exam question. A full-mark answer has exactly " + M + " clear points (about " + (M * 2) + " lines). Judge the answer the way a board examiner would, one mark per correct point, then convert to a score out of 10. In the missing field name the exact points to add. Write the model answer as a full-mark board answer with " + M + " short numbered points." : "") + "\nEvaluate kindly and honestly. Return ONLY JSON {\"score\": number 0-10, \"good\": what they got right, \"missing\": what to add or fix, \"model\": a model answer in 3-5 simple lines}.");
     if(!r){ b.disabled = false; b.textContent = "Check my answer"; return; }
     var sc = Math.max(0, Math.min(10, +r.score || 0)); s.scores.push(sc);
-    $("qaFb").innerHTML = "<div class='fact'><strong>" + (sc >= 8 ? " Excellent! " : sc >= 5 ? " Good effort! " : " Let’s improve this. ") + (M ? (Math.round(sc * M / 10 * 2) / 2) + " / " + M + " marks" : sc + "/10") + "</strong><p> " + inline(String(r.good || "")) + "</p><p> " + inline(String(r.missing || "")) + "</p><p class='exp'> Model answer: " + inline(String(r.model || "")) + "</p></div><button class='primary' id='qaNext'>" + (s.i + 1 < s.items.length ? "Next →" : "Finish ") + "</button>";
+    $("qaFb").innerHTML = "<div class='card' style='margin-top:12px;border-left:4px solid var(--acc2)'><strong>" + (sc >= 8 ? " Excellent! " : sc >= 5 ? " Good effort! " : " Let’s improve this. ") + (M ? (Math.round(sc * M / 10 * 2) / 2) + " / " + M + " marks" : sc + "/10") + "</strong><p> " + inline(String(r.good || "")) + "</p><p> " + inline(String(r.missing || "")) + "</p><p class='exp' style='background:var(--accbg);padding:8px;border-radius:8px'> Model answer: " + inline(String(r.model || "")) + "</p></div><button class='btn' id='qaNext' style='width:100%;margin-top:10px'>" + (s.i + 1 < s.items.length ? "Next →" : "Finish ") + "</button>";
     b.classList.add("hidden"); $("qaNext").onclick = function(){ s.i++; qaPersist(); qaShow(); };
   };
   focusRegion(mp, "start");
@@ -5054,14 +5889,29 @@ async function flashStart(){
   var bank = DB.engine !== "ai" ? genFlashLocal(10) : (DB.cache[bankKey("flash")] || []);
   if(DB.engine === "ai" && bank.filter(function(x){ return !x.u; }).length < 10){ var nb = await fillBank("flash", bank.length > 0); if(nb) bank = nb; }
   if(!bank.length && DB.engine === "ai"){ var LF = genFlashLocal(10); if(LF.length){ bank = LF; toast("AI was not available, so these were made on your device"); } }
-  if(!bank.length){ mp.innerHTML = "<p class='status'>Couldn’t make flashcards.</p><button class='primary' id='rtBtn'>Try again</button>"; $("rtBtn").onclick = flashStart; return; }
+  if(!bank.length){ mp.innerHTML = "<p class='status'>Couldn’t make flashcards.</p><button class='btn' id='rtBtn'>Try again</button>"; $("rtBtn").onclick = flashStart; return; }
   var d = leastUsed(bank, 10); save();
   var F = {i: 0, knew: 0}; (function draw(){
-    if(F.i >= d.length){ var gr = recordPrac("flash", Math.round(F.knew * 100 / d.length)); mp.innerHTML = "<div class='hero card' style='text-align:center'><div class='big'>" + F.knew + " / " + d.length + "</div><p>cards you knew. " + (F.knew >= d.length * 0.7 ? "Super recall!" : "Revise once more and try again") + "</p>" + growthHtml(gr) + "<button class='primary' id='flAgain'>Again</button></div>" + nextBar("flash"); $("flAgain").onclick = flashStart; bindNext(mp); logEv("flash", "Flashcards: knew " + F.knew + " of " + d.length); markDone("flash"); focusRegion(mp, "start"); return; }
+    if(F.i >= d.length){ var gr = recordPrac("flash", Math.round(F.knew * 100 / d.length)); mp.innerHTML = "<div class='hero card' style='text-align:center'><div class='big'>" + F.knew + " / " + d.length + "</div><p>cards you knew. " + (F.knew >= d.length * 0.7 ? "Super recall!" : "Revise once more and try again") + "</p>" + growthHtml(gr) + "<button class='btn' id='flAgain' style='margin-top:10px'>Again</button></div>" + nextBar("flash"); $("flAgain").onclick = flashStart; bindNext(mp); logEv("flash", "Flashcards: knew " + F.knew + " of " + d.length); markDone("flash"); focusRegion(mp, "start"); return; }
     var x = d[F.i], flipped = false;
-    mp.innerHTML = "<div class='status'>Card " + (F.i + 1) + " of " + d.length + " · tap the card to flip</div><div class='flip' id='fl'>" + inline(String(x.front)) + "</div><div class='row' style='margin-top:10px'><button id='fNo'>Revise again</button><button class='primary' id='fYes'>I knew it</button></div>";
-    $("fl").onclick = function(){ flipped = !flipped; this.innerHTML = inline(String(flipped ? x.back : x.front)); this.style.background = flipped ? "var(--acc2bg)" : ""; };
-    $("fYes").onclick = function(){ F.knew++; F.i++; draw(); }; $("fNo").onclick = function(){ F.i++; draw(); };
+    var pct = Math.round((F.i + 1) * 100 / d.length);
+    var h = "<div class='focusTopBar'>" +
+      "<button class='focusCloseBtn' id='flClose' title='Back to Study'>✕</button>" +
+      "<div class='focusProgressBar'><i style='width:" + pct + "%'></i></div>" +
+      "<span class='focusStepCount'>" + (F.i + 1) + "/" + d.length + "</span>" +
+      "</div>";
+    h += "<div class='flipCard250' id='fl'><div><small class='flipHint'>Tap to flip</small><b class='flipText'>" + inline(String(x.front)) + "</b></div></div>";
+    h += "<div class='g2 thumbDock'><button class='btn o' id='fNo'>Revise again</button><button class='btn' id='fYes'>I knew it</button></div>";
+    mp.innerHTML = h;
+    $("flClose").onclick = function(){ closeMethod(); };
+    $("fl").onclick = function(){
+      flipped = !flipped;
+      this.querySelector(".flipText").innerHTML = inline(String(flipped ? x.back : x.front));
+      this.style.background = flipped ? "var(--acc2bg)" : "var(--accbg)";
+      this.style.borderColor = flipped ? "var(--acc2)" : "var(--acc)";
+    };
+    $("fYes").onclick = function(){ F.knew++; F.i++; draw(); };
+    $("fNo").onclick = function(){ F.i++; draw(); };
     focusRegion(mp, "start");
   })();
 }
@@ -10038,86 +10888,48 @@ RENDER.plan = function(){
   var el = $("spIn"); if(!el) return;
   DB.ttDone = DB.ttDone || {}; DB.tt = DB.tt || [];
   var tab = PLN_TAB === "today" ? "today" : "syllabus";
-  var h = "<h1>Plan &amp; Timetable</h1><p class='sub'>Your daily focus, weekly timetable, syllabus and exam countdown in one place.</p>" +
-    "<div class='subTabs' style='margin:0 0 12px'>" +
-    "<button data-ptab='today'" + (tab === "today" ? " class='primary'" : "") + ">📅 Today &amp; Weekly</button>" +
-    "<button data-ptab='syllabus'" + (tab === "syllabus" ? " class='primary'" : "") + ">📚 Syllabus &amp; Timetable</button>" +
+  var h = "<h1>Plan &amp; Timetable</h1><p class='sub'>Your daily focus, weekly timetable, syllabus and exam countdown.</p>" +
+    "<div class='g2' style='margin:0 0 14px'>" +
+    "<button class='btn" + (tab === "today" ? "" : " o") + "' data-ptab='today'>Today</button>" +
+    "<button class='btn" + (tab === "syllabus" ? "" : " o") + "' data-ptab='syllabus'>Syllabus</button>" +
     "</div><div id='spTabBody'></div>";
   el.innerHTML = h;
   el.querySelectorAll("[data-ptab]").forEach(function(b){ b.onclick = function(){ PLN_TAB = b.getAttribute("data-ptab"); RENDER.plan(); }; });
   var body = $("spTabBody");
   if(tab === "today"){ RENDER.rec(body); return; }
   var sh = "";
-  /* 1. syllabus */
   var syl = DB.syllabus;
-  sh += "<div class='card'><h2 style='margin-top:0'>1 · My syllabus</h2>";
+  sh += "<div class='card stepCard'><small class='stepBadge'>STEP 1</small><b>Upload your syllabus</b>";
   if(!syl || !(syl.subjects || []).length){
-    sh += "<p class='status'>Upload your syllabus as a <b>PDF</b>, <b>Excel (.xlsx)</b>, CSV or text file. I will read the subjects and chapters, then plan your study so you finish in time.</p><div class='row'><button class='primary' id='plSyl'>📋 Upload syllabus (PDF or Excel)</button></div>";
+    sh += "<p class='status'>PDF, Excel (.xlsx), CSV or text. I will read your subjects and chapters to prepare your study roadmap.</p><button class='btn' id='plSyl' style='margin-top:8px'>Upload syllabus</button>";
   } else {
     var nch = syl.subjects.reduce(function(a, s){ return a + s.chapters.length; }, 0);
-    sh += "<p class='status'>Loaded " + (syl.at ? fmtD(syl.at) : "") + " · " + syl.subjects.length + " subject" + (syl.subjects.length === 1 ? "" : "s") + " · " + nch + " chapters.</p>";
-    sh += "<div class='sylGrid'>" + syl.subjects.map(function(s){ return "<div class='card' style='margin:0;padding:10px'><strong>" + esc(s.name) + "</strong><div class='status'>" + s.chapters.length + " chapter" + (s.chapters.length === 1 ? "" : "s") + "</div><div class='status' style='max-height:130px;overflow:auto'>" + (s.chapters.slice(0, 50).map(function(c){ return "• " + esc(c); }).join("<br>") || "—") + "</div></div>"; }).join("") + "</div>";
-    sh += "<div class='row' style='margin-top:10px'><button id='plSyl'>📋 Replace syllabus</button><button id='plArrange'>🤖 Verify &amp; arrange with AI</button><button id='plSylClear'>Clear</button></div><p class='status'>Verify &amp; arrange uses the internet and your AI to match your uploaded chapters to this syllabus, subject by subject and semester by semester, and to prepare study packs.</p>";
+    sh += "<p class='status'>Loaded <b>" + syl.subjects.length + " subjects</b> (" + nch + " chapters). <button class='linkish' id='plSylRe'>Upload a different syllabus</button></p>";
   }
   sh += "</div>";
-  /* 2. plan */
-  var st = planStats();
-  sh += "<div class='card'><h2 style='margin-top:0'>2 · My study plan</h2>";
-  if(!st.total){
-    sh += "<p class='status'>No plan yet. " + ((syl && syl.subjects.length) ? "Make a plan from your syllabus." : "Upload a syllabus, or make a plan from the chapters you have added.") + "</p><div class='row'><button class='primary' id='plMake'>📅 Make my study plan</button><button id='plPacks'>⚡ Prepare all study packs (online)</button></div>";
+
+  sh += "<div class='card stepCard'><small class='stepBadge'>STEP 2</small><b>Make my study plan</b>";
+  if(!syl || !(syl.subjects || []).length){
+    sh += "<p class='status'>Built automatically from your syllabus once uploaded.</p>";
   } else {
-    sh += "<p class='status'>Plan made " + (DB.plan.at ? fmtD(DB.plan.at) : "") + (DB.plan.exam ? " · finish by " + esc(DB.plan.exam) : "") + " · " + st.done + " of " + st.total + " done · " + st.due + " due or overdue.</p>";
-    sh += "<div class='bar'><i style='width:" + Math.round(st.done * 100 / st.total) + "%'></i></div>";
-    sh += "<div class='stat' style='margin-top:10px'>" + Object.keys(st.bySubj).map(function(k){ var b = st.bySubj[k]; return "<div><div class='big'>" + b.d + "/" + b.n + "</div>" + esc(k) + "</div>"; }).join("") + "</div>";
-    var tk = dayKey(Date.now());
-    sh += "<h3>What to study next</h3>";
-    sh += todayPlan().slice().sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); }).slice(0, 12).map(function(it){
-      var done = !!DB.ttDone[planDoneKey(it)], due = it.date <= tk && !done;
-      return "<div class='planItem" + (due ? " due" : "") + (done ? " done" : "") + "'><span class='dt'>" + esc(it.date) + "</span><div class='nm' style='flex:1;min-width:0'><strong>" + esc(it.chapter) + "</strong><div class='status'>" + esc(it.subj) + (it.sem && it.sem !== "No semester" ? " · " + esc(it.sem) : "") + (it.book ? " · " + esc(it.book) : "") + "</div></div>" + (it.chId ? "<button data-plopen='" + esc(it.chId) + "'>Study</button>" : "") + "<button data-plsel='" + esc(it.id) + "'>" + (done ? "✓" : "Done") + "</button></div>";
-    }).join("");
-    sh += "<div class='row' style='margin-top:10px'><button id='plMake'>📅 Remake plan</button><button id='plPacks'>⚡ Prepare all study packs (online)</button><button id='plClear'>Clear plan</button></div>";
+    sh += "<p class='status'>Built from your chapters with revision loops and mock exam dates.</p><button class='btn' id='plGen' style='margin-top:8px'>Generate study plan</button>";
   }
   sh += "</div>";
-  /* 3. timetable */
-  sh += "<div class='card'><h2 style='margin-top:0'>3 · My timetable</h2>";
-  sh += "<h3 style='margin-top:0'>Today · " + DAYNAMES[new Date().getDay()] + "</h3>";
-  var ts = ttToday();
-  if(!ts.length) sh += "<p class='status'>No study slots for today yet. Add some below and I will follow up with you here and on your home screen.</p>";
-  else sh += ts.map(function(s){ return ttSlotHtml(s, true); }).join("");
-  sh += "<h3>My week</h3>";
-  var slots = (DB.tt || []).slice().sort(ttSort), d;
-  if(!slots.length) sh += "<p class='status'>Build your week: add a slot for each subject or activity. You can edit or delete any slot later.</p>";
-  else for(d = 0; d < 7; d++){
-    var ds = slots.filter(function(s){ return s.day === d; });
-    if(!ds.length) continue;
-    sh += "<div class='ttDay'><h4>" + DAYNAMES[d] + "</h4>" + ds.map(function(s){ return ttSlotHtml(s, false); }).join("") + "</div>";
-  }
-  sh += "<div class='row' style='margin-top:10px'><button class='primary' id='ttAdd'>+ Add a slot</button></div></div>";
   body.innerHTML = sh;
+
   if($("plSyl")) $("plSyl").onclick = function(){ $("sylFile").click(); };
-  if($("plSylClear")) $("plSylClear").onclick = function(){ askYes("Clear the saved syllabus? Your chapters stay.", function(){ DB.syllabus = null; DB.plan = null; save(); RENDER.plan(); }); };
-  if($("plArrange")) $("plArrange").onclick = aiArrange;
-  if($("plMake")) $("plMake").onclick = planMakeDialog;
-  if($("plPacks")) $("plPacks").onclick = prepareAllPacks;
-  if($("plClear")) $("plClear").onclick = function(){ askYes("Clear your study plan? Your chapters and study packs stay.", function(){ DB.plan = null; save(); RENDER.plan(); }); };
-  if($("ttAdd")) $("ttAdd").onclick = function(){ ttForm(null); };
-  body.querySelectorAll("[data-plsel]").forEach(function(b){ b.onclick = function(){ var it = planItemById(b.getAttribute("data-plsel")); if(!it) return; var k = planDoneKey(it); if(DB.ttDone[k]) delete DB.ttDone[k]; else DB.ttDone[k] = 1; save(); RENDER.plan(); }; });
-  body.querySelectorAll("[data-plopen]").forEach(function(b){ b.onclick = function(){ var cid = b.getAttribute("data-plopen"); if(DB.chapters.some(function(c){ return c.id === cid; })){ DB.cur = cid; save(); show("study"); } else toast("This chapter is not uploaded yet"); }; });
-  body.querySelectorAll("[data-ttdone]").forEach(function(b){ b.onclick = function(){ var k = b.getAttribute("data-ttdone"); if(DB.ttDone[k]) delete DB.ttDone[k]; else DB.ttDone[k] = 1; save(); RENDER.plan(); }; });
-  body.querySelectorAll("[data-ttedit]").forEach(function(b){ b.onclick = function(){ var s = (DB.tt || []).filter(function(x){ return x.id === b.getAttribute("data-ttedit"); })[0]; if(s) ttForm(s); }; });
-  body.querySelectorAll("[data-ttdel]").forEach(function(b){ b.onclick = function(){ var id = b.getAttribute("data-ttdel"); DB.tt = (DB.tt || []).filter(function(x){ return x.id !== id; }); save(); RENDER.plan(); }; });
+  if($("plSylRe")) $("plSylRe").onclick = function(){ $("sylFile").click(); };
+  if($("plGen")) $("plGen").onclick = function(){ makePlanFromSyllabus(); };
 };
 
 /* ---------- Progress (Overview | Performance | History | Reports) ---------- */
 RENDER.progress = function(){
   var el = $("pgIn"); if(!el) return;
   var tab = ["overview","perf","hist","rep"].indexOf(PRG_TAB) >= 0 ? PRG_TAB : "overview";
-  var h = "<h1>Neural Map</h1><p class='sub'>Track your growth, test scores, history and chapter reports in one view.</p>" +
-    "<div class='subTabs' style='margin:0 0 12px'>" +
-    "<button data-gtab='overview'" + (tab === "overview" ? " class='primary'" : "") + ">🌱 Overview</button>" +
-    "<button data-gtab='perf'" + (tab === "perf" ? " class='primary'" : "") + ">📊 Engram Score</button>" +
-    "<button data-gtab='hist'" + (tab === "hist" ? " class='primary'" : "") + ">🕒 Trace History</button>" +
-    "<button data-gtab='rep'" + (tab === "rep" ? " class='primary'" : "") + ">📄 Debrief</button>" +
+  var h = "<h1>Progress</h1><p class='sub'>Track your memory growth, test scores, and chapter mastery.</p>" +
+    "<div class='g2' style='margin:0 0 14px'>" +
+    "<button class='btn" + (tab === "overview" ? "" : " o") + "' data-gtab='overview'>Overview</button>" +
+    "<button class='btn" + (tab === "perf" ? "" : " o") + "' data-gtab='perf'>Scores</button>" +
     "</div><div id='pgTabBody'></div>";
   el.innerHTML = h;
   el.querySelectorAll("[data-gtab]").forEach(function(b){ b.onclick = function(){ PRG_TAB = b.getAttribute("data-gtab"); RENDER.progress(); }; });
@@ -10125,35 +10937,19 @@ RENDER.progress = function(){
   if(tab === "perf"){ RENDER.perf(body); return; }
   if(tab === "hist"){ RENDER.hist(body); return; }
   if(tab === "rep"){ RENDER.rep(body); return; }
-  if(!DB.chapters.length){ body.innerHTML = noData("Upload your book and start practising. Your plant will grow here."); bindNo(); return; }
+  if(!DB.chapters.length){
+    body.innerHTML = "<div class='card plantCard'><div style='font-size:36px;margin-bottom:8px'>🌱</div><b style='font-size:17px;font-family:Georgia,serif'>Your plant grows here.</b><p class='status' style='margin:4px 0 14px'>Start one activity to see it grow.</p><button class='btn' id='pgGoStudy'>Go to Study</button></div>";
+    var pgs = $("pgGoStudy"); if(pgs) pgs.onclick = function(){ showView("study"); };
+    return;
+  }
   var xp = totalXp(), st = ovStage(xp), nx = TH[st + 1], pr = nx ? Math.round((xp - TH[st]) * 100 / (nx - TH[st])) : 100, wk = 0, cnt = 0, touched = 0;
   var dg = dailyGoalInfo(), bdg = scholarBadges(), oh = "";
-  DB.chapters.forEach(function(c){ var P = pracOf(c.id); if(P.length) touched++; P.forEach(function(x){ cnt++; if(x.d > Date.now() - 7 * 864e5) wk += Math.round(x.pct / 5); }); });
-  oh += "<div class='card hero'><div class='row' style='flex-wrap:nowrap;gap:16px;margin:0'>" + plantSvg(st, 92) + "<div style='flex:1;min-width:0'><div class='status'>Your growth level</div><div class='big'>" + STAGES[st] + "</div><div class='bar'><i style='width:" + pr + "%'></i></div><div class='status'>" + xp + " growth points" + (nx ? " · " + (nx - xp) + " more to become a " + STAGES[st + 1] : " · top level reached") + "</div><p style='margin:6px 0 0'>" + (wk ? "<span class='tag s'><span class='mi'>" + svgIc("up") + "</span> +" + wk + " points this week</span>" : "Practise today to start growing!") + "</p></div></div></div>";
-  oh += "<div class='stat'><div><div class='big'>" + touched + "/" + DB.chapters.length + "</div>Chapters practised</div><div><div class='big'>" + cnt + "</div>Practices done</div><div><div class='big'>" + dg.xp + "/" + dg.target + "</div>Today's XP</div><div><div class='big'>" + streak() + (dg.freezes ? " 🛡" + dg.freezes : "") + "</div>Day streak</div></div>";
-  oh += "<div class='card'><strong>Scholar badges</strong><div class='badgeGrid'>" + bdg.map(function(b){ return "<span class='badgePill" + (b.on ? "" : " off") + "' title='" + esc(b.desc) + "'>" + b.ic + " " + esc(b.name) + "</span>"; }).join("") + "</div></div>";
-  function chCard(c){
-    var P = pracOf(c.id), sc = chScore(c.id), tr = trendOf(c.id), sg = chStage(c.id), d = (DB.progress[c.id] || {done: {}}).done, rv = reviewInfo(c.id), rd = readinessOf(c.id);
-    var tg = tr === null ? "" : tr > 0 ? "<span class='tag s'><span class='mi'>" + svgIc("up") + "</span> +" + tr + "</span>" : tr < 0 ? "<span class='tag w'><span class='mi'>" + svgIc("down") + "</span> " + tr + "</span>" : "<span class='tag a'>steady</span>";
-    var chips = ["mcq","exam","qa","teach","flash","cram"].map(function(k){ var L = P.filter(function(x){return x.kind === k}); if(!L.length){ return k === "cram" && d[k] ? "<span class='chip on'>" + mEmoji(k) + " cram ×" + d[k] + "</span>" : ""; } var a = Math.round(L.reduce(function(s, x){return s + x.pct}, 0) / L.length); return "<span class='chip on'>" + mEmoji(k) + " " + k + " ×" + L.length + " · avg " + a + "%</span>"; }).join("") + ["explain","notes","doubt"].map(function(k){ return d[k] ? "<span class='chip on'>" + mEmoji(k) + " " + k + " ×" + d[k] + "</span>" : ""; }).join("");
-    return "<div class='card' style='margin:0'><div class='row' style='flex-wrap:nowrap;gap:12px;margin-bottom:6px'>" + plantSvg(sg, 64) + "<div style='flex:1;min-width:0'><strong>" + esc(c.name) + "</strong><div class='status'>" + STAGES[sg] + " · " + P.length + " practices</div></div><div style='text-align:right'><div class='big' style='font-size:1.5rem'>" + (sc === null ? "–" : sc + "%") + "</div>" + tg + "</div></div><div class='readinessRow'><span class='status'>Exam readiness</span><div class='bar' style='flex:1;margin:0'><i style='width:" + rd.pct + "%'></i></div><strong>" + rd.pct + "%</strong></div>" + (rv ? "<div class='status' style='margin:4px 0 0'>" + (rv.due ? "<span class='tag w'>Revision due</span>" : "Next review in " + rv.wait + " day" + (rv.wait === 1 ? "" : "s")) + "</div>" : "") + spark(P) + "<div>" + (chips || "<span class='status'>No practice yet</span>") + "</div><div class='row' style='margin:8px 0 0'><button data-open='" + c.id + "'>Continue this chapter</button></div></div>";
-  }
-  oh += "<h2>Chapter by chapter</h2>";
-  uniq(DB.chapters.map(subjOf)).sort().forEach(function(sj){
-    var inSubj = DB.chapters.filter(function(c){ return subjOf(c) === sj; });
-    var sems = uniq(inSubj.map(semOf)).sort();
-    oh += "<div class='orgTree'><h3>📘 " + esc(sj) + "</h3>";
-    sems.forEach(function(sm){
-      var books = uniq(inSubj.filter(function(c){ return semOf(c) === sm; }).map(bookOf)).sort();
-      if(!(sems.length === 1 && sm === "No semester")) oh += "<div class='semHead'>" + esc(sm) + "</div>";
-      books.forEach(function(bk){
-        var list = inSubj.filter(function(c){ return semOf(c) === sm && bookOf(c) === bk; });
-        oh += "<div class='status' style='margin:6px 0 2px;font-weight:600'>" + esc(bk) + "</div><div class='grid2'>" + list.map(chCard).join("") + "</div>";
-      });
-    });
-    oh += "</div>";
-  });
-  body.innerHTML = oh; body.querySelectorAll("[data-open]").forEach(function(b){ b.onclick = function(){ goStep(nextStep(b.dataset.open), b.dataset.open); }; });
+  oh += "<div class='card plantCard' style='margin-bottom:12px'>" + plantSvg(st, 140) + "<b style='font-size:18px;display:block;margin:8px 0 2px'>" + STAGES[st] + "</b><p class='status' style='margin:0 0 10px'>" + xp + " Total XP · " + (nx ? (nx - xp) + " XP to " + STAGES[st + 1] : "Maximum growth reached!") + "</p><div class='homeProgressBar'><i style='width:" + pr + "%'></i></div></div>";
+  oh += "<div class='card'><b>Chapter Readiness</b><div class='pathList' style='margin-top:10px'>" + DB.chapters.map(function(c){
+    var rd = readinessOf(c.id);
+    return "<div class='chip' style='margin-bottom:6px;padding:10px 12px'><span style='font-size:13px;font-weight:600'>" + esc(c.name) + "</span><em style='font-size:12px;font-weight:700;color:var(--acc2)'>" + rd.pct + "% ready</em></div>";
+  }).join("") + "</div></div>";
+  body.innerHTML = oh;
 };
 
 /* ---------- Performance ---------- */
@@ -10292,7 +11088,7 @@ RENDER.fun = function(){
 
 function setViewH(){
   var hd = $("top"), h = hd ? hd.getBoundingClientRect().height : 99;
-  var av = Math.max(300, Math.round(window.innerHeight - h - 30 - (window.__tabH||0)));
+  var av = Math.max(300, Math.round(window.innerHeight - h - 30));
   document.documentElement.style.setProperty("--viewH", av + "px");
 }
 window.addEventListener("resize", function(){
@@ -10349,44 +11145,15 @@ if(DB.profile && AUTH.session){
   }
 } else if(AUTH.users.length) show("onb");
 else show("intro");
-</script>
-<script id="mobile-redesign-js">
-(function(){
-var MAIN=["home","study","plan","progress","perf","hist","rep","rec","fun","note","mist","tools","play","tips"];
-var TABS=[["home","Home","⌂"],["study","Study","📖"],["plan","Plan","🗓"],["progress","Progress","📈"],["more","More","☰"]];
-var MORE=[["note","📓","Notebook"],["mist","✗","Error ledger"],["fun","✨","Fun facts"],["play","🎮","Play"],["tips","💡","Hacks & tips"],["tools","⚙","Settings"]];
-var bar=document.createElement("nav");bar.id="tabbar";bar.setAttribute("aria-label","Main");
-bar.innerHTML=TABS.map(function(t){return '<button data-t="'+t[0]+'"><i>'+t[2]+'</i>'+t[1]+'</button>'}).join("");
-var sh=document.createElement("div");sh.id="moreSheet";
-sh.innerHTML='<div><h3>More</h3>'+MORE.map(function(m){return '<button data-v="'+m[0]+'"><span>'+m[1]+'</span>'+m[2]+'</button>'}).join("")+'</div>';
-document.body.appendChild(bar);document.body.appendChild(sh);
-var bk=document.getElementById("navFab"),b1=document.querySelector("#top .bar1");if(bk&&b1)b1.insertBefore(bk,b1.firstChild);
-function group(v){return({perf:"progress",hist:"progress",rep:"progress",rec:"plan",progress:"progress",home:"home",study:"study",plan:"plan"})[v]||"more"}
-var hd=document.querySelector("header"),ap=document.createElement("div");ap.id="actProg";ap.innerHTML="<i></i>";if(hd)hd.appendChild(ap);
-function prog(){var m=document.getElementById("mp");if(!m||!document.body.classList.contains("method-open"))return;var t=m.innerText||"",r=t.match(/(?:Question|Card|Q)\s+(\d+)\s*(?:of|\/)\s*(\d+)/i);ap.firstChild.style.width=r?Math.round(100*(+r[1])/(+r[2]))+"%":"0";}
-var pq=0;function qprog(){cancelAnimationFrame(pq);pq=requestAnimationFrame(prog);}
-new MutationObserver(qprog).observe(document.getElementById("main")||document.body,{subtree:true,childList:true,characterData:true});
-function tabH(){var shown=getComputedStyle(bar).display!=="none";var h=shown?bar.offsetHeight:0;window.__tabH=h;document.documentElement.style.setProperty("--tabH",(h||64)+"px");}
-function sync(){var v=window.curView||"home",ok=!!(DB.profile&&AUTH.session)&&MAIN.indexOf(v)>=0;
-document.body.classList.toggle("has-tabs",ok);var g=group(v);tabH();if(typeof setViewH==="function")setViewH();
-bar.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b.dataset.t===g)});}
-var cc=document.getElementById("chCard");
-if(cc){var chip=document.createElement("div");chip.id="chChip";chip.innerHTML="<span></span><em>Change</em>";cc.insertBefore(chip,cc.firstChild);
-function G(i){return document.getElementById(i)}
-function sumTxt(){return ["selSubj","selBook","chSel"].map(function(i){var e=G(i);return e&&e.selectedIndex>=0&&e.options[e.selectedIndex]?e.options[e.selectedIndex].text:""}).filter(function(t){return t&&!/^(All |No |—|-)/.test(t)}).join(" · ")}
-function hasCh(){var e=G("chSel");return !!(e&&e.options.length&&e.value!==""&&e.selectedIndex>=0&&!/^No /.test(e.options[e.selectedIndex].text))}
-function rc(){var t=sumTxt()||"Choose a chapter",sp=chip.firstChild,em=chip.lastChild,o=cc.dataset.open==="1",n=o?"Done":"Change";
-if(sp.textContent!==t)sp.textContent=t;if(em.textContent!==n)em.textContent=n;cc.classList.toggle("cc-collapsed",hasCh()&&!o);}
-var rq=0;function qrc(){cancelAnimationFrame(rq);rq=requestAnimationFrame(rc);}
-chip.onclick=function(){cc.dataset.open=cc.dataset.open==="1"?"":"1";rc();};
-cc.addEventListener("change",qrc);new MutationObserver(qrc).observe(cc,{childList:true,subtree:true});rc();}
-var sv=window.showView;window.showView=function(v){sv(v);sync();};
-bar.onclick=function(e){var b=e.target.closest("button");if(!b)return;
-if(b.dataset.t==="more"){sh.classList.add("open");return}show(b.dataset.t);};
-sh.onclick=function(e){var b=e.target.closest("button");if(e.target===sh||b){sh.classList.remove("open")}if(b)show(b.dataset.v);};
-new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:["class"]});
-sync();addEventListener("resize",function(){tabH();if(typeof setViewH==="function")setViewH();});
-})();
+
+
+  // BottomNav click handlers
+  document.querySelectorAll("#bottomNav .navTab").forEach(function(b){
+    b.onclick = function(){
+      var tab = b.getAttribute("data-tab");
+      if(tab) showView(tab);
+    };
+  });
 </script>
 </body>
 </html>
