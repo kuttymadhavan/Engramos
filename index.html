@@ -525,8 +525,10 @@ body:not(.method-open) #v-study>#stBody>#mp{flex:0 0 auto;padding:8px 12px}
   --tab-bar-height: 56px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
+  --top-dock-height: 52px;
+  --top-dock-total: calc(var(--top-dock-height) + var(--safe-top));
   --bottom-dock-total: calc(var(--tab-bar-height) + var(--safe-bottom));
-  --viewH: calc(100dvh - var(--bottom-dock-total) - 60px);
+  --viewH: calc(100dvh - var(--bottom-dock-total) - var(--top-dock-total));
   color-scheme: light;
 }
 
@@ -808,6 +810,7 @@ body.auth-screen #bottomNav,
 }
 
 body.auth-screen #main {
+  bottom: 0 !important;
   padding-bottom: calc(var(--safe-bottom) + 24px) !important;
 }
 
@@ -1498,17 +1501,19 @@ body.auth-screen #main {
 
 @media (max-width: 620px) {
   html, body {
-    overflow-x: hidden;
+    overflow: hidden;
+    height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
   }
   #appShell {
     max-width: 100%;
-    min-height: 100dvh;
+    height: 100dvh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
     border: none;
     border-radius: 0;
@@ -1516,26 +1521,48 @@ body.auth-screen #main {
     background: transparent;
   }
   #top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
+    height: var(--top-dock-total);
     box-sizing: border-box;
-    padding: calc(var(--safe-top) + 8px) 14px 8px;
+    padding: calc(var(--safe-top) + 6px) 14px 8px;
+    z-index: 950;
+    background: color-mix(in srgb, var(--card) 95%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--line);
   }
   #main, main {
+    position: fixed;
+    top: var(--top-dock-total);
+    bottom: var(--bottom-dock-total);
+    left: 0;
+    right: 0;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 10px !important;
     padding-left: 14px !important;
     padding-right: 14px !important;
-    overflow-x: hidden;
+    padding-bottom: 24px !important;
   }
   #bottomNav {
-    width: 100%;
-    max-width: 100%;
+    position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    height: var(--bottom-dock-total);
     transform: none;
     border-radius: 0;
+    z-index: 1000;
   }
 }
 
@@ -1687,7 +1714,7 @@ body.auth-screen #main {
 <div class="card" id="loginCard">
 <h2 style="margin-top:0">Welcome back</h2>
 <p class="status">Enter your username and password. Only your own books, notes and progress will open.</p>
-<label for="liUser">Username</label><input type="text" id="liUser" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="your username">
+<label for="liUser">Username</label><input type="text" id="liUser" autocomplete="username" autocapitalize="words" spellcheck="false" placeholder="your username">
 <label for="liPass">Password</label><input type="password" id="liPass" autocomplete="current-password" placeholder="your password">
 <div class="row" style="margin-top:14px"><button class="primary" id="liGo">Log in</button><button type="button" class="linkish" id="liForgot">Forgot password?</button></div>
 <div id="liMsg" class="status"></div>
@@ -1700,7 +1727,7 @@ body.auth-screen #main {
 <h2 id="createTitle" style="margin-top:0">Make it yours</h2>
 <p id="createSub" class="status">Just your name, city, a username and a password. Your books and notes stay on this device.</p>
 <label for="oName">Your name</label><input type="text" id="oName" autocomplete="name" autocapitalize="words" placeholder="what should I call you?">
-<label for="oUser">Username (how you log in)</label><input type="text" id="oUser" autocapitalize="none" spellcheck="false" autocomplete="username" placeholder="letters and numbers, no spaces">
+<label for="oUser">Username (how you log in)</label><input type="text" id="oUser" autocapitalize="words" spellcheck="false" autocomplete="username" placeholder="letters and numbers, no spaces">
 <label for="oFrom">Your city</label><input type="text" id="oFrom" placeholder="city / town" autocomplete="address-level2" autocapitalize="words">
 <label for="oLang">Language you prefer</label><select id="oLang"></select>
 <div id="pilotFields">
@@ -2252,22 +2279,40 @@ function toTitleCase(str){
   return String(str).replace(/(?:^|\s|-)\S/g, function(c){ return c.toUpperCase(); });
 }
 function attachTitleCaseInput(el){
-  if(!el) return;
+  if(!el || el.type === "password" || el.type === "email" || el.type === "checkbox" || el.type === "number" || el.type === "file") return;
+  if(el.id === "acCode" || el.id === "oCode" || el.id === "kKey") return;
+  el.setAttribute("autocapitalize", "words");
   el.addEventListener("blur", function(){
     if(this.value) this.value = toTitleCase(this.value.trim());
   });
   el.addEventListener("input", function(){
     var val = this.value;
-    if(val && val.length === 1){
-      this.value = val.toUpperCase();
-    } else if(val && val.length > 1 && (val.charAt(val.length - 2) === " " || val.charAt(val.length - 2) === "-")){
-      var lastChar = val.charAt(val.length - 1);
-      if(/[a-z]/.test(lastChar)){
-        this.value = val.slice(0, -1) + lastChar.toUpperCase();
+    var start = this.selectionStart, end = this.selectionEnd;
+    var formatted = val.replace(/(^|\s+)([a-z])/g, function(_, sp, ch){ return sp + ch.toUpperCase(); });
+    if(formatted !== val){
+      this.value = formatted;
+      if(start !== null && end !== null){
+        try { this.setSelectionRange(start, end); } catch(_e){}
       }
     }
   });
 }
+
+// Global real-time Title-Case listener for all text inputs except password/email/code
+document.addEventListener("input", function(e){
+  var el = e.target;
+  if(!el || el.tagName !== "INPUT" || el.type === "password" || el.type === "email" || el.type === "checkbox" || el.type === "number" || el.type === "file") return;
+  if(el.id === "acCode" || el.id === "oCode" || el.id === "kKey") return;
+  var val = el.value;
+  var start = el.selectionStart, end = el.selectionEnd;
+  var formatted = val.replace(/(^|\s+)([a-z])/g, function(_, sp, ch){ return sp + ch.toUpperCase(); });
+  if(formatted !== val){
+    el.value = formatted;
+    if(start !== null && end !== null){
+      try { el.setSelectionRange(start, end); } catch(_e){}
+    }
+  }
+}, true);
 
 /* ---------- Groq Cloud Guide Modal (14,400 requests/day) ---------- */
 function groqGuideModal(){
@@ -2590,8 +2635,9 @@ function aiErrText(code){
   return "Could not connect. Please check the key and model, then try again.";
 }
 function jsonFrom(call){
-  return async function(p){
-    var r = await call(p + "\n\nReturn ONLY valid JSON with no markdown fences or extra text.", {});
+  return async function(p, opts){
+    opts = opts || {};
+    var r = await call(p + "\n\nReturn ONLY valid JSON with no markdown fences or extra text.", opts);
     var t = String(r && r.text || "").replace(/```(?:json)?|```/gi, "").trim(), a = t.search(/[\[{]/);
     if(a < 0) throw aierr("api", "unreadable reply");
     var open = t.charAt(a), close = open === "[" ? "]" : "}", depth = 0, inStr = false, es = false, z = -1, i, ch;
@@ -2604,13 +2650,31 @@ function jsonFrom(call){
       if(ch === open) depth++;
       else if(ch === close){ depth--; if(depth === 0){ z = i; break; } }
     }
-    if(z < a) throw aierr("api", "unreadable reply");
-    return JSON.parse(t.slice(a, z + 1));
+    var rawJson = z >= a ? t.slice(a, z + 1) : t.slice(a);
+    try {
+      return JSON.parse(rawJson);
+    } catch(err1){
+      // Resilient cleanup: remove trailing commas before } or ]
+      var sanitized = rawJson.replace(/,\s*([\]}])/g, "$1");
+      try {
+        return JSON.parse(sanitized);
+      } catch(err2){
+        // Attempt repairing unclosed braces if truncated near the end
+        if(z < a){
+          var repaired = sanitized;
+          if(inStr) repaired += '"';
+          while(depth > 0){ repaired += close; depth--; }
+          try { return JSON.parse(repaired); } catch(err3){}
+        }
+        throw aierr("api", "unreadable reply: " + err1.message);
+      }
+    }
   };
 }
 function fetchWithTimeout(url, opts, ms){
   var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-  var tm = ctrl ? setTimeout(function(){ try { ctrl.abort(); } catch(e){} }, ms || 25000) : null;
+  var timeoutMs = ms || (opts && opts.timeout) || 60000;
+  var tm = ctrl ? setTimeout(function(){ try { ctrl.abort(); } catch(e){} }, timeoutMs) : null;
   var o = Object.assign({}, opts || {});
   if(ctrl) o.signal = ctrl.signal;
   return fetch(url, o).then(function(r){ if(tm) clearTimeout(tm); return r; }, function(e){ if(tm) clearTimeout(tm); throw e; });
@@ -2622,8 +2686,8 @@ function mkOpenAI(ai){
     var apiKey = ai.key || (ai.provider === "groq" ? STARTER_GROQ_KEY : "");
     var h = {"content-type":"application/json", "authorization":"Bearer " + apiKey};
     if(ai.provider === "openrouter"){ h["HTTP-Referer"] = location.href; h["X-Title"] = "ENGRAMOS"; }
-    var r;
-    try { r = await fetchWithTimeout(P.api, {method:"POST", headers:h, body: JSON.stringify({model: ai.model || P.model, max_tokens: 8000, stream: !!opts.onText, messages:[{role:"user", content: prompt}]})}, 25000); }
+    var r, reqTimeout = (opts && opts.timeout) || 60000;
+    try { r = await fetchWithTimeout(P.api, {method:"POST", headers:h, body: JSON.stringify({model: ai.model || P.model, max_tokens: 8000, stream: !!opts.onText, messages:[{role:"user", content: prompt}]})}, reqTimeout); }
     catch(e){ throw aierr("no_net", e); }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
@@ -2670,8 +2734,8 @@ function mkGemini(ai){
   var P = AI_PROVIDERS[ai.provider];
   var call = async function(prompt, opts){
     opts = opts || {};
-    var model = ai.model || P.model, r;
-    try { r = await fetchWithTimeout(P.api + encodeURIComponent(model) + ":generateContent", {method:"POST", headers:{"content-type":"application/json", "x-goog-api-key": ai.key}, body: JSON.stringify({contents:[{role:"user", parts:[{text: prompt}]}], generationConfig:{maxOutputTokens: 8192, temperature: 0.4}})}, 25000); }
+    var model = ai.model || P.model, r, reqTimeout = (opts && opts.timeout) || 60000;
+    try { r = await fetchWithTimeout(P.api + encodeURIComponent(model) + ":generateContent", {method:"POST", headers:{"content-type":"application/json", "x-goog-api-key": ai.key}, body: JSON.stringify({contents:[{role:"user", parts:[{text: prompt}]}], generationConfig:{maxOutputTokens: 8192, temperature: 0.4}})}, reqTimeout); }
     catch(e){ throw aierr("no_net", e); }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
@@ -2696,8 +2760,8 @@ function mkAnthropic(ai){
   var P = AI_PROVIDERS[ai.provider];
   var call = async function(prompt, opts){
     opts = opts || {};
-    var r;
-    try { r = await fetchWithTimeout(P.api, {method:"POST", headers:{"content-type":"application/json", "x-api-key": ai.key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true"}, body: JSON.stringify({model: ai.model || P.model, max_tokens: 8000, stream: !!(opts.onText && window.ReadableStream), messages:[{role:"user", content: prompt}]})}, 25000); }
+    var r, reqTimeout = (opts && opts.timeout) || 60000;
+    try { r = await fetchWithTimeout(P.api, {method:"POST", headers:{"content-type":"application/json", "x-api-key": ai.key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true"}, body: JSON.stringify({model: ai.model || P.model, max_tokens: 8000, stream: !!(opts.onText && window.ReadableStream), messages:[{role:"user", content: prompt}]})}, reqTimeout); }
     catch(e){ throw aierr("no_net", e); }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
@@ -3386,7 +3450,7 @@ function showView(v){
   if(typeof refreshPilotBar === "function") refreshPilotBar();
   document.body.classList.toggle("fit", ["study","progress","plan","perf","hist","rep","rec","fun","note","mist","tools","play","tips"].indexOf(v) >= 0);
   refreshBanner(); updateBackBtn();
-  muteObs = true; if(RENDER[v]) RENDER[v](); if(["progress","perf","hist","rep","fun","note"].indexOf(v) >= 0) addCta(v); if(v === "home") newQuote(); setViewH(); window.scrollTo(0, 0); replay($("v-" + v)); setTimeout(function(){ muteObs = false; }, 0);
+  muteObs = true; if(RENDER[v]) RENDER[v](); if(["progress","perf","hist","rep","fun","note"].indexOf(v) >= 0) addCta(v); if(v === "home") newQuote(); setViewH(); window.scrollTo(0, 0); var mEl = $("main"); if(mEl) mEl.scrollTop = 0; replay($("v-" + v)); setTimeout(function(){ muteObs = false; }, 0);
 }
 $("bBack").onclick = function(){
   if(methodOpen()){ closeMethod(); return; }
@@ -4277,20 +4341,23 @@ function sampleChapterModal(){
 
 /* ---------- smart pack: build once online, then use it offline ---------- */
 function cleanPack(d){
-  d = d && (d.pack || d.data || d.result) || d;
+  d = d && (d.pack || d.data || d.result || d.smart_pack || d.knowledge_pack) || d;
   var out = {v: 1, at: Date.now(), grade: (DB.profile && DB.profile.cls) || "", concepts: [], qa: [], facts: []}, sc = {}, sq = {}, sf = {};
-  var list = d && (d.concepts || d.concept || []);
+  var list = d && (d.concepts || d.concept || d.topics || d.items || []);
+  if(!Array.isArray(list) && typeof d === "object" && d){
+    for(var k in d){ if(Array.isArray(d[k]) && d[k].length && d[k][0] && (d[k][0].t || d[k][0].term || d[k][0].name)){ list = d[k]; break; } }
+  }
   if(!Array.isArray(list)) list = [];
   list.forEach(function(x){
     if(!x) return;
-    var t = String(x.t || x.term || x.name || "").replace(/\s+/g, " ").trim();
-    var m = String(x.d || x.def || x.definition || x.meaning || "").replace(/\s+/g, " ").trim();
-    var ex = String(x.ex || x.example || "").replace(/\s+/g, " ").trim();
+    var t = String(x.t || x.term || x.name || x.title || "").replace(/\s+/g, " ").trim();
+    var m = String(x.d || x.def || x.definition || x.meaning || x.description || "").replace(/\s+/g, " ").trim();
+    var ex = String(x.ex || x.example || x.worked_example || "").replace(/\s+/g, " ").trim();
     var k = termKey(t) || t.toLowerCase();
     if(!t || !m || sc[k]) return;
     sc[k] = 1; out.concepts.push({t: trunc(t, 90), d: trunc(m, 440), ex: trunc(ex, 320)});
   });
-  var qs = d && (d.qa || d.questions || []);
+  var qs = d && (d.qa || d.questions || d.qas || d.exam_questions || []);
   if(!Array.isArray(qs)) qs = [];
   qs.forEach(function(x){
     if(!x) return;
@@ -4300,7 +4367,7 @@ function cleanPack(d){
     if(!q || !a || !k || sq[k]) return;
     sq[k] = 1; out.qa.push({q: trunc(q, 240), a: trunc(a, 720)});
   });
-  var fs = d && (d.facts || d.fact || []);
+  var fs = d && (d.facts || d.fact || d.key_facts || []);
   if(!Array.isArray(fs)) fs = [];
   fs.forEach(function(x){
     var f = String(typeof x === "string" ? x : (x && (x.f || x.fact || x.text)) || "").replace(/\s+/g, " ").trim();
@@ -4351,7 +4418,7 @@ function buildPack(){
 async function buildPackFor(c){
   if(!c) throw aierr("api", "no chapter");
   var s = await getSample(); if(!s) throw aierr("no_net");
-  var d = await s.json(packPrompt(c), {cache: false, modelTier: "default"});
+  var d = await s.json(packPrompt(c), {cache: false, modelTier: "default", timeout: 90000});
   var pk = cleanPack(d);
   if(!pk.concepts.length) throw aierr("api", "empty pack");
   c.pack = pk; delete PREP[c.id]; save();
@@ -4371,7 +4438,10 @@ async function runPack(cid){
   } catch(e){
     $("packInfo").innerHTML = "";
     aiErr(e);
-    toast("Could not build the smart pack");
+    var errReason = e && e.code === "rate_limited" ? "AI rate limit reached — please wait 15 seconds" :
+                    e && e.code === "no_net" ? "Connection timeout or offline" :
+                    e && e.code === "bad_key" ? "AI key error — reconnect key" : "Could not build the smart pack";
+    toast(errReason);
   } finally {
     if(btn){ btn.disabled = false; btn.textContent = old; }
     fillSel();
@@ -4667,20 +4737,38 @@ async function buildBookPacks(b, btn, statEl, modal){
   btn.disabled = true;
   var oldTxt = btn.textContent;
   var done = 0;
+  var errCount = 0;
   for(var i = 0; i < targets.length; i++){
     var ch = targets[i];
     btn.textContent = "Building " + (i + 1) + " of " + targets.length + "…";
-    if(statEl) statEl.innerHTML = "<span class='status' style='color:var(--acc)'>Building pack for: <b>" + esc(ch.name) + "</b>…</span>";
+    if(statEl) statEl.innerHTML = "<span class='status' style='color:var(--acc)'>Building pack for: <b>" + esc(ch.name) + "</b> (" + (i + 1) + "/" + targets.length + ")…</span>";
     try {
       await buildPackFor(ch);
       done++;
+      if(i < targets.length - 1) await sleep(2500);
     } catch(e){
       console.warn("Pack build error for " + ch.name, e);
+      if(e && e.code === "rate_limited"){
+        if(statEl) statEl.innerHTML = "<span class='status' style='color:var(--acc2)'>Free AI limit hit — cooling down 12s for <b>" + esc(ch.name) + "</b>…</span>";
+        await sleep(12000);
+        try {
+          await buildPackFor(ch);
+          done++;
+          continue;
+        } catch(e2){
+          console.warn("Retry failed for " + ch.name, e2);
+        }
+      }
+      errCount++;
     }
   }
   btn.disabled = false;
   btn.textContent = oldTxt;
-  toast("Finished building " + done + " smart packs for “" + b.book + "”!");
+  if(done === 0 && targets.length > 0){
+    toast("Could not build packs — please check AI key or connection");
+  } else {
+    toast("Finished building " + done + " smart pack" + (done > 1 ? "s" : "") + " for “" + b.book + "”!" + (errCount > 0 ? " (" + errCount + " failed)" : ""));
+  }
   if(modal && modal.el && modal.el.parentNode){
     modal.el.remove();
     manageBooksModal();
@@ -4988,7 +5076,22 @@ function openMethod(k){
   }
   if(c){ var mm = METHODS.filter(function(x){return x.k === k})[0]; DB.last = {cid: c.id, method: k, text: "Started " + (mm ? mm.n : k), t: Date.now()}; save(); }
   if(k === "explain"){
-    mp.innerHTML = "<div class='row'><select id='exMode'><option value='all'>Whole chapter, concept by concept</option><option value='topic'>One topic</option></select><input type='text' id='exTopic' placeholder='Which topic?' class='hidden'><select id='exLevel'><option value='very simple, like explaining to a friend, with everyday examples'>Very simple</option><option value='clear with practical examples'>With examples</option><option value='exam-oriented, with definitions and key points that fetch marks'>Exam style</option></select></div><button class='primary' id='exGo'>Explain </button><div class='out' id='exOut'></div>";
+    var backBarHtml = "";
+    if(window.lastStudyOrigin && window.lastStudyOrigin.method === "map"){
+      backBarHtml = "<div class='card' style='margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;background:var(--accbg);border:1.5px solid var(--acc);border-radius:14px;padding:9px 14px;box-shadow:var(--shadow-sm)'>" +
+        "<span style='font-size:0.88rem;font-weight:700;color:var(--acc);display:flex;align-items:center;gap:6px'><span>🗺️</span> <span>Concept from Mind Map</span></span>" +
+        "<button class='primary' id='btnBackToMM' type='button' style='padding:6px 14px;font-size:0.84rem;font-weight:700;border-radius:10px;cursor:pointer'>← Back to Mind Map</button>" +
+        "</div>";
+    }
+    mp.innerHTML = backBarHtml + "<div class='row'><select id='exMode'><option value='all'>Whole chapter, concept by concept</option><option value='topic'>One topic</option></select><input type='text' id='exTopic' placeholder='Which topic?' class='hidden'><select id='exLevel'><option value='very simple, like explaining to a friend, with everyday examples'>Very simple</option><option value='clear with practical examples'>With examples</option><option value='exam-oriented, with definitions and key points that fetch marks'>Exam style</option></select></div><button class='primary' id='exGo'>Explain </button><div class='out' id='exOut'></div>";
+    var bmm = $("btnBackToMM");
+    if(bmm){
+      bmm.onclick = function(){
+        var orig = window.lastStudyOrigin;
+        window.lastStudyOrigin = null;
+        mindmapStart(orig && orig.mode === "concept" ? "concept" : "radial");
+      };
+    }
     $("exMode").onchange = function(){ $("exTopic").classList.toggle("hidden", this.value !== "topic"); };
     $("exGo").onclick = async function(){ var t = $("exTopic").value.trim(), lvl = $("exLevel").value;
       var r = await run(($("exMode").value === "topic" && t) ? "Explain the topic “" + t + "” from this chapter in a way that is " + lvl + ". Use headings, short paragraphs, one real-life example and a 2-line summary." : "Find every important concept in this chapter, in order. For each: a heading, a clear explanation that is " + lvl + ", a quick example, and a line starting with “Remember:” with the key exam point. End with a short summary.", $("exOut"), $("exGo"), {ctx: "explain", key: "ex|" + lvl + "|" + (($("exMode").value === "topic" && t) ? t : "all"), q: ($("exMode").value === "topic" && t) ? t : "", local: function(){ return localExplain(($("exMode").value === "topic" && t) ? t : "", lvl); }});
@@ -5071,7 +5174,12 @@ function secNodeCount(P, si){
   });
   return Math.min(n, 12);
 }
-function explainTopic(t){
+function explainTopic(t, fromMode){
+  window.lastStudyOrigin = {
+    method: "map",
+    mode: fromMode || (typeof MM !== "undefined" && MM && MM.mode ? MM.mode : "radial"),
+    topic: t
+  };
   openMethod("explain");
   var m = $("exMode"); if(m){ m.value = "topic"; m.dispatchEvent(new Event("change")); }
   var it = $("exTopic"); if(it) it.value = t;
@@ -5146,26 +5254,161 @@ function drawMap(scope){
     nd.x = cx + rx * Math.cos(a); nd.y = cy + ry * Math.sin(a); nd.color = MAP_COLORS[Math.max(0, order.indexOf(nd.sec)) % MAP_COLORS.length];
     ai++;
   });
-  var h = "<div class='mapWrap'><svg viewBox='0 0 " + W + " " + H + "' role='img' aria-label='Concept map for " + esc(cur().name) + "'>";
+  var vb = {x: 0, y: 0, w: W, h: H};
+  var h = "<div class='mmWrap' style='border-radius:16px;overflow:hidden;position:relative'>" +
+    "<div class='mmTools'><button id='conIn' title='Zoom in'>＋</button><button id='conOut' title='Zoom out'>−</button><button id='conFit' title='Fit'>Fit</button></div>" +
+    "<svg class='mmSvg' id='conSvg' viewBox='0 0 " + W + " " + H + "' role='img' aria-label='Concept map for " + esc(cur().name) + "'>";
   edges.forEach(function(e){
     var A = nodes[e.a], B = nodes[e.b];
-    h += "<line class='mapEdge' x1='" + A.x.toFixed(1) + "' y1='" + A.y.toFixed(1) + "' x2='" + B.x.toFixed(1) + "' y2='" + B.y.toFixed(1) + "' stroke-width='" + Math.min(4, 1 + e.w * .45) + "'/>";
+    h += "<line class='mapEdge' data-e='" + e.a + "-" + e.b + "' x1='" + A.x.toFixed(1) + "' y1='" + A.y.toFixed(1) + "' x2='" + B.x.toFixed(1) + "' y2='" + B.y.toFixed(1) + "' stroke='var(--line)' stroke-opacity='0.6' stroke-width='" + Math.min(4, 1 + e.w * .45) + "'/>";
   });
   nodes.forEach(function(n, ni){
-    var r = 16 + Math.min(9, (deg[ni] || 0) * 2);
+    var r = 18 + Math.min(10, (deg[ni] || 0) * 2);
     var label = trunc(n.t, 22);
     var ini = String(n.t).split(/\s+/).filter(function(w){ return /^[A-Za-z0-9]/.test(w); }).slice(0, 2).map(function(w){ return w.charAt(0).toUpperCase(); }).join("");
-    h += "<g class='mapNode' data-t='" + esc(n.t).replace(/'/g, "&#39;") + "' tabindex='0' role='button' aria-label='Explain " + esc(n.t) + "'>" +
+    h += "<g class='mapNode' data-ni='" + ni + "' data-t='" + esc(n.t).replace(/'/g, "&#39;") + "' tabindex='0' role='button' aria-label='Explain " + esc(n.t) + "' style='cursor:pointer'>" +
       "<title>" + esc(n.t) + (n.d ? ": " + esc(trunc(n.d, 180)) : "") + "</title>" +
-      "<circle cx='" + n.x.toFixed(1) + "' cy='" + n.y.toFixed(1) + "' r='" + r + "' fill='" + n.color + "' fill-opacity='.14' stroke='" + n.color + "' stroke-width='3'/>" +
-      "<text x='" + n.x.toFixed(1) + "' y='" + (n.y + 4).toFixed(1) + "' text-anchor='middle' font-size='11'>" + esc(ini || "•") + "</text>" +
-      "<text x='" + n.x.toFixed(1) + "' y='" + (n.y + r + 17).toFixed(1) + "' text-anchor='middle' font-size='12'>" + esc(label) + "</text></g>";
+      "<circle class='touchTarget' cx='" + n.x.toFixed(1) + "' cy='" + n.y.toFixed(1) + "' r='36' fill='transparent' pointer-events='all' style='cursor:pointer'/>" +
+      "<circle class='nodeCircle' cx='" + n.x.toFixed(1) + "' cy='" + n.y.toFixed(1) + "' r='" + r + "' fill='" + n.color + "' fill-opacity='.18' stroke='" + n.color + "' stroke-width='3'/>" +
+      "<text x='" + n.x.toFixed(1) + "' y='" + (n.y + 4).toFixed(1) + "' text-anchor='middle' font-size='11' font-weight='700' fill='currentColor' pointer-events='none'>" + esc(ini || "•") + "</text>" +
+      "<text x='" + n.x.toFixed(1) + "' y='" + (n.y + r + 17).toFixed(1) + "' text-anchor='middle' font-size='12' font-weight='600' fill='currentColor' pointer-events='none'>" + esc(label) + "</text></g>";
   });
-  h += "</svg></div><div class='mapLegend'>" + order.map(function(s, i){ return "<span><i class='mapDot' style='background:" + MAP_COLORS[i % MAP_COLORS.length] + "'></i>" + esc(s) + "</span>"; }).join("") + "</div>";
-  if(edges.length) h += "<div class='mapLinks'>" + edges.slice(0, 5).map(function(e){ var A = nodes[e.a], B = nodes[e.b]; return "<button data-t='" + esc(A.t).replace(/'/g, "&#39;") + "'>" + esc(A.t) + " ↔ " + esc(B.t) + " <span class='status'>· used together " + e.w + " time" + (e.w > 1 ? "s" : "") + "</span></button>"; }).join("") + "</div>";
-  else h += "<p class='status'>These ideas appear in different parts of the chapter, so there are few direct links. Tap one to read it.</p>";
+  h += "</svg></div><div class='mapLegend' style='margin-top:8px'>" + order.map(function(s, i){ return "<span><i class='mapDot' style='background:" + MAP_COLORS[i % MAP_COLORS.length] + "'></i>" + esc(s) + "</span>"; }).join("") + "</div>";
+  h += "<div id='mapDetail' class='nodeSheet' style='margin-top:12px;border:1.5px solid var(--line);border-radius:16px;padding:14px;background:var(--card)'><b id='mapDetailTitle' style='font-size:1.05rem;color:var(--acc)'>Tap any circle to inspect it</b><p id='mapDetailDesc' class='status' style='margin:4px 0 0'>Touch any concept circle on the map to see what it means and how it connects.</p></div>";
+  if(edges.length) h += "<div class='mapLinks' style='margin-top:10px'>" + edges.slice(0, 5).map(function(e){ var A = nodes[e.a], B = nodes[e.b]; return "<button data-t='" + esc(A.t).replace(/'/g, "&#39;") + "'>" + esc(A.t) + " ↔ " + esc(B.t) + " <span class='status'>· used together " + e.w + " time" + (e.w > 1 ? "s" : "") + "</span></button>"; }).join("") + "</div>";
   out.innerHTML = h;
-  out.querySelectorAll("[data-t]").forEach(function(el){ el.onclick = function(){ explainTopic(el.dataset.t); }; el.onkeydown = function(ev){ if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); explainTopic(el.dataset.t); } }; });
+
+  function selectConNode(ni){
+    var n = nodes[ni]; if(!n) return;
+    out.querySelectorAll(".mapNode").forEach(function(el, i){
+      var isSel = (i === ni);
+      var cEl = el.querySelector(".nodeCircle");
+      if(cEl){
+        cEl.setAttribute("stroke-width", isSel ? "5" : "3");
+        cEl.setAttribute("fill-opacity", isSel ? "0.45" : "0.18");
+      }
+    });
+    out.querySelectorAll(".mapEdge").forEach(function(edgeEl, ei){
+      var e = edges[ei];
+      if(e){
+        var connected = (e.a === ni || e.b === ni);
+        edgeEl.setAttribute("stroke-opacity", connected ? "1.0" : "0.15");
+        edgeEl.setAttribute("stroke", connected ? "var(--acc)" : "var(--line)");
+        edgeEl.setAttribute("stroke-width", connected ? (Math.min(5, 2 + e.w * 0.6)) : "1");
+      }
+    });
+    var connNames = [];
+    edges.forEach(function(e){
+      if(e.a === ni && nodes[e.b]) connNames.push(nodes[e.b].t);
+      if(e.b === ni && nodes[e.a]) connNames.push(nodes[e.a].t);
+    });
+    var dBox = $("mapDetail");
+    if(dBox){
+      var connHtml = connNames.length ? "<div style='margin:8px 0;font-size:0.85rem'><b>Connects to:</b> " + connNames.map(function(cn){ return "<span class='chip on'>" + esc(cn) + "</span>"; }).join(" ") + "</div>" : "";
+      dBox.innerHTML = "<h3 style='margin:0 0 6px;color:var(--acc)'>" + esc(n.t) + " <span class='tag a'>" + esc(n.sec || "Chapter") + "</span></h3>" +
+        (n.d ? "<p style='margin:0 0 8px'>" + esc(n.d) + "</p>" : "<p class='status'>Key concept identified in this chapter.</p>") +
+        connHtml +
+        "<div class='row' style='margin-top:10px'>" +
+        "<button class='primary' id='mapWhy' style='font-size:0.9rem;padding:9px 16px'>Explain this concept</button>" +
+        "<button id='mapRead' style='font-size:0.9rem;padding:9px 14px'>Read aloud</button>" +
+        "</div>";
+      var bw = $("mapWhy"); if(bw) bw.onclick = function(){ explainTopic(n.t, "concept"); };
+      var br = $("mapRead"); if(br) br.onclick = function(){ speakText(n.t + ". " + (n.d || "")); };
+      focusRegion(dBox, "nearest");
+    }
+  }
+
+  out.querySelectorAll(".mapNode").forEach(function(el){
+    var ni = +el.getAttribute("data-ni");
+    var act = function(ev){ if(ev) ev.preventDefault(); selectConNode(ni); };
+    el.onclick = act;
+    el.addEventListener("touchend", act);
+    el.onkeydown = function(ev){ if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); selectConNode(ni); } };
+  });
+
+  out.querySelectorAll(".mapLinks [data-t]").forEach(function(el){
+    el.onclick = function(){ explainTopic(el.dataset.t, "concept"); };
+  });
+
+  // Pan, Zoom and Pinch for Connections SVG
+  var conSvg = $("conSvg");
+  if(conSvg){
+    var conDrag = null, conDist = 0, conInitVb = null, conLastTap = 0, conTouchPt = null;
+    function conZoom(f){
+      var nw = Math.max(280, Math.min(1800, vb.w * f)), nh = nw * H / W;
+      vb = {x: vb.x + (vb.w - nw) / 2, y: vb.y + (vb.h - nh) / 2, w: nw, h: nh};
+      conSvg.setAttribute("viewBox", vb.x + " " + vb.y + " " + vb.w + " " + vb.h);
+    }
+    if($("conIn")) $("conIn").onclick = function(){ conZoom(0.82); };
+    if($("conOut")) $("conOut").onclick = function(){ conZoom(1.22); };
+    if($("conFit")) $("conFit").onclick = function(){ vb = {x: 0, y: 0, w: W, h: H}; conSvg.setAttribute("viewBox", vb.x + " " + vb.y + " " + vb.w + " " + vb.h); };
+
+    conSvg.addEventListener("pointerdown", function(e){
+      if(e.pointerType === "touch") return;
+      if(e.target.closest && e.target.closest(".mapNode")) return;
+      conDrag = {sx: e.clientX, sy: e.clientY, x: vb.x, y: vb.y, r: conSvg.getBoundingClientRect()};
+      conSvg.classList.add("grabbing"); try { conSvg.setPointerCapture(e.pointerId); } catch(_e){}
+    });
+    conSvg.addEventListener("pointermove", function(e){
+      if(!conDrag) return;
+      var dx = (e.clientX - conDrag.sx) * vb.w / conDrag.r.width, dy = (e.clientY - conDrag.sy) * vb.h / conDrag.r.height;
+      vb.x = conDrag.x - dx; vb.y = conDrag.y - dy;
+      conSvg.setAttribute("viewBox", vb.x + " " + vb.y + " " + vb.w + " " + vb.h);
+    });
+    function conEnd(){ conDrag = null; conSvg.classList.remove("grabbing"); }
+    conSvg.addEventListener("pointerup", conEnd);
+    conSvg.addEventListener("pointercancel", conEnd);
+    conSvg.addEventListener("wheel", function(e){ e.preventDefault(); conZoom(e.deltaY > 0 ? 1.08 : 0.92); }, {passive: false});
+
+    conSvg.addEventListener("touchstart", function(e){
+      if(e.touches.length === 2){
+        e.preventDefault();
+        var t1 = e.touches[0], t2 = e.touches[1];
+        conDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+        conInitVb = Object.assign({}, vb);
+      } else if(e.touches.length === 1){
+        var t = e.touches[0];
+        var now = Date.now();
+        if(now - conLastTap < 320){
+          e.preventDefault();
+          if(vb.w < 600){ vb = {x: 0, y: 0, w: W, h: H}; }
+          else { conZoom(0.62); }
+          conSvg.setAttribute("viewBox", vb.x + " " + vb.y + " " + vb.w + " " + vb.h);
+          conLastTap = 0; return;
+        }
+        conLastTap = now;
+        if(!e.target.closest || !e.target.closest(".mapNode")){
+          conTouchPt = {sx: t.clientX, sy: t.clientY, x: vb.x, y: vb.y, r: conSvg.getBoundingClientRect()};
+        }
+      }
+    }, {passive: false});
+
+    conSvg.addEventListener("touchmove", function(e){
+      if(e.touches.length === 2 && conDist > 0 && conInitVb){
+        e.preventDefault();
+        var t1 = e.touches[0], t2 = e.touches[1];
+        var dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+        if(dist > 5){
+          var scale = conDist / dist;
+          var nw = Math.max(280, Math.min(1800, conInitVb.w * scale)), nh = nw * H / W;
+          vb = {x: conInitVb.x + (conInitVb.w - nw) / 2, y: conInitVb.y + (conInitVb.h - nh) / 2, w: nw, h: nh};
+          conSvg.setAttribute("viewBox", vb.x + " " + vb.y + " " + vb.w + " " + vb.h);
+        }
+      } else if(e.touches.length === 1 && conTouchPt){
+        e.preventDefault();
+        var t = e.touches[0];
+        var dx = (t.clientX - conTouchPt.sx) * vb.w / conTouchPt.r.width;
+        var dy = (t.clientY - conTouchPt.sy) * vb.h / conTouchPt.r.height;
+        vb.x = conTouchPt.x - dx; vb.y = conTouchPt.y - dy;
+        conSvg.setAttribute("viewBox", vb.x + " " + vb.y + " " + vb.w + " " + vb.h);
+      }
+    }, {passive: false});
+
+    conSvg.addEventListener("touchend", function(e){
+      if(e.touches.length < 2){ conDist = 0; conInitVb = null; }
+      if(e.touches.length === 0){ conTouchPt = null; }
+    });
+  }
 }
 
 /* ---------- interactive mind map ---------- */
@@ -5298,7 +5541,10 @@ function mmZoom(f){
 function mmBindPan(){
   var svg = $("mmSvg"); if(!svg || !MM) return;
   var drag = null;
+  var initialDist = 0, initialVb = null, lastTap = 0, touchStartPt = null;
+
   svg.addEventListener("pointerdown", function(e){
+    if(e.pointerType === "touch") return; // Touch events handle mobile gestures
     if(e.target.closest && e.target.closest(".mmNode")) return;
     drag = {sx: e.clientX, sy: e.clientY, x: MM.vb.x, y: MM.vb.y, r: svg.getBoundingClientRect()};
     svg.classList.add("grabbing"); try { svg.setPointerCapture(e.pointerId); } catch(_e){}
@@ -5313,6 +5559,60 @@ function mmBindPan(){
   svg.addEventListener("pointerup", end);
   svg.addEventListener("pointercancel", end);
   svg.addEventListener("wheel", function(e){ e.preventDefault(); mmZoom(e.deltaY > 0 ? 1.08 : 0.92); }, {passive: false});
+
+  // Native Mobile Multi-Touch Pinch-to-Zoom & Double-Tap Enhance
+  svg.addEventListener("touchstart", function(e){
+    if(e.touches.length === 2){
+      e.preventDefault();
+      var t1 = e.touches[0], t2 = e.touches[1];
+      initialDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      initialVb = Object.assign({}, MM.vb);
+    } else if(e.touches.length === 1){
+      var t = e.touches[0];
+      var now = Date.now();
+      if(now - lastTap < 320){
+        e.preventDefault();
+        if(MM.vb.w < 650){
+          MM.vb = {x: 0, y: 0, w: 900, h: 640};
+        } else {
+          mmZoom(0.62);
+        }
+        mmDraw();
+        lastTap = 0;
+        return;
+      }
+      lastTap = now;
+      if(!e.target.closest || !e.target.closest(".mmNode")){
+        touchStartPt = {sx: t.clientX, sy: t.clientY, x: MM.vb.x, y: MM.vb.y, r: svg.getBoundingClientRect()};
+      }
+    }
+  }, {passive: false});
+
+  svg.addEventListener("touchmove", function(e){
+    if(e.touches.length === 2 && initialDist > 0 && initialVb){
+      e.preventDefault();
+      var t1 = e.touches[0], t2 = e.touches[1];
+      var dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      if(dist > 5){
+        var scale = initialDist / dist;
+        var nw = Math.max(280, Math.min(1800, initialVb.w * scale)), nh = nw * 640 / 900;
+        MM.vb = {x: initialVb.x + (initialVb.w - nw) / 2, y: initialVb.y + (initialVb.h - nh) / 2, w: nw, h: nh};
+        svg.setAttribute("viewBox", MM.vb.x + " " + MM.vb.y + " " + MM.vb.w + " " + MM.vb.h);
+      }
+    } else if(e.touches.length === 1 && touchStartPt){
+      e.preventDefault();
+      var t = e.touches[0];
+      var dx = (t.clientX - touchStartPt.sx) * MM.vb.w / touchStartPt.r.width;
+      var dy = (t.clientY - touchStartPt.sy) * MM.vb.h / touchStartPt.r.height;
+      MM.vb.x = touchStartPt.x - dx; MM.vb.y = touchStartPt.y - dy;
+      svg.setAttribute("viewBox", MM.vb.x + " " + MM.vb.y + " " + MM.vb.w + " " + MM.vb.h);
+    }
+  }, {passive: false});
+
+  svg.addEventListener("touchend", function(e){
+    if(e.touches.length < 2){ initialDist = 0; initialVb = null; }
+    if(e.touches.length === 0){ touchStartPt = null; }
+  });
 }
 
 /* ---------- function problems: one-one, onto, interactive working ---------- */
@@ -9662,7 +9962,11 @@ function resumeLast(){
 }
 function nextBar(ctx){
   var c = cur(); if(!c) return "";
-  var ns = nextStep(c.id), nc = nextChapterAfter(c.id), h = "<div class='card hero' style='margin-top:12px;text-align:center'><strong>What next?</strong><div class='row' style='justify-content:center;margin:10px 0 6px'>";
+  var ns = nextStep(c.id), nc = nextChapterAfter(c.id), h = "";
+  if(window.lastStudyOrigin && window.lastStudyOrigin.method === "map"){
+    h += "<div class='card hero' style='margin-top:12px;text-align:center;border:1.5px solid var(--acc);background:var(--accbg)'><strong style='color:var(--acc)'>Finished reading this concept?</strong><div class='row' style='justify-content:center;margin:10px 0 6px'><button class='primary' id='bNextToMM' style='font-size:1rem;padding:9px 20px;font-weight:700'>← Return to Mind Map</button></div></div>";
+  }
+  h += "<div class='card hero' style='margin-top:12px;text-align:center'><strong>What next?</strong><div class='row' style='justify-content:center;margin:10px 0 6px'>";
   if(ns.done) h += nc ? "<button class='primary' data-go='path' data-chap='" + nc.id + "'>Start next chapter: " + esc(nc.name.slice(0, 40)) + "</button>" : "<button class='primary' data-go='exam' data-chap='" + c.id + "'>Revise with a mock exam</button>";
   else h += "<button class='primary' data-go='" + ns.k + "' data-chap='" + c.id + "' data-focus='" + esc(ns.focus || "").replace(/'/g, "&#39;") + "'>Next step: " + esc(ns.label) + "</button>";
   var more = ["doubt","qa","mcq","flash"].filter(function(k){ return k !== ctx && k !== ns.k; }).slice(0, 3);
@@ -9670,6 +9974,14 @@ function nextBar(ctx){
   return h;
 }
 function bindNext(root){
+  var bmm = root.querySelector("#bNextToMM");
+  if(bmm){
+    bmm.onclick = function(){
+      var orig = window.lastStudyOrigin;
+      window.lastStudyOrigin = null;
+      mindmapStart(orig && orig.mode === "concept" ? "concept" : "radial");
+    };
+  }
   root.querySelectorAll("[data-go]").forEach(function(b){ b.onclick = function(){ var k = b.dataset.go, ch = b.dataset.chap; if(k === "path"){ if(ch){ DB.cur = ch; save(); } show("study"); } else goMethod(k, b.dataset.focus, ch); }; });
   root.querySelectorAll("[data-view]").forEach(function(b){ b.onclick = function(){ show(b.dataset.view); }; });
   root.querySelectorAll("[data-resume]").forEach(function(b){ b.onclick = resumeLast; });
@@ -12690,7 +13002,7 @@ else show("intro");
 
   // Initialize theme, Title-Case listeners and WhatsApp smart pack receiver
   initTheme();
-  ["oName", "oFrom", "oGName", "rqName", "rqSch", "rqGName"].forEach(function(id){
+  ["liUser", "oUser", "oName", "oFrom", "oGName", "rqName", "rqSch", "rqGName"].forEach(function(id){
     var el = $(id);
     if(el) attachTitleCaseInput(el);
   });
