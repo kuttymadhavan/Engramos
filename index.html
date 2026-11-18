@@ -30,6 +30,7 @@ main{max-width:960px;margin:0 auto;padding:16px 14px 70px}h1{font-size:1.5rem;ma
 button{font:inherit;cursor:pointer;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;transition:transform .15s,box-shadow .15s,border-color .15s}
 button:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);border-color:var(--acc)}button.primary{background:var(--acc);color:var(--onacc);border-color:var(--acc);font-weight:600;box-shadow:var(--primary-shadow)}button.primary:hover{box-shadow:var(--primary-shadow-hover)}button:disabled{opacity:.5;cursor:default}
 select,input[type=text],input[type=number],input[type=email],input[type=password],textarea{font:inherit;padding:9px;border-radius:11px;border:1px solid var(--line);background:var(--card);color:var(--ink);max-width:100%;transition:border-color .15s,box-shadow .15s}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 12px center!important;background-size:14px!important;padding-right:34px!important;cursor:pointer}
 select:focus,input:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accbg);outline:none}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.flip:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 input[type=text]{flex:1;min-width:150px}textarea{width:100%;min-height:90px}label{display:block;font-size:.88rem;color:var(--mute);margin:10px 0 3px}.form select,.form input{width:100%}
@@ -310,11 +311,55 @@ body:not(.method-open) #v-study>#stBody>#mp{flex:0 0 auto;padding:8px 12px}
 #v-mist .card,#v-tools .card{padding:14px;margin-bottom:10px}
 #v-mist h1,#v-tools h1{font-size:1.25rem;margin:2px 0 8px}
 #v-mist h2,#v-tools h2{font-size:1.05rem;margin:10px 0 4px}
-.toolsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.toolsGrid .card{margin-bottom:0}
 .mistList .mist .q{font-weight:600;line-height:1.4}
 
-@media (max-width:620px){.toolsGrid{grid-template-columns:1fr}}
+/* ---- Redesigned More Hub & Settings ---- */
+.moreHub{max-width:860px;margin:0 auto;padding-bottom:20px}
+.moreProfileCard{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:16px 18px;margin-bottom:18px;box-shadow:var(--shadow-sm);flex-wrap:wrap}
+.moreProfileMain{display:flex;align-items:center;gap:14px;min-width:0;flex:1 1 240px}
+.moreAvatar{width:52px;height:52px;min-width:52px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.4rem;box-shadow:0 4px 12px var(--glow1);text-transform:uppercase}
+.moreProfileMeta{min-width:0;flex:1}
+.moreProfileName{font-size:1.18rem;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.2}
+.moreProfileSub{font-size:.82rem;color:var(--mute);margin:2px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.moreStatsRow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.moreStatChip{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.moreEditBtn{font-size:.84rem;font-weight:600;padding:7px 14px;border-radius:99px;background:var(--accbg);color:var(--acc);border:1.5px solid var(--acc);flex-shrink:0;cursor:pointer}
+.moreEditBtn:hover{background:var(--acc);color:var(--onacc)}
+
+.moreSectionKicker{font-size:.76rem;font-weight:800;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;margin:22px 4px 10px;display:flex;align-items:center;justify-content:space-between}
+.moreExtrasGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:20px}
+@media (min-width:860px){.moreExtrasGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}}
+
+.extraTile{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;outline:none;transition:all .18s ease;display:flex;flex-direction:column;justify-content:space-between;min-height:104px;box-shadow:var(--shadow-sm);position:relative;min-width:0;overflow:hidden;box-sizing:border-box}
+.extraTile:hover,.extraTile:focus-visible{border-color:var(--acc);transform:translateY(-2px);box-shadow:var(--shadow)}
+.extraTile:active{transform:scale(.98)}
+.extraTileTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;min-width:0;gap:6px}
+.extraTileIcon{font-size:1.35rem;line-height:1;flex-shrink:0}
+.extraTileBadge{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--mute);border:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;flex-shrink:1}
+.extraTileBadge.warn{background:var(--badbg);color:var(--bad);border-color:var(--bad)}
+.extraTileBadge.ok{background:var(--okbg);color:var(--ok);border-color:var(--ok)}
+.extraTileBadge.active{background:var(--acc2bg);color:var(--acc2ink);border-color:var(--acc2)}
+.extraTileTitle{font-weight:700;font-size:.95rem;color:var(--ink);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.extraTileSub{font-size:.78rem;color:var(--mute);margin-top:3px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.settingsGroup{background:var(--card);border:1.5px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+.settingsRow{border-bottom:1px solid var(--line);transition:background .15s}
+.settingsRow:last-child{border-bottom:none}
+.settingsRowSummary{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;min-height:50px;cursor:pointer;user-select:none;gap:10px;transition:background .15s}
+.settingsRowSummary:hover{background:var(--accbg)}
+.settingsRowLeft{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.settingsRowIcon{font-size:1.15rem;width:24px;text-align:center;flex-shrink:0}
+.settingsRowText{min-width:0;flex:1}
+.settingsRowTitle{font-weight:700;font-size:.92rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+.settingsRowSub{font-size:.78rem;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+.settingsRowRight{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.settingsStatusPill{font-size:.73rem;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--bg);color:var(--mute);border:1px solid var(--line);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.settingsStatusPill.on{background:var(--okbg);color:var(--ok);border-color:var(--ok)}
+.settingsStatusPill.warn{background:var(--badbg);color:var(--bad);border-color:var(--bad)}
+.settingsChevron{font-size:.92rem;color:var(--mute);transition:transform .2s ease;display:inline-block;width:14px;text-align:center;font-weight:700}
+.settingsRow.open .settingsChevron{transform:rotate(90deg);color:var(--acc)}
+.settingsDrawer{display:none;padding:14px 16px 16px;background:var(--bg);border-top:1px solid var(--line)}
+.settingsRow.open .settingsDrawer{display:block;animation:fade .2s ease}
 /* ---- student photo ---- */
 .avatar img,.authAvatar img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
 .photoRow{display:flex;align-items:center;gap:12px;margin:2px 0 8px;position:relative}
@@ -1594,7 +1639,7 @@ var AUTH_VIEWS = ["intro", "request", "activate", "onb"];
 var REQ_KEY = "ocm_study_access_request", INV_KEY = "ocm_study_pending_invite";
 var PENDING_REQ = null, PENDING_INVITE = null;
 function blankDB(){
-  return {profile: null, chapters: [], progress: {}, history: [], facts: {}, cache: {}, book: [], engine: "local", cur: null, speech: {uri: "", name: "", rate: 0.95, pitch: 1}, syllabus: null, plan: null, tt: [], ttDone: {}, daily: {}, freeze: {count: 0, used: {}, rewarded: {}}, badges: {}, updatedAt: 0, save: {asked: false, enabled: false, name: "", file: "", at: 0}, pilot: {code: "", registered: false, issuedAt: 0, validUntil: 0, revoked: false, consent: false, consentAt: 0, board: "", guardian: {name: "", email: "", phone: ""}}, sub: {tier: "free", plan: "free", paidAt: 0, validUntil: 0, amountInr: 0, paymentId: "", orderId: "", method: "", devPreviewFree: false, pendingPayment: null}};
+  return {profile: null, chapters: [], progress: {}, history: [], facts: {}, cache: {}, book: [], engine: "ai", cur: null, speech: {uri: "", name: "", rate: 0.95, pitch: 1}, syllabus: null, plan: null, tt: [], ttDone: {}, daily: {}, freeze: {count: 0, used: {}, rewarded: {}}, badges: {}, updatedAt: 0, save: {asked: false, enabled: false, name: "", file: "", at: 0}, pilot: {code: "", registered: false, issuedAt: 0, validUntil: 0, revoked: false, consent: false, consentAt: 0, board: "", guardian: {name: "", email: "", phone: ""}}, sub: {tier: "free", plan: "free", paidAt: 0, validUntil: 0, amountInr: 0, paymentId: "", orderId: "", method: "", devPreviewFree: false, pendingPayment: null}};
 }
 function studyFields(){
   return ["profile", "chapters", "progress", "history", "facts", "cache", "book", "cur", "last", "sess", "speech", "qaMarks", "paper", "mist", "lastBackup", "play", "syllabus", "plan", "tt", "ttDone", "daily", "freeze", "badges", "updatedAt", "save", "pilot", "sub"];
@@ -1773,6 +1818,10 @@ function load(){
     } else AUTH.session = null;
   }
   DB.ai = AUTH.ai || null;
+  if(DB.ai && DB.ai.provider === "groq" && !DB.ai.model){
+    DB.ai.model = "llama-3.3-70b-versatile";
+    AUTH.ai = DB.ai;
+  }
   if(AUTH.session) saveUsers();
 }
 function save(){
@@ -2266,10 +2315,11 @@ function levelName(){
 function persona(){ return "You are the ENGRAMOS study companion, a warm older-sibling tutor for " + who() + ". " + L() + " Pitch every explanation for " + levelHint() + ". Go deeper than a textbook summary: explain why each idea matters, how it connects to the ones before it, and give one worked or real-life example. Explain ideas in short, clear sentences (usually 1–3), using the chapter’s own terms and examples; define any new word you use. Do not invent facts, do not pad answers, and do not mention page numbers, figure numbers or the author. Never end your reply with a question or an offer such as ‘Want me to…’, because the app shows buttons for the next step. End with one short encouraging line instead. "; }
 function base(q){ var c = cur(); q = q || EXQ; EXQ = ""; var ct = q ? excerpt(q, 4) : c.text; return persona() + "Stay faithful to the textbook text below; never contradict it. Use its wording and examples where they help. If the text does not contain the answer, say briefly what the chapter does cover instead of guessing.\n\nBOOK: " + c.book + "\nCHAPTER: " + c.name + "\nCHAPTER TEXT:\n" + ct + "\n\nTASK:\n"; }
 /* ---------- AI providers: free models, email sign-in, or your own key ---------- */
+var STARTER_GROQ_KEY = ""; // Pre-configured starter connection for Day-1 zero-effort student access
 var AI_PROVIDERS = {
-  groq: {name:"Groq", tag:"Recommended · 14,400/day free", desc:"Lightning-fast open models (Llama 3.1 8B & Llama 3.3 70B). Dedicated 14,400 requests/day free forever with your personal Groq key (no credit card needed).", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.1-8b-instant", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:[
-    {id:"llama-3.1-8b-instant", label:"⚡ Llama 3.1 8B Instant (Ultra-Fast · Recommended)"},
-    {id:"llama-3.3-70b-versatile", label:"🧠 Llama 3.3 70B Versatile (Deep Reasoning)"},
+  groq: {name:"Groq", tag:"Default · 14,400/day free", desc:"Lightning-fast open models (Llama 3.3 70B). Pre-configured out of the box so you can start studying right away. Optional: add your own free key for dedicated 14,400 requests/day.", api:"https://api.groq.com/openai/v1/chat/completions", kind:"openai", model:"llama-3.3-70b-versatile", free:true, link:"https://console.groq.com/keys", hint:"gsk_…", models:[
+    {id:"llama-3.3-70b-versatile", label:"🧠 Llama 3.3 70B Versatile (Deep Reasoning · Default)"},
+    {id:"llama-3.1-8b-instant", label:"⚡ Llama 3.1 8B Instant (Ultra-Fast 1.2s)"},
     {id:"openai/gpt-oss-120b", label:"🌟 OpenAI GPT-OSS 120B (High Capability)"},
     {id:"openai/gpt-oss-20b", label:"⚡ OpenAI GPT-OSS 20B (Fast Open Model)"}
   ]},
@@ -2291,20 +2341,27 @@ var AI_PROVIDERS = {
 };
 function aierr(code, detail){ var e = new Error(code); e.code = code; if(detail) e.detail = String(detail).slice(0, 240); return e; }
 function hostOf(u){ return String(u).replace(/^https?:\/\//, "").split("/")[0]; }
+function isOnline(){
+  if(typeof window !== "undefined" && window.navigator && window.navigator.standalone) return true;
+  return typeof navigator !== "undefined" ? navigator.onLine !== false : true;
+}
 function aiCfg(){
-  if(DB.ai && DB.ai.provider && AI_PROVIDERS[DB.ai.provider] && (DB.ai.key || DB.ai.provider === "puter")) return DB.ai;
-  if(DB.groqKey) return {provider:"groq", key:DB.groqKey, model: AI_PROVIDERS.groq.model};
-  if(DB.geminiKey) return {provider:"gemini", key:DB.geminiKey, model: AI_PROVIDERS.gemini.model};
+  if(DB.ai && DB.ai.provider && AI_PROVIDERS[DB.ai.provider]) {
+    if(!DB.ai.key && DB.ai.provider === "groq" && STARTER_GROQ_KEY) DB.ai.key = STARTER_GROQ_KEY;
+    return DB.ai;
+  }
+  if(DB.groqKey) return {provider:"groq", key:DB.groqKey, model: (DB.ai && DB.ai.model) || AI_PROVIDERS.groq.model};
+  if(DB.geminiKey) return {provider:"gemini", key:DB.geminiKey, model: (DB.ai && DB.ai.model) || AI_PROVIDERS.gemini.model};
   if(DB.key){ DB.ai = {provider:"anthropic", key:DB.key, email:"", model:DB.model || AI_PROVIDERS.anthropic.model}; DB.key = ""; DB.model = ""; return DB.ai; }
-  return null;
+  return {provider:"groq", key:STARTER_GROQ_KEY, model:"llama-3.3-70b-versatile", starter:true};
 }
 function aiName(c){ var P = c && AI_PROVIDERS[c.provider]; return P ? P.name : "AI"; }
 function refreshKeyBtn(){
   var b = $("bKey"); if(!b) return;
   var c = aiCfg();
   b.classList.toggle("hidden", HOSTED || !DB.profile);
-  if(c && (c.key || c.provider === "puter")){
-    b.textContent = "✦ " + aiName(c) + " connected ✓";
+  if(c){
+    b.textContent = (c.starter && (!c.key || c.key === STARTER_GROQ_KEY)) ? "✦ Groq connected ✓" : "✦ " + aiName(c) + " connected ✓";
   } else {
     b.textContent = "✦ Connect AI";
   }
@@ -2367,15 +2424,24 @@ function fetchWithTimeout(url, opts, ms){
 function mkOpenAI(ai){
   var P = AI_PROVIDERS[ai.provider];
   var call = async function(prompt, opts){
-    opts = opts || {}; if(!navigator.onLine) throw aierr("no_net");
-    var h = {"content-type":"application/json", "authorization":"Bearer " + ai.key};
+    opts = opts || {};
+    var apiKey = ai.key || (ai.provider === "groq" ? STARTER_GROQ_KEY : "");
+    var h = {"content-type":"application/json", "authorization":"Bearer " + apiKey};
     if(ai.provider === "openrouter"){ h["HTTP-Referer"] = location.href; h["X-Title"] = "ENGRAMOS"; }
     var r;
     try { r = await fetchWithTimeout(P.api, {method:"POST", headers:h, body: JSON.stringify({model: ai.model || P.model, max_tokens: 8000, stream: !!opts.onText, messages:[{role:"user", content: prompt}]})}, 25000); }
     catch(e){ throw aierr("no_net", e); }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
-      throw aierr(r.status === 401 || r.status === 403 ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 402 ? "no_credit" : (r.status === 404 || (r.status === 400 && /model|decommissioned/i.test(t))) ? "bad_model" : "api", t);
+      var isBadKey = (r.status === 401 || r.status === 403 || /invalid_api_key|invalid api key/i.test(t));
+      var isBadModel = !isBadKey && (r.status === 404 || (r.status === 400 && /model_not_found|model.*does not exist|decommissioned/i.test(t)));
+      if(ai.provider === "groq" && isBadModel && (ai.model || P.model) !== "llama-3.1-8b-instant"){
+        ai.model = "llama-3.1-8b-instant";
+        if(typeof DB !== "undefined" && DB && DB.ai) DB.ai.model = "llama-3.1-8b-instant";
+        if(typeof save === "function") try { save(); } catch(e){}
+        return call(prompt, opts);
+      }
+      throw aierr(isBadKey ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 402 ? "no_credit" : isBadModel ? "bad_model" : "api", t);
     }
     if(opts.onText && r.body && r.body.getReader){
       var rd = r.body.getReader(), dec = new TextDecoder(), buf = "", acc = "";
@@ -2409,12 +2475,18 @@ function mkOpenAI(ai){
 function mkGemini(ai){
   var P = AI_PROVIDERS[ai.provider];
   var call = async function(prompt, opts){
-    opts = opts || {}; if(!navigator.onLine) throw aierr("no_net");
+    opts = opts || {};
     var model = ai.model || P.model, r;
     try { r = await fetchWithTimeout(P.api + encodeURIComponent(model) + ":generateContent", {method:"POST", headers:{"content-type":"application/json", "x-goog-api-key": ai.key}, body: JSON.stringify({contents:[{role:"user", parts:[{text: prompt}]}], generationConfig:{maxOutputTokens: 8192, temperature: 0.4}})}, 25000); }
     catch(e){ throw aierr("no_net", e); }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
+      if((r.status === 404 || (r.status === 400 && /not found|not supported|invalid model/i.test(t))) && model !== "gemini-1.5-flash"){
+        ai.model = "gemini-1.5-flash";
+        if(typeof DB !== "undefined" && DB && DB.ai) DB.ai.model = "gemini-1.5-flash";
+        if(typeof save === "function") try { save(); } catch(e){}
+        return call(prompt, opts);
+      }
       throw aierr(r.status === 429 ? "rate_limited" : r.status === 401 || r.status === 403 || (r.status === 400 && /API key|API_KEY/i.test(t)) ? "bad_key" : (r.status === 404 || (r.status === 400 && /not found|not supported|invalid model/i.test(t))) ? "bad_model" : "api", t);
     }
     var j = await r.json(), cand = j.candidates && j.candidates[0], parts = cand && cand.content && cand.content.parts || [];
@@ -2429,7 +2501,7 @@ function mkGemini(ai){
 function mkAnthropic(ai){
   var P = AI_PROVIDERS[ai.provider];
   var call = async function(prompt, opts){
-    opts = opts || {}; if(!navigator.onLine) throw aierr("no_net");
+    opts = opts || {};
     var r;
     try { r = await fetchWithTimeout(P.api, {method:"POST", headers:{"content-type":"application/json", "x-api-key": ai.key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true"}, body: JSON.stringify({model: ai.model || P.model, max_tokens: 8000, stream: !!(opts.onText && window.ReadableStream), messages:[{role:"user", content: prompt}]})}, 25000); }
     catch(e){ throw aierr("no_net", e); }
@@ -2544,6 +2616,31 @@ function bestPuterModel(list){
   for(var i = 0; i < pref.length; i++){ for(var j = 0; j < list.length; j++){ if(pref[i].test(list[j])) return list[j]; } }
   return list[0] || "gpt-5.4-nano";
 }
+function cleanApiKey(raw, provider){
+  if(!raw) return "";
+  var k = String(raw).trim();
+  // Strip all backticks, quotes (single, double, curly)
+  k = k.replace(/[`'"“”‘’]/g, "").trim();
+  // Strip zero-width, non-breaking and invisible control characters
+  k = k.replace(/[\u200B-\u200D\uFEFF\u00A0\r\n\t]/g, "").trim();
+  // Strip common prefix labels like "key:", "api_key:", "Bearer "
+  k = k.replace(/^(bearer|api[-_ ]?key|key):\s*/i, "").trim();
+
+  if(provider === "gemini"){
+    var idx = k.indexOf("AIza");
+    if(idx >= 0){
+      k = k.slice(idx).trim();
+      k = k.split(/\s+/)[0].replace(/[.,;`'"“”‘’]+$/, "");
+    }
+  } else if(provider === "groq"){
+    var gidx = k.indexOf("gsk_");
+    if(gidx >= 0){
+      k = k.slice(gidx).trim();
+      k = k.split(/\s+/)[0].replace(/[.,;`'"“”‘’]+$/, "");
+    }
+  }
+  return k;
+}
 function connectModal(){
   return new Promise(function(res){
     var o = document.createElement("div"); o.className = "modal";
@@ -2632,35 +2729,36 @@ function connectModal(){
       var h = "<p style='margin:2px 0 10px'>" + esc(P.desc) + "</p>";
       if(pick === "groq"){
         h += "<div style='background:var(--accbg);border:1px solid var(--acc);border-radius:12px;padding:12px;margin:0 0 12px'>" +
-          "<div style='font-size:13px;font-weight:700;color:var(--acc);margin-bottom:6px'>⚡ Groq Cloud (Recommended — 14,400 Requests/Day Free):</div>" +
+          "<div style='font-size:13px;font-weight:700;color:var(--acc);margin-bottom:6px'>⚡ Groq Cloud (Default & Pre-Configured — Zero Effort):</div>" +
           "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--ink)'>" +
-          "<div>• <b>Ultra-Fast Speed:</b> ~1.2s response time powered by Groq LPU engine.</div>" +
-          "<div>• <b>Dedicated 14,400 Daily Quota:</b> 100% free daily allowance (Llama 3.1 8B & 3.3 70B).</div>" +
-          "<div>• <b>Free Setup in 60s:</b> No credit card required. Sign in and copy key.</div>" +
+          "<div>• <b>Day-1 Instant Access:</b> Active out of the box with Meta Llama 3.3 70B (~1.2s speed). No sign-up or key required to start.</div>" +
+          "<div>• <b>Dedicated 14,400 Daily Quota:</b> Want your own private daily allowance? Enter your free personal key below.</div>" +
+          "<div>• <b>Free Setup in 60s:</b> No credit card required. Free forever.</div>" +
           "</div>" +
           "<div class='row' style='margin-top:10px;gap:8px;flex-wrap:wrap'>" +
           "<button type='button' id='btnGroqGuide' class='primary' style='font-size:12px;padding:6px 12px'>📘 Step-by-Step Groq Guide</button>" +
           "<a href='https://console.groq.com/keys' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Groq Console ↗</a>" +
           "</div>" +
           "</div>" +
-          "<label style='font-weight:600;font-size:12px;color:var(--ink);margin-bottom:4px;display:block'>Groq API Key (starts with <code>gsk_…</code>):</label>" +
+          "<label style='font-weight:600;font-size:12px;color:var(--ink);margin-bottom:4px;display:block'>Personal Groq Key (optional for dedicated 14,400 req/day):</label>" +
           "<div class='row' style='gap:6px;margin-bottom:6px'>" +
-          "<input type='text' id='kKey' placeholder='Paste your gsk_… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
+          "<input type='text' id='kKey' placeholder='Optional: paste personal gsk_… key' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && !cfg.starter && cfg.key || "") + "'>" +
           "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
           "</div>" +
-          "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from list):</label>" +
-          "<div class='row' style='gap:6px;margin-bottom:6px'>" +
+          "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from dropdown):</label>" +
+          "<div class='row' style='gap:6px;margin-bottom:2px'>" +
           "<select id='kMod' style='flex:1;min-width:0;padding:9px 11px;font-size:13px;border-radius:10px;background:var(--card);color:var(--ink);border:1px solid var(--line)'></select>" +
           "<button type='button' id='btnRefreshModels' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0' title='Check live models for this key'>🔄 Refresh</button>" +
-          "</div>";
+          "</div>" +
+          "<small style='color:var(--mute);font-size:11px;display:block;margin-bottom:8px'>▾ Tap to choose model (Llama 3.3 70B default)</small>";
       } else if(pick === "gemini"){
         h += "<div style='background:var(--accbg);border:1px solid var(--acc);border-radius:12px;padding:12px;margin:0 0 12px'>" +
-          "<div style='font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px'>⚡ Google Gemini 2.0 Flash (Recommended for Big Books):</div>" +
+          "<div style='font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px'>⚡ Google Gemini 2.0 Flash (High-Capacity Alternative):</div>" +
           "<div style='font-size:12px;display:flex;flex-direction:column;gap:4px;color:var(--ink)'>" +
-          "<div>• <b>1M Token Context:</b> Ingests entire 40-page textbook chapters without cutting.</div>" +
-          "<div>• <b>Top Indic Accuracy:</b> Superior Hindi, Tamil, Telugu, Marathi comprehension.</div>" +
-          "<div>• <b>1,500 Free Requests / Day:</b> 100% free forever with your Gmail account.</div>" +
-          "<div>• <b>No Credit Card Needed:</b> Sign in to Google AI Studio in 60s.</div>" +
+          "<div>• <b>1,000,000 Token Context Window:</b> Ingests entire 40-page textbook chapters simultaneously without truncation.</div>" +
+          "<div>• <b>Top Indic Language Accuracy:</b> State-of-the-art Hindi, Tamil, Telugu, Marathi, Malayalam, and CBSE comprehension.</div>" +
+          "<div>• <b>1.5–2.5s Generation Speed:</b> Ultra-fast reasoning powered by Google DeepMind.</div>" +
+          "<div>• <b>1,500 Requests / Day Free Forever:</b> Google AI Studio with any Gmail account (zero credit card).</div>" +
           "</div>" +
           "<div class='row' style='margin-top:10px;gap:8px;flex-wrap:wrap'>" +
           "<button type='button' id='btnGemGuide' class='primary' style='font-size:12px;padding:6px 12px'>📘 Step-by-Step Gemini Guide</button>" +
@@ -2672,8 +2770,9 @@ function connectModal(){
           "<input type='text' id='kKey' placeholder='Paste your AIza… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
           "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
           "</div>" +
-          "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from list):</label>" +
-          "<select id='kMod' style='width:100%;padding:9px 11px;font-size:13px;border-radius:10px;background:var(--card);color:var(--ink);border:1px solid var(--line);margin-bottom:6px'></select>";
+          "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from dropdown):</label>" +
+          "<select id='kMod' style='width:100%;padding:9px 11px;font-size:13px;border-radius:10px;background:var(--card);color:var(--ink);border:1px solid var(--line);margin-bottom:2px'></select>" +
+          "<small style='color:var(--mute);font-size:11px;display:block;margin-bottom:8px'>▾ Tap to choose model (Gemini 2.0 Flash recommended)</small>";
       } else {
         var signed = pick === "puter" && puterSignedIn();
         if(pick === "puter"){
@@ -2722,10 +2821,11 @@ function connectModal(){
             if(txt && txt.trim()){
               var inp = o.querySelector("#kKey");
               if(inp){
-                inp.value = txt.trim();
+                var cleaned = cleanApiKey(txt, pick);
+                inp.value = cleaned;
                 msg("");
                 toast("Key pasted!");
-                if(pick === "groq") fetchGroqModels(inp.value, true);
+                if(pick === "groq") fetchGroqModels(cleaned, true);
               }
             } else {
               toast("Clipboard is empty");
@@ -2793,17 +2893,37 @@ function connectModal(){
           var usr = {}; try { usr = await (await loadPuter()).auth.getUser() || {}; } catch(e){}
           cfg = {provider:"puter", key:"", email:userEmail(usr), model:(o.querySelector("#kMod") || {}).value || "gpt-5.4-nano"};
         } else {
-          var key = (o.querySelector("#kKey") || {}).value.trim();
+          var rawKey = (o.querySelector("#kKey") || {}).value || "";
+          var key = cleanApiKey(rawKey, pick);
+          var ki = o.querySelector("#kKey"); if(ki) ki.value = key;
+          if(!key && pick === "groq"){
+            // Revert / connect using default pre-configured starter Groq
+            cfg = {provider:"groq", key:STARTER_GROQ_KEY, model:(o.querySelector("#kMod") || {}).value.trim() || P.model, starter:true};
+            useAI(cfg);
+            toast("✦ Groq connected ✓");
+            done();
+            return;
+          }
+          if(!key){
+            ok.disabled = false; ok.textContent = btnOld;
+            msg("Please paste your " + (pick === "groq" ? "free Groq" : pick === "gemini" ? "free Google Gemini" : P.name) + " API key.");
+            return;
+          }
+          if(pick === "groq" && key.length < 40){
+            ok.disabled = false; ok.textContent = btnOld;
+            msg("That Groq key looks incomplete (" + key.length + " chars). Groq keys are ~56 characters starting with gsk_… Please copy the full key from Groq Console.");
+            return;
+          }
+          if(pick === "gemini" && key.length < 30){
+            ok.disabled = false; ok.textContent = btnOld;
+            msg("That Gemini key looks incomplete (" + key.length + " chars). Gemini keys are ~39 characters starting with AIza… Please copy the full key from Google AI Studio.");
+            return;
+          }
           if(pick === "groq"){
-            if(!key){ ok.disabled = false; ok.textContent = btnOld; msg("Paste your free Groq API key (starts with gsk_…) or tap 'Step-by-Step Groq Guide' above."); return; }
-            if(key.indexOf("gsk_") !== 0){ ok.disabled = false; ok.textContent = btnOld; msg("Groq API keys start with gsk_…. Please check your copied key."); return; }
             cfg = {provider:"groq", key:key, model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
           } else if(pick === "gemini"){
-            if(!key){ ok.disabled = false; ok.textContent = btnOld; msg("Paste your free Gemini API key (starts with AIza…) or tap 'Step-by-Step Gemini Guide' above."); return; }
-            if(key.indexOf("AIza") !== 0){ ok.disabled = false; ok.textContent = btnOld; msg("Gemini API keys start with AIza…. Please check your copied key."); return; }
             cfg = {provider:"gemini", key:key, model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
           } else {
-            if(!key){ ok.disabled = false; ok.textContent = btnOld; msg("Paste your " + P.name + " API key first."); return; }
             cfg = {provider:pick, key:key, email:(o.querySelector("#kMail") || {}).value.trim(), model:(o.querySelector("#kMod") || {}).value.trim() || P.model};
           }
         }
@@ -2812,6 +2932,9 @@ function connectModal(){
           t = await api("Reply with the single word OK.", {});
           if(!/ok/i.test(String(t && t.text || ""))) throw aierr("api");
         } catch(err){
+          if(err && (err.code === "bad_key" || /invalid_api_key/i.test(String(err && err.detail || "")))){
+            throw aierr("bad_key");
+          }
           if(pick === "groq" && err && (err.code === "bad_model" || err.code === "api")){
             var fallbacks = ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "llama3-8b-8192"].filter(function(m){ return m !== cfg.model; });
             var healed = false;
@@ -2877,7 +3000,7 @@ function aiErr0(e){
   else setMsg("Something went wrong. Please try again.", true);
 }
 async function run(prompt, outEl, btn, opt){
-  opt = opt || {}; var cAi = aiCfg(); if((DB.engine !== "ai" || !cAi || (!cAi.key && cAi.provider !== "puter")) && opt.local){ var lt = opt.local(); outEl.innerHTML = md(lt); addSaveBtn(outEl, opt, lt); if(opt.next !== false){ outEl.insertAdjacentHTML("beforeend", nextBar(opt.ctx || "")); bindNext(outEl); } revealResult(outEl); return lt; }
+  opt = opt || {}; var cAi = aiCfg(); if((DB.engine !== "ai" || !cAi || (!cAi.key && cAi.provider !== "puter" && !STARTER_GROQ_KEY)) && opt.local){ var lt = opt.local(); outEl.innerHTML = md(lt); addSaveBtn(outEl, opt, lt); if(opt.next !== false){ outEl.insertAdjacentHTML("beforeend", nextBar(opt.ctx || "")); bindNext(outEl); } revealResult(outEl); return lt; }
   var c0 = cur(), ck = (opt.key && c0 && !opt.general) ? "out|" + c0.id + "|" + opt.key : null;
   if(ck && DB.cache[ck] && !opt.fresh){ outEl.innerHTML = md(DB.cache[ck]) + "<div class='row'><button id='rgBtn'>Regenerate</button></div>"; document.getElementById("rgBtn").onclick = function(){ run(prompt, outEl, btn, Object.assign({}, opt, {fresh: true})); }; addSaveBtn(outEl, opt, DB.cache[ck]); outEl.insertAdjacentHTML("beforeend", nextBar(opt.ctx || "")); bindNext(outEl); revealResult(outEl); return DB.cache[ck]; }
   RETRY = function(){ btn.click(); }; var s = await getSample(); if(!s) return;
@@ -3138,7 +3261,7 @@ function refreshBanner(){
   if(w){ w.textContent = DB.profile ? DB.profile.name : ""; w.classList.toggle("hidden", onb); }
   var a = $("aiStat");
   if(a){
-    var c = aiCfg(), on = navigator.onLine;
+    var c = aiCfg(), on = isOnline();
     var hasKey = !!(c && (c.key || c.provider === "puter"));
     var txt = onb ? "" : (!on ? "Offline" : (hasKey ? (aiName(c) + " ✓") : "✦ Connect AI"));
     a.className = "chip" + (hasKey ? " on" : " local") + (on ? "" : " off") + (txt ? "" : " hidden");
@@ -4276,7 +4399,7 @@ function manageBooksModal(){
       else if(act === "buildbook"){
         var b = catalog[+btn.dataset.bidx];
         if(!b) return;
-        if(!navigator.onLine){ toast("Go online first to build Smart Packs with AI"); return; }
+        if(!isOnline()){ toast("Go online first to build Smart Packs with AI"); return; }
         if(!aiCfg()){
           connectModal().then(function(){
             if(aiCfg()) buildBookPacks(b, btn, el.querySelector("#bmStat_" + btn.dataset.bidx), m);
@@ -4290,7 +4413,7 @@ function manageBooksModal(){
         var cid = btn.dataset.cid;
         var c = DB.chapters.filter(function(x){ return x.id === cid; })[0];
         if(!c) return;
-        if(!navigator.onLine){ toast("Go online first to build Smart Packs"); return; }
+        if(!isOnline()){ toast("Go online first to build Smart Packs"); return; }
         btn.disabled = true; btn.textContent = "Building…";
         try {
           await runPack(c.id);
@@ -9645,49 +9768,317 @@ function langCardHtml(){
   var curLang = (DB.profile && DB.profile.lang) || "hi";
   var lp = LANG_PACKS[curLang] || LANG_PACKS.hi;
   var isInstalled = DB.langPacks && DB.langPacks[curLang];
-  var statusBadge = "<span class='chip" + (isInstalled ? "" : " local") + "'>" + (isInstalled ? "✓ " + esc(lp.name) + " Active (+ English Default)" : "English Default") + "</span>";
-  var h = "<div class='card'><strong>Language &amp; Script Proficiency</strong>" +
-    "<p class='status'>English is always supported as default for all English-medium subjects. Choose an additional regional language pack below as an added advantage to study Hindi or local language books with accurate sentence splitting, Indic definition extraction, and localized questions whenever needed.</p>" +
-    "<div class='row' style='align-items:center;gap:10px;margin-bottom:8px'>" +
-    "<select id='cfgLangSel' style='flex:1;min-width:180px'>" +
-    Object.keys(LANG_PACKS).map(function(k){
-      var p = LANG_PACKS[k];
-      return "<option value='" + k + "'" + (k === curLang ? " selected" : "") + ">" + (k === "en" ? "English (Default)" : (esc(p.name) + " (" + esc(p.nativeName) + ")")) + "</option>";
-    }).join("") +
-    "</select>" + statusBadge + "</div>" +
-    "<div class='row' style='gap:8px;flex-wrap:wrap'>" +
-    "<button class='primary' data-act='langdl' id='btnLangDl'>📥 " + (isInstalled ? "Re-download &amp; Re-index Language Pack" : "Download &amp; Activate Language Pack") + "</button>" +
-    "<button data-act='langexport'>Export Pack</button>" +
-    "<button data-act='langimport'>Import Custom Pack</button>" +
-    "<input type='file' id='fLangImport' accept='.json' style='display:none'>" +
-    "</div></div>";
+  var pillTxt = isInstalled ? esc(lp.name) + " Active" : "English Default";
+  var pillCls = isInstalled ? "on" : "";
+  var h = "<div class='settingsRow hasDrawer' id='rowLang'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'>" +
+        "<div class='settingsRowIcon'>🌐</div>" +
+        "<div class='settingsRowText'>" +
+          "<div class='settingsRowTitle'>Language &amp; Script</div>" +
+          "<div class='settingsRowSub'>English is built-in. Regional packs for local books.</div>" +
+        "</div>" +
+      "</div>" +
+      "<div class='settingsRowRight'>" +
+        "<span class='settingsStatusPill " + pillCls + "'>" + pillTxt + "</span>" +
+        "<span class='settingsChevron'>›</span>" +
+      "</div>" +
+    "</div>" +
+    "<div class='settingsDrawer'>" +
+      "<p class='status' style='margin:0 0 10px'>Regional language pack enables sentence splitting, Indic definition extraction, and localized questions for Indian languages.</p>" +
+      "<div class='row' style='align-items:center;gap:10px;margin-bottom:8px'>" +
+        "<select id='cfgLangSel' style='flex:1;min-width:180px'>" +
+        Object.keys(LANG_PACKS).map(function(k){
+          var p = LANG_PACKS[k];
+          return "<option value='" + k + "'" + (k === curLang ? " selected" : "") + ">" + (k === "en" ? "English (Default)" : (esc(p.name) + " (" + esc(p.nativeName) + ")")) + "</option>";
+        }).join("") +
+        "</select>" +
+      "</div>" +
+      "<div class='row' style='gap:8px;flex-wrap:wrap'>" +
+        "<button class='primary' data-act='langdl' id='btnLangDl'>📥 " + (isInstalled ? "Re-download Language Pack" : "Download &amp; Activate Pack") + "</button>" +
+        "<button type='button' data-act='langexport'>Export Pack</button>" +
+        "<button type='button' data-act='langimport'>Import Custom Pack</button>" +
+        "<input type='file' id='fLangImport' accept='.json' style='display:none'>" +
+      "</div>" +
+    "</div>" +
+  "</div>";
   return h;
+}
+
+function myLevelRowHtml(){
+  var idx = lvIndex();
+  var lvl = LEVELS[idx] || LEVELS[0];
+  return "<div class='settingsRow hasDrawer' id='rowLevel'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'>" +
+        "<div class='settingsRowIcon'>🎯</div>" +
+        "<div class='settingsRowText'>" +
+          "<div class='settingsRowTitle'>My Level &amp; Playbook</div>" +
+          "<div class='settingsRowSub'>Tunes question difficulty, tips, and examples</div>" +
+        "</div>" +
+      "</div>" +
+      "<div class='settingsRowRight'>" +
+        "<span class='settingsStatusPill'>" + esc(lvl[0].split(" (")[0]) + "</span>" +
+        "<span class='settingsChevron'>›</span>" +
+      "</div>" +
+    "</div>" +
+    "<div class='settingsDrawer'>" +
+      "<p class='status' style='margin:0 0 10px'>Select your class/grade to tune vocabulary, explanations, and challenge levels:</p>" +
+      "<select id='lvSel' style='width:100%;margin-bottom:6px'>" +
+        LEVELS.map(function(l, i){ return "<option value='" + i + "'" + (idx === i ? " selected" : "") + ">" + esc(l[0]) + "</option>"; }).join("") +
+      "</select>" +
+    "</div>" +
+  "</div>";
+}
+
+function planAccessRowHtml(){
+  var s = subStatus(), p = DB.pilot || {};
+  var pillTxt = "Free Plan", pillCls = "";
+  if(s.paidActive){ pillTxt = "Pro Active"; pillCls = "on"; }
+  else if(s.unlocked){ pillTxt = "Developer Build"; pillCls = "on"; }
+  else if(s.pilotActive){ pillTxt = "Pilot · " + s.daysLeft + "d left"; pillCls = "on"; }
+  else if(p.code && p.code.indexOf("ENGM-") === 0){ pillTxt = "License Active"; pillCls = "on"; }
+
+  var desc = "";
+  var btns = "";
+  if(s.paidActive){
+    desc = "Plan: <b>" + esc(planName(s.plan)) + "</b>" + (s.validUntil ? " · valid until " + fmtD(s.validUntil) + " (" + s.daysLeft + " days left)" : "") + ". Unlimited books, chapters, and smart packs.";
+    btns = "<button data-act='subrec'>⬇ Parent Receipt</button> <button data-act='subup'>Extend 1 Year</button>";
+  } else if(s.unlocked){
+    desc = "Developer Build · All features unlocked (unlimited books, AI packs, 5-Min Cram &amp; Fire Drill).";
+    btns = "<button data-act='subprev'>" + (s.previewFree ? "Exit Free Preview" : "Preview Free Limits") + "</button>";
+  } else {
+    desc = "Upgrade to <b>ENGRAMOS Pro</b> (₹" + SUB_PLAN.priceInr + "/yr) for unlimited books, 5-Min Cram, and AI Smart Packs.";
+    if(s.pendingPayment){
+      desc += "<br><span style='color:var(--acc)'>UTR submitted: <code>" + esc(s.pendingPayment.paymentId) + "</code> (pending verification).</span>";
+    }
+    btns = "<button class='primary' data-act='subup'>Go Pro (₹" + SUB_PLAN.priceInr + "/yr)</button> <button data-act='subcode'>Enter License Key</button>";
+    if(s.pendingPayment) btns += " <button data-act='subchk'>Check Payment</button>";
+  }
+  if(p.code && p.code !== "DEV-LOCAL" && !s.paidActive){
+    desc += "<br><small style='color:var(--mute)'>School Code: <b>" + esc(p.code) + "</b>" + (p.validUntil ? " · until " + fmtD(p.validUntil) : "") + "</small>";
+  }
+  btns += " <button type='button' data-act='plmail'>Email Organiser</button>";
+
+  return "<div class='settingsRow hasDrawer' id='rowPlan'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'>" +
+        "<div class='settingsRowIcon'>⭐</div>" +
+        "<div class='settingsRowText'>" +
+          "<div class='settingsRowTitle'>Plan &amp; Access</div>" +
+          "<div class='settingsRowSub'>Subscription tier, license keys, and receipts</div>" +
+        "</div>" +
+      "</div>" +
+      "<div class='settingsRowRight'>" +
+        "<span class='settingsStatusPill " + pillCls + "'>" + pillTxt + "</span>" +
+        "<span class='settingsChevron'>›</span>" +
+      "</div>" +
+    "</div>" +
+    "<div class='settingsDrawer'>" +
+      "<p class='status' style='margin:0 0 10px'>" + desc + "</p>" +
+      "<div class='row' style='gap:8px;flex-wrap:wrap'>" + btns + "</div>" +
+    "</div>" +
+  "</div>";
+}
+
+function teacherToolsRowHtml(){
+  return "<div class='settingsRow hasDrawer' id='rowTeacher'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'>" +
+        "<div class='settingsRowIcon'>👥</div>" +
+        "<div class='settingsRowText'>" +
+          "<div class='settingsRowTitle'>Teacher &amp; Class Tools</div>" +
+          "<div class='settingsRowSub'>Aggregate student progress from backup files</div>" +
+        "</div>" +
+      "</div>" +
+      "<div class='settingsRowRight'>" +
+        "<span class='settingsStatusPill'>Batch View</span>" +
+        "<span class='settingsChevron'>›</span>" +
+      "</div>" +
+    "</div>" +
+    "<div class='settingsDrawer'>" +
+      "<p class='status' style='margin:0 0 10px'>Combine multiple students' JSON backup files on this device to review class mastery.</p>" +
+      "<div class='row' style='gap:8px;flex-wrap:wrap'>" +
+        "<button type='button' data-act='cls'>Choose Backup Files</button>" +
+      "</div>" +
+    "</div>" +
+  "</div>";
 }
 
 RENDER.tools = function(){
   var needBk = DB.history.length > 5 && (!DB.lastBackup || Date.now() - DB.lastBackup > 7 * 864e5);
   var ai = aiCfg(), spk = speechPrefs();
-  var h = "<h1>Settings</h1><p class='sub'>Everything here runs on this device. Nothing leaves your phone unless you choose AI.</p><div class='toolsGrid'>";
-  h += langCardHtml();
   var bks = booksCatalog();
-  h += "<div class='card'><strong>Uploaded Books &amp; Smart Packs</strong><p class='status'>" + (DB.chapters.length ? (bks.length + " book" + (bks.length > 1 ? "s" : "") + " · " + DB.chapters.length + " chapters (" + packedChaptersCount() + " packs ready)") : "No books uploaded yet.") + "</p><button data-act='books'>Manage Books &amp; Packs</button></div>";
-  h += "<div class='card'><strong>AI connection</strong><p class='status'>" + (ai ? ("Connected to <b>" + esc(aiName(ai)) + "</b>.") : "Optional: connect a free Gemini, Groq or Puter AI key for smart packs and hints.") + "</p><button data-act='ai'>" + (ai ? "Manage AI connection" : "Connect AI") + "</button></div>";
-  h += "<div class='card'><strong>Read aloud &amp; voice</strong><p class='status'>Voice: <b>" + esc(spk.name || "Automatic") + "</b> · speed " + spk.rate.toFixed(2) + "×.</p><button data-act='voice'>Voice settings</button></div>";
-  h += "<div class='card'><strong>Study plan</strong><p class='status'>Upload your syllabus and set a timetable with follow-up.</p><button data-v='plan'>Open study plan</button></div>";
-  h += folderCardHtml();
-  h += subCardHtml();
-  h += pilotCardHtml();
-  h += "<div class='card'><strong>Print report</strong><p class='status'>A tidy progress report for a parent or teacher.</p><button data-act='pr'>Print report</button></div>";
-  h += "<div class='card'><strong>Back up my data</strong><p class='status'>Save a copy of your progress to a file.</p><button data-act='bk'>Back up now</button>" + (needBk ? "<p class='status'>It has been a while since your last backup.</p>" : "") + "</div>";
-  h += "<div class='card'><strong>Restore backup</strong><p class='status'>Bring back progress from a backup file.</p><button data-act='rs'>Choose backup file</button></div>";
-  h += "<div class='card'><strong>My study playbook</strong><p class='status'>Optional: pick your level so tips, examples and difficulty fit you. Default is general.</p><select id='lvSel'>" + LEVELS.map(function(l, i){ return "<option value='" + i + "'" + (lvIndex() === i ? " selected" : "") + ">" + l[0] + "</option>"; }).join("") + "</select><p class='status' style='margin-bottom:0'>Your books and chapters are always yours to create for any subject or semester.</p></div>";
-  h += "<div class='card'><strong>My details</strong><p class='status'>Name, city, password and clearing data.</p><button data-act='prof'>Open my details</button></div>";
+  var p = DB.profile || {};
+  var pName = p.name || "Student";
+  var pInit = pName.charAt(0).toUpperCase();
+  var pSub = (p.school ? esc(p.school) : "") + (p.from ? (p.school ? " · " : "") + esc(p.from) : "");
+  if(!pSub) pSub = "ENGRAMOS Learning Companion";
+  var strk = typeof streak === "function" ? streak() : 0;
+  var xp = (typeof dailyGoalInfo === "function") ? dailyGoalInfo().xp : 0;
+  var mistCount = (typeof mistakeItems === "function") ? mistakeItems("*").length : 0;
+  var noteCount = (DB.book || []).length;
+  var c = cur();
+
+  var h = "<div class='moreHub'>";
+
+  // 1. Profile Hero Card
+  h += "<div class='moreProfileCard'>" +
+    "<div class='moreProfileMain'>" +
+      "<div class='moreAvatar'>" + esc(pInit) + "</div>" +
+      "<div class='moreProfileMeta'>" +
+        "<div class='moreProfileName'>" + esc(pName) + "</div>" +
+        "<div class='moreProfileSub'>" + pSub + "</div>" +
+        "<div class='moreStatsRow'>" +
+          "<span class='moreStatChip'>🔥 " + strk + " day streak</span>" +
+          "<span class='moreStatChip'>⚡ " + xp + " XP today</span>" +
+        "</div>" +
+      "</div>" +
+    "</div>" +
+    "<button type='button' class='moreEditBtn' data-act='prof'>Edit Profile</button>" +
+  "</div>";
+
+  // 2. Study Extras Kicker & 2x3 Grid
+  h += "<div class='moreSectionKicker'><span>Study Extras</span><span>Quick Tools</span></div>";
+  h += "<div class='moreExtrasGrid'>" +
+    "<div class='extraTile' role='button' tabindex='0' data-v='note'>" +
+      "<div class='extraTileTop'><span class='extraTileIcon'>📓</span><span class='extraTileBadge'>" + noteCount + " note" + (noteCount === 1 ? "" : "s") + "</span></div>" +
+      "<div><div class='extraTileTitle'>Notebook</div><div class='extraTileSub'>Saved notes &amp; excerpts</div></div>" +
+    "</div>" +
+    "<div class='extraTile' role='button' tabindex='0' data-v='mist'>" +
+      "<div class='extraTileTop'><span class='extraTileIcon'>⚠️</span>" + (mistCount > 0 ? "<span class='extraTileBadge warn'>" + mistCount + " to fix</span>" : "<span class='extraTileBadge ok'>✓ All clear</span>") + "</div>" +
+      "<div><div class='extraTileTitle'>Error Ledger</div><div class='extraTileSub'>Past errors to review</div></div>" +
+    "</div>" +
+    "<div class='extraTile' role='button' tabindex='0' data-v='play'>" +
+      "<div class='extraTileTop'><span class='extraTileIcon'>🎮</span><span class='extraTileBadge'>3 drills</span></div>" +
+      "<div><div class='extraTileTitle'>Play &amp; Games</div><div class='extraTileSub'>Vocabulary &amp; speed drills</div></div>" +
+    "</div>" +
+    "<div class='extraTile' role='button' tabindex='0' data-v='mindmap'>" +
+      "<div class='extraTileTop'><span class='extraTileIcon'>🗺️</span>" + (c ? "<span class='extraTileBadge active' title='" + esc(c.name) + "'>Active: " + esc(c.name.slice(0, 10)) + (c.name.length > 10 ? "…" : "") + "</span>" : "<span class='extraTileBadge'>Concept map</span>") + "</div>" +
+      "<div><div class='extraTileTitle'>Mind Map</div><div class='extraTileSub'>Visual concept tree</div></div>" +
+    "</div>" +
+    "<div class='extraTile' role='button' tabindex='0' data-v='tips'>" +
+      "<div class='extraTileTop'><span class='extraTileIcon'>💡</span><span class='extraTileBadge'>Techniques</span></div>" +
+      "<div><div class='extraTileTitle'>Hacks &amp; Tips</div><div class='extraTileSub'>Exam &amp; memory methods</div></div>" +
+    "</div>" +
+    "<div class='extraTile' role='button' tabindex='0' data-v='fun'>" +
+      "<div class='extraTileTop'><span class='extraTileIcon'>✨</span><span class='extraTileBadge'>Curiosities</span></div>" +
+      "<div><div class='extraTileTitle'>Fun Facts</div><div class='extraTileSub'>Topic trivia &amp; surprises</div></div>" +
+    "</div>" +
+  "</div>";
+
+  // 3. Settings Groups
+  h += "<div class='moreSectionKicker'><span>My Study</span><span>Preferences</span></div>";
+  h += "<div class='settingsGroup'>";
+  h += langCardHtml();
+  h += "<div class='settingsRow' data-act='books'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>📚</div><div class='settingsRowText'><div class='settingsRowTitle'>Books &amp; Smart Packs</div><div class='settingsRowSub'>Upload textbooks, build smart packs, and organize chapters</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill'>" + bks.length + " books · " + DB.chapters.length + " ch</span><span class='settingsChevron'>›</span></div>" +
+    "</div>" +
+  "</div>";
+  h += "<div class='settingsRow' data-v='plan'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>📅</div><div class='settingsRowText'><div class='settingsRowTitle'>Study Plan &amp; Timetable</div><div class='settingsRowSub'>Daily study slots, syllabus checklist, and revision routine</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill'>Timetable</span><span class='settingsChevron'>›</span></div>" +
+    "</div>" +
+  "</div>";
+  h += myLevelRowHtml();
+  h += "<div class='settingsRow' data-act='voice'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>🔊</div><div class='settingsRowText'><div class='settingsRowTitle'>Read Aloud &amp; Voice</div><div class='settingsRowSub'>Speaking speed, pitch, and voice pronunciation</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill'>" + (spk.name ? esc(spk.name.slice(0, 10)) : 'Auto') + " · " + spk.rate.toFixed(1) + "×</span><span class='settingsChevron'>›</span></div>" +
+    "</div>" +
+  "</div>";
   h += "</div>";
-  h += "<details class='card' style='margin-top:8px'><summary style='cursor:pointer;font-weight:700'>Organiser &amp; teacher tools</summary><div style='margin-top:10px'><strong>Group view</strong><p class='status'>For teachers &amp; organisers: combine multiple students’ JSON backup files on this device.</p><button data-act='cls'>Choose backup files</button></div></details>";
+
+  h += "<div class='moreSectionKicker'><span>Connections &amp; Data</span><span>Sync &amp; Storage</span></div>";
+  h += "<div class='settingsGroup'>";
+  h += "<div class='settingsRow' data-act='ai'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>⚡</div><div class='settingsRowText'><div class='settingsRowTitle'>AI Connection</div><div class='settingsRowSub'>" + (ai ? ("Connected to " + esc(aiName(ai)) + " (14,400 free requests/day)") : "Optional: connect free Groq or Gemini key for AI hints") + "</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill " + (ai ? 'on' : '') + "'>" + (ai ? esc(aiName(ai)) + ' Active' : 'Offline Engine') + "</span><span class='settingsChevron'>›</span></div>" +
+    "</div>" +
+  "</div>";
+  h += folderCardHtml();
+  h += "<div class='settingsRow' data-act='bk'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>💾</div><div class='settingsRowText'><div class='settingsRowTitle'>Back Up Data</div><div class='settingsRowSub'>Export an offline backup file (JSON) of all books and progress</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill " + (needBk ? 'warn' : '') + "'>" + (needBk ? 'Backup Due' : (DB.lastBackup ? fmtD(DB.lastBackup) : 'Backup Now')) + "</span><span class='settingsChevron'>⬇</span></div>" +
+    "</div>" +
+  "</div>";
+  h += "<div class='settingsRow' data-act='rs'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>📂</div><div class='settingsRowText'><div class='settingsRowTitle'>Restore Backup</div><div class='settingsRowSub'>Restore study progress, notes, and packs from a backup file</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill'>Choose File</span><span class='settingsChevron'>⬆</span></div>" +
+    "</div>" +
+  "</div>";
+  h += "</div>";
+
+  h += "<div class='moreSectionKicker'><span>Account &amp; Access</span><span>Settings</span></div>";
+  h += "<div class='settingsGroup'>";
+  h += planAccessRowHtml();
+  h += "<div class='settingsRow' data-act='pr'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>🖨️</div><div class='settingsRowText'><div class='settingsRowTitle'>Print Progress Report</div><div class='settingsRowSub'>Print or save a clean one-page student progress summary</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill'>PDF / Print</span><span class='settingsChevron'>›</span></div>" +
+    "</div>" +
+  "</div>";
+  h += "<div class='settingsRow' data-act='prof'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>👤</div><div class='settingsRowText'><div class='settingsRowTitle'>My Details &amp; Password</div><div class='settingsRowSub'>Student name, school, city, PIN, and reset options</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill'>Profile</span><span class='settingsChevron'>›</span></div>" +
+    "</div>" +
+  "</div>";
+  h += teacherToolsRowHtml();
+  h += "</div>";
+
+  h += "<p class='status' style='text-align:center;font-size:.78rem;margin:20px 0 0'>ENGRAMOS runs privately on your device · Data stays in your browser</p>";
+  h += "</div>";
+
   $("tlIn").innerHTML = h;
-  $("tlIn").querySelectorAll("[data-v]").forEach(function(n){ n.onclick = function(){ var v = n.dataset.v; if(v === "mindmap") openMindmap(); else show(v); }; });
+
+  // Bind accordion toggles
+  $("tlIn").querySelectorAll(".settingsRow.hasDrawer").forEach(function(row){
+    var summary = row.querySelector(".settingsRowSummary");
+    if(summary){
+      summary.onclick = function(e){
+        if(e.target.closest("button") || e.target.closest("select") || e.target.closest("input")) return;
+        row.classList.toggle("open");
+      };
+    }
+  });
+
+  // Bind view transitions for tiles and navigation rows
+  $("tlIn").querySelectorAll("[data-v]").forEach(function(n){
+    n.onclick = function(e){
+      if(e.target.closest("button") || e.target.closest("select") || e.target.closest("input")) return;
+      var v = n.getAttribute("data-v");
+      if(v === "mindmap") openMindmap();
+      else show(v);
+    };
+  });
+
+  // Bind level selector change
   var lv = $("lvSel");
-  if(lv) lv.onchange = function(){ DB.profile = DB.profile || {}; DB.profile.level = parseInt(this.value, 10) || 0; DB.profile.band = LEVELS[DB.profile.level][1]; save(); toast("Got it — I'll pitch things your way."); };
+  if(lv) lv.onchange = function(){
+    DB.profile = DB.profile || {};
+    DB.profile.level = parseInt(this.value, 10) || 0;
+    DB.profile.band = LEVELS[DB.profile.level][1];
+    save();
+    toast("Got it — I'll pitch things your way.");
+    if(curView === "tools") RENDER.tools();
+  };
+
+  // Bind language selector change
+  var lsel = $("cfgLangSel");
+  if(lsel) lsel.onchange = function(){
+    var lid = this.value;
+    DB.profile = DB.profile || {};
+    DB.profile.lang = lid;
+    save();
+    if(curView === "tools") RENDER.tools();
+  };
 };
 
 /* ---------- Play: games built from the uploaded chapter ---------- */
@@ -10169,21 +10560,43 @@ function folderTurnOff(){
   });
 }
 function folderCardHtml(){
-  var s = DB.save || {asked: false, enabled: false, name: "", at: 0}, sup = folderSupported(), state, btns;
+  var s = DB.save || {asked: false, enabled: false, name: "", at: 0}, sup = folderSupported(), state, btns, pillTxt = "Off", pillCls = "";
   if(!s.enabled){
-    state = sup ? "Your work is kept in this browser. Choose a folder \u2014 you can pick a cloud folder such as iCloud Drive, OneDrive, Google Drive or Dropbox \u2014 and I will save a copy there automatically." : "This browser cannot write to a folder directly. Try Chrome or Edge, or open the app from its local server. Your work stays in this browser meanwhile; use <b>Back up my data</b> to keep a copy anywhere.";
-    btns = sup ? "<button class='primary' data-act='foldpick'>Choose a folder</button>" : "";
+    pillTxt = "Not Set";
+    state = sup ? "Auto-saves your progress to iCloud, Google Drive, or any local folder." : "Direct folder write unavailable in this browser. Use Back Up Data to keep offline copies.";
+    btns = sup ? "<button class='primary' data-act='foldpick'>Choose a Folder</button>" : "";
   } else if(!sup){
-    state = "Saved earlier to \u201C" + esc(s.name) + "\u201D, but this browser can no longer write to a folder.";
+    pillTxt = "Unavailable"; pillCls = "warn";
+    state = "Saved earlier to \u201C" + esc(s.name) + "\u201D, but this browser cannot write to it.";
     btns = "";
   } else if(FOLDER.pending){
-    state = "Saving to \u201C" + esc(s.name) + "\u201D" + (FOLDER.lasted ? " \u2014 could not write (" + esc(FOLDER.lasted) + ")" : "") + ". Press Reconnect to allow it again.";
-    btns = "<button data-act='foldchg'>Change folder</button> <button class='primary' data-act='foldrec'>Reconnect</button> <button data-act='foldoff'>Turn off</button>";
+    pillTxt = "Needs Permission"; pillCls = "warn";
+    state = "Saving to \u201C" + esc(s.name) + "\u201D" + (FOLDER.lasted ? " \u2014 write error (" + esc(FOLDER.lasted) + ")" : "") + ". Tap Reconnect to allow.";
+    btns = "<button data-act='foldchg'>Change Folder</button> <button class='primary' data-act='foldrec'>Reconnect</button> <button data-act='foldoff'>Turn Off</button>";
   } else {
-    state = "Saving automatically to \u201C" + esc(s.name) + "\u201D" + (s.at ? ". Last save " + fmtT(s.at) + " on " + fmtD(s.at) + "." : ".");
-    btns = "<button data-act='foldchg'>Change folder</button> <button data-act='foldoff'>Turn off</button>";
+    pillTxt = "Active"; pillCls = "on";
+    state = "Auto-saving to \u201C" + esc(s.name) + "\u201D" + (s.at ? " · last save " + fmtT(s.at) : "") + ".";
+    btns = "<button data-act='foldchg'>Change Folder</button> <button data-act='foldoff'>Turn Off</button>";
   }
-  return "<div class='card'><strong>Save folder</strong><p class='status'>" + state + "</p>" + (btns ? "<div class='row' style='margin:8px 0 0'>" + btns + "</div>" : "") + "</div>";
+  return "<div class='settingsRow hasDrawer' id='rowFolder'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'>" +
+        "<div class='settingsRowIcon'>📁</div>" +
+        "<div class='settingsRowText'>" +
+          "<div class='settingsRowTitle'>Save Folder</div>" +
+          "<div class='settingsRowSub'>Auto-saves progress to a local or cloud folder</div>" +
+        "</div>" +
+      "</div>" +
+      "<div class='settingsRowRight'>" +
+        "<span class='settingsStatusPill " + pillCls + "'>" + pillTxt + "</span>" +
+        "<span class='settingsChevron'>›</span>" +
+      "</div>" +
+    "</div>" +
+    "<div class='settingsDrawer'>" +
+      "<p class='status' style='margin:0 0 10px'>" + state + "</p>" +
+      (btns ? "<div class='row' style='gap:8px;flex-wrap:wrap'>" + btns + "</div>" : "") +
+    "</div>" +
+  "</div>";
 }
 function refreshFolderChip(){ if(curView === "tools" && RENDER.tools) RENDER.tools(); }
 function folderWelcomeModal(){
@@ -11721,7 +12134,7 @@ function arrangePrompt(){
 }
 async function aiArrange(){
   if(!subStatus().pro){ upgradeModal("AI Syllabus verification & auto-arrange"); return; }
-  if(!navigator.onLine){ setMsg("Verifying and arranging needs the internet. Please go online and try again.", true); return; }
+  if(!isOnline()){ setMsg("Verifying and arranging needs the internet. Please go online and try again.", true); return; }
   if(!aiCfg()){ await connectModal(); if(!aiCfg()){ toast("Connect AI first, then verify"); return; } }
   var s = await getSample(); if(!s) return;
   var btn = $("plArrange"), old = btn ? btn.textContent : "";
@@ -11746,7 +12159,7 @@ async function aiArrange(){
 }
 async function prepareAllPacks(){
   if(!subStatus().pro){ upgradeModal("Bulk Smart Pack builder"); return; }
-  if(!navigator.onLine){ setMsg("You are offline. Preparing study packs needs the internet.", true); return; }
+  if(!isOnline()){ setMsg("You are offline. Preparing study packs needs the internet.", true); return; }
   var todo = DB.chapters.filter(function(c){ return !(c.pack && c.pack.concepts && c.pack.concepts.length); });
   if(!todo.length){ toast("Every chapter already has a saved study pack"); return; }
   if(!aiCfg()){ await connectModal(); if(!aiCfg()){ toast("Connect AI first"); return; } }
