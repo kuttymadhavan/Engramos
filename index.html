@@ -11873,11 +11873,11 @@ function attachFolder(){
   }).catch(function(){ FOLDER.pending = true; FOLDER.lasted = "error"; refreshFolderChip(); return false; });
 }
 var ENGRAMOS_CLOUD_PROVIDERS = [
-  { id: "gdrive", name: "Google Drive", icon: "🔵", brand: "Google Drive", hint: "Google Drive > My Drive or streamed folder" },
-  { id: "onedrive", name: "Microsoft OneDrive", icon: "🔷", brand: "OneDrive", hint: "OneDrive folder or SharePoint synced drive" },
-  { id: "dropbox", name: "Dropbox", icon: "📦", brand: "Dropbox", hint: "Dropbox synced personal or team folder" },
-  { id: "icloud", name: "Apple iCloud Drive", icon: "☁️", brand: "iCloud Drive", hint: "iCloud Drive (Finder sidebar or Files app)" },
-  { id: "local", name: "Local / Network Drive", icon: "📁", brand: "Local Drive", hint: "Local Documents or corporate network drive" }
+  { id: "gdrive", name: "Google Drive", icon: "🔵", brand: "Google Drive", shortHint: "My Drive / Stream", hint: "Google Drive > My Drive or streamed folder" },
+  { id: "onedrive", name: "OneDrive", icon: "🔷", brand: "OneDrive", shortHint: "OneDrive sync folder", hint: "OneDrive folder or SharePoint synced drive" },
+  { id: "dropbox", name: "Dropbox", icon: "📦", brand: "Dropbox", shortHint: "Dropbox team / personal", hint: "Dropbox synced personal or team folder" },
+  { id: "icloud", name: "iCloud Drive", icon: "☁️", brand: "iCloud Drive", shortHint: "Finder / Files app", hint: "iCloud Drive (Finder sidebar or Files app)" },
+  { id: "local", name: "Local Drive", icon: "📁", brand: "Local Drive", shortHint: "Documents / Storage", hint: "Local Documents or corporate network drive" }
 ];
 
 function getEngramosCloudProvider(id){
@@ -11888,21 +11888,16 @@ function getEngramosCloudProvider(id){
 }
 
 function renderEngramosProviderGrid(activeProvId){
-  var h = "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:10px'>";
+  var h = "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:6px;margin-top:6px'>";
   ENGRAMOS_CLOUD_PROVIDERS.forEach(function(p){
     var isCurrent = (activeProvId === p.id);
-    h += "<div style='border:1.5px solid " + (isCurrent ? "var(--acc)" : "var(--line)") + ";background:" + (isCurrent ? "rgba(99,102,241,0.06)" : "var(--card)") + ";border-radius:10px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;gap:6px'>" +
-      "<div>" +
-        "<div style='display:flex;align-items:center;justify-content:space-between'>" +
-          "<span style='font-size:20px'>" + p.icon + "</span>" +
-          (isCurrent ? "<span style='font-size:10px;font-weight:700;color:var(--acc);background:rgba(99,102,241,0.12);padding:2px 6px;border-radius:10px'>ACTIVE</span>" : "") +
-        "</div>" +
-        "<div style='font-weight:700;font-size:12.5px;color:var(--ink);margin-top:4px'>" + p.name + "</div>" +
-        "<div style='font-size:11px;color:var(--mut);margin-top:2px;line-height:1.3'>" + p.hint + "</div>" +
+    h += "<div data-act='prov_pick' data-prov='" + p.id + "' style='border:1.5px solid " + (isCurrent ? "var(--acc)" : "var(--line)") + ";background:" + (isCurrent ? "rgba(124,92,255,0.09)" : "var(--card)") + ";border-radius:8px;padding:6px 4px 5px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;align-items:center;min-height:64px;text-align:center;box-sizing:border-box' title='" + esc(p.hint) + "'>" +
+      "<div style='font-size:18px;line-height:1'>" + p.icon + "</div>" +
+      "<div style='font-weight:700;font-size:11px;color:var(--ink);margin-top:2px;line-height:1.1'>" + p.name + "</div>" +
+      "<div style='font-size:8.5px;color:var(--mute);line-height:1.1;margin-top:1px'>" + p.shortHint + "</div>" +
+      "<div style='margin-top:3px;font-size:9px;font-weight:700;color:" + (isCurrent ? "var(--acc)" : "var(--ink)") + ";background:" + (isCurrent ? "rgba(124,92,255,0.15)" : "rgba(0,0,0,0.04)") + ";padding:1.5px 6px;border-radius:3px;width:90%;box-sizing:border-box'>" +
+        (isCurrent ? "✓ Active" : "Connect") +
       "</div>" +
-      "<button type='button' class='" + (isCurrent ? "primary" : "") + "' data-act='prov_pick' data-prov='" + p.id + "' style='font-size:11px;padding:5px 8px;margin-top:4px'>" +
-        (isCurrent ? "✓ Reconnect / Change" : "Connect " + p.brand) +
-      "</button>" +
     "</div>";
   });
   h += "</div>";
