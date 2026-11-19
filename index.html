@@ -158,16 +158,17 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:8px 0 2px}
 .svFoot .saveNb{margin-top:10px}
 @media (max-width:760px){.svParts{max-height:148px;overflow:auto}.svPart{flex:1 1 45%}}
 /* constant brand banner: wordmark + tagline + current screen name (back/forward moved to the floating #navFab) */
-#scTitle{font-weight:700;font-size:1.02rem;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:24vw}
-.barL{flex:1;min-width:0;display:flex;align-items:center;gap:8px;overflow:hidden}
-.brand{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#scTitle{display:none!important}
+.bar1{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%}
+.barL{flex:0 0 auto!important;min-width:max-content!important;max-width:none!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:1px!important;line-height:1.05!important;overflow:visible!important}
+.brand{flex-shrink:0!important;font-size:1.24rem!important;font-weight:850;min-width:max-content!important;overflow:visible!important;white-space:nowrap!important;text-overflow:clip!important;letter-spacing:0.02em!important;line-height:1!important;margin:0!important;color:var(--acc)!important;text-transform:uppercase}
+.brandTag{display:block!important;font-size:0.65rem!important;font-weight:600!important;color:var(--mute)!important;letter-spacing:0.02em!important;white-space:nowrap!important;line-height:1.1!important;margin:0!important}
 .chip{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 10px;white-space:nowrap;max-width:24vw;overflow:hidden;text-overflow:ellipsis}
 .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 25%,transparent)}
 .chip.off .dot{background:var(--mute);box-shadow:none}
 .chip.local .dot{background:var(--acc2);box-shadow:0 0 0 2px color-mix(in srgb,var(--acc2) 25%,transparent)}
-#whoChip{max-width:18vw;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
-#whoChip:active{transform:scale(0.96)}
-#aiStat{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,border-color .15s ease}
+#whoChip,#bKey{display:none!important}
+#aiStat{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,border-color .15s ease;font-size:0.75rem;padding:4px 9px;max-width:38vw}
 #aiStat:active{transform:scale(0.96)}
 #aiStat:hover{border-color:var(--acc)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -175,15 +176,14 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:8px 0 2px}
 #oDanger{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
 body.method-open #v-study>h1{display:none}
 /* Note: body.fit main padding is consolidated below to respect --bottom-dock-total */
-@media (max-width:560px){.brandTag{display:none}}
 @media (max-width:620px){
   #scTitle{display:none!important}
-  .barL{flex:0 0 auto!important;max-width:none!important;overflow:visible!important}
-  .brand{flex-shrink:0!important;font-size:1.22rem!important;overflow:visible!important;min-width:max-content!important;letter-spacing:-0.01em!important}
-  #whoChip{max-width:22vw!important;font-size:0.75rem!important;padding:4px 8px!important}
-  #aiStat{max-width:32vw!important;font-size:0.74rem!important;padding:4px 8px!important;cursor:pointer!important}
+  .barL{flex:0 0 auto!important;max-width:none!important;overflow:visible!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important}
+  .brand{flex-shrink:0!important;font-size:1.18rem!important;overflow:visible!important;min-width:max-content!important;letter-spacing:0.01em!important;line-height:1!important}
+  .brandTag{display:block!important;font-size:0.62rem!important;line-height:1.1!important}
+  #whoChip,#bKey{display:none!important}
+  #aiStat{max-width:40vw!important;font-size:0.74rem!important;padding:4px 8px!important;cursor:pointer!important}
   .bar1{gap:6px!important;justify-content:space-between!important}
-  #bKey{display:none!important}
   .themeToggleBtn{width:34px!important;height:34px!important;min-width:34px!important;padding:0!important}
   .cta{padding:10px 12px}
   .cta .status{display:none}
@@ -240,8 +240,16 @@ body.method-open #v-study>h1{display:none}
 .homeExtras button{padding:7px 12px;font-size:.86rem}
 #path{display:none!important}
 /* ---- mind map ---- */
+.mmHeaderBar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;width:100%}
+.mmBackBtn{font-size:.82rem!important;font-weight:700!important;padding:6px 12px!important;border-radius:999px!important;border:1.5px solid var(--line)!important;color:var(--ink)!important;background:var(--card)!important;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.mmBackBtn:hover{border-color:var(--acc)!important}
+.mmTogglePills{display:inline-flex;background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:2px;gap:2px}
+.mmPill{font-size:.76rem!important;font-weight:700!important;padding:4px 10px!important;border-radius:999px!important;border:none!important;margin:0!important;cursor:pointer;transition:all .15s ease}
+.mmPill:not(.o){background:var(--acc)!important;color:#fff!important}
+.mmPill.o{background:transparent!important;color:var(--mute)!important}
+.mmPill.o:hover{color:var(--ink)!important}
 .mmWrap{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:radial-gradient(circle at 50% 45%,var(--accbg),var(--card) 70%)}
-.mmSvg{display:block;width:100%;height:min(62vh,520px);touch-action:none;cursor:grab}
+.mmSvg{display:block;width:100%;height:clamp(260px,calc(100dvh - var(--top-dock-total, 60px) - var(--bottom-dock-total, 68px) - 150px),430px);touch-action:none;cursor:grab}
 .mmSvg.grabbing{cursor:grabbing}
 .mmNode{cursor:pointer;animation:mmIn .5s ease both}
 .mmNode circle{transition:fill .2s,stroke-width .2s}
@@ -252,6 +260,7 @@ body.method-open #v-study>h1{display:none}
 .mmBranch{stroke:var(--acc);stroke-opacity:.45;stroke-width:2;fill:none}
 .mmTools{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px}
 .mmTools button{padding:6px 10px;font-size:.85rem;background:var(--card)}
+#mmDetail,#mapDetail{margin-top:8px;padding:10px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:.86rem;line-height:1.4}
 /* ---- one screen per section ---- */
 #v-study,#v-progress,#v-perf,#v-hist,#v-rep,#v-rec,#v-fun,#v-note,#v-mist,#v-tools,#v-play,#v-tips,#v-plan{
   display:flex;flex-direction:column;min-height:0;
@@ -830,14 +839,39 @@ body.auth-screen #main {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  width: 100%;
+}
+#top .barL {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 1px !important;
 }
 #top .brand, .brand {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 850;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: var(--acc);
   text-transform: uppercase;
+  flex-shrink: 0 !important;
+  min-width: max-content !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+  text-overflow: clip !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+#top .brandTag, .brandTag {
+  display: block !important;
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+  color: var(--mute) !important;
+  letter-spacing: 0.02em !important;
+  white-space: nowrap !important;
+  line-height: 1.1 !important;
+  margin: 0 !important;
 }
 #top .avatar {
   width: 34px;
@@ -1649,7 +1683,7 @@ body.auth-screen #main {
 </head>
 <body>
 <div id="appShell">
-<header id="top"><div class="bar1"><div class="barL"><span class="brand">ENGRAMOS</span><span class="brandTag">Memory, engineered.</span><span id="scTitle" class="hidden"></span></div><span id="whoChip" class="chip hidden" role="button" tabindex="0" title="Student details"></span><span id="aiStat" class="chip hidden" role="button" tabindex="0" title="AI Connection (tap to configure)"></span><button id="bTheme" class="pill themeToggleBtn" title="Switch theme" aria-label="Switch theme"></button><button id="bProf" class="avatar" title="My details" aria-label="My details"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="var(--accbg)"/><path d="M5 40c0-10 6-14 15-14s15 4 15 14z" fill="var(--acc)"/><circle cx="20" cy="21" r="7" fill="#f2c9a0"/><path d="M7 14l13-6 13 6-13 6z" fill="#2b3550"/><path d="M13 17v4c0 2 14 2 14 0v-4" fill="#2b3550"/><path d="M32 15v7" stroke="#24a99a" stroke-width="1.6"/></svg></button><button id="bKey" class="hidden">✦ Connect AI</button></div></header>
+<header id="top"><div class="bar1"><div class="barL"><span class="brand">ENGRAMOS</span><span class="brandTag">Memory, engineered.</span><span id="scTitle" class="hidden"></span></div><span id="aiStat" class="chip hidden" role="button" tabindex="0" title="AI Connection (tap to configure)"></span><button id="bTheme" class="pill themeToggleBtn" title="Switch theme" aria-label="Switch theme"></button><button id="bProf" class="avatar" title="My details" aria-label="My details"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="var(--accbg)"/><path d="M5 40c0-10 6-14 15-14s15 4 15 14z" fill="var(--acc)"/><circle cx="20" cy="21" r="7" fill="#f2c9a0"/><path d="M7 14l13-6 13 6-13 6z" fill="#2b3550"/><path d="M13 17v4c0 2 14 2 14 0v-4" fill="#2b3550"/><path d="M32 15v7" stroke="#24a99a" stroke-width="1.6"/></svg></button><span id="whoChip" class="chip hidden" style="display:none!important"></span><button id="bKey" class="hidden" style="display:none!important"></button></div></header>
 <div id="navFab" class="hidden"><button id="bBack" class="navFabBtn" title="Go back to the previous screen" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><span class="lbl">Back</span></button><button id="bFwd" class="navFabBtn" title="Go forward" aria-label="Go forward"><span class="lbl">Forward</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
 <div id="pilotBar" class="pilotBar hidden" role="status"></div>
 <main id="main">
@@ -1863,7 +1897,7 @@ function blankDB(){
   return {profile: null, chapters: [], progress: {}, history: [], facts: {}, cache: {}, book: [], engine: "ai", cur: null, speech: {uri: "", name: "", rate: 0.95, pitch: 1}, syllabus: null, plan: null, tt: [], ttDone: {}, daily: {}, freeze: {count: 0, used: {}, rewarded: {}}, badges: {}, updatedAt: 0, save: {asked: false, enabled: false, name: "", file: "", at: 0}, pilot: {code: "", registered: false, issuedAt: 0, validUntil: 0, revoked: false, consent: false, consentAt: 0, board: "", guardian: {name: "", email: "", phone: ""}}, sub: {tier: "free", plan: "free", paidAt: 0, validUntil: 0, amountInr: 0, paymentId: "", orderId: "", method: "", devPreviewFree: false, pendingPayment: null}};
 }
 function studyFields(){
-  return ["profile", "chapters", "progress", "history", "facts", "cache", "book", "cur", "last", "sess", "speech", "qaMarks", "paper", "mist", "lastBackup", "play", "syllabus", "plan", "tt", "ttDone", "daily", "freeze", "badges", "updatedAt", "save", "pilot", "sub"];
+  return ["profile", "chapters", "progress", "history", "facts", "cache", "book", "cur", "last", "sess", "speech", "qaMarks", "paper", "mist", "lastBackup", "play", "syllabus", "plan", "tt", "ttDone", "daily", "freeze", "badges", "updatedAt", "save", "pilot", "sub", "_sync"];
 }
 function normalizeStudy(d){
   d = d && typeof d === "object" ? d : {};
@@ -1880,6 +1914,7 @@ function normalizeStudy(d){
   d.freeze.rewarded = (d.freeze.rewarded && typeof d.freeze.rewarded === "object") ? d.freeze.rewarded : {};
   d.badges = (d.badges && typeof d.badges === "object") ? d.badges : {};
   d.updatedAt = d.updatedAt || 0;
+  d._sync = (d._sync && typeof d._sync === "object") ? d._sync : null;
   d.save = (d.save && typeof d.save === "object") ? d.save : {};
   if(d.save.asked === undefined) d.save.asked = false;
   d.save.enabled = !!d.save.enabled; d.save.name = d.save.name || "";
@@ -2052,6 +2087,7 @@ function save(){
     else if(DB.ai) AUTH.ai = DB.ai;
     if(AUTH.session && DB.profile){
       DB.updatedAt = Date.now();
+      if(typeof EngramosSync !== "undefined" && EngramosSync.syncEnvelope) EngramosSync.syncEnvelope();
       var u = findUser(AUTH.session), snap = studySnapshot(DB), sid = AUTH.session;
       if(u){ u.name = DB.profile.name; u.cls = DB.profile.cls; }
       var lsOk = writeStudentLocal(sid, snap);
@@ -2372,16 +2408,35 @@ function sharePackToWhatsApp(c){
     return;
   }
   var pk = c.pack, bName = bookOf(c), chName = c.name, sub = subjOf(c);
+  var cleanName = (chName.replace(/[^\w\- ]+/g, "") || "Smart-Pack").trim();
+  var fileName = cleanName + " - Smart Pack.json";
+
+  var sharePayload = {
+    app: "ENGRAMOS",
+    version: 1,
+    sharedAt: new Date().toISOString(),
+    book: bName,
+    chapter: chName,
+    subject: sub,
+    sem: semOf(c),
+    pack: pk
+  };
+  var jsonStr = JSON.stringify(sharePayload, null, 2);
+
+  // Automatically save the clean pack file to Downloads
+  saveFile(fileName, jsonStr);
+
+  // Clean WhatsApp summary text (NO SCRAMBLED URL)
   var lines = [];
   lines.push("📚 *" + (sub ? sub + " · " : "") + bName + "*");
   lines.push("📖 *" + chName + "*");
-  lines.push("✨ *ENGRAMOS Smart Pack (" + pk.concepts.length + " concepts)*\n");
+  lines.push("✨ *ENGRAMOS Smart Pack (" + pk.concepts.length + " concepts · " + (pk.qa || []).length + " Q&As · " + (pk.facts || []).length + " facts)*\n");
   lines.push("🧠 *Key Concepts:*");
   pk.concepts.slice(0, 5).forEach(function(item, i){
     lines.push((i + 1) + ". *" + item.t + ":* " + item.d + (item.ex ? " _(e.g. " + item.ex + ")_" : ""));
   });
   if(pk.concepts.length > 5){
-    lines.push("_(+" + (pk.concepts.length - 5) + " more concepts in the pack)_");
+    lines.push("_(+" + (pk.concepts.length - 5) + " more concepts in the pack file)_");
   }
   if(pk.qa && pk.qa.length){
     lines.push("\n❓ *Top Recall Questions:*");
@@ -2390,25 +2445,110 @@ function sharePackToWhatsApp(c){
       lines.push("  *A:* " + q.a);
     });
   }
-  var sharePayload = {book: bName, chapter: chName, subject: sub, sem: semOf(c), pack: pk};
-  var jsonStr = JSON.stringify(sharePayload);
-  var encoded = "";
-  try {
-    encoded = btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, function(match, p1){ return String.fromCharCode('0x' + p1); }));
-  } catch(e){}
-  var appUrl = window.location.href.split("#")[0];
-  var magicLink = appUrl + (encoded ? "#importPack=" + encoded : "");
-  if(encoded) lines.push("\n👉 *Tap to study notes, flashcards & drills in ENGRAMOS:*\n" + magicLink);
+  lines.push("\n📂 *Pack File:* `" + fileName + "`");
+  lines.push("👉 *To import into ENGRAMOS:*");
+  lines.push("1. Tap *Books & Packs* > *📥 Import Pack File* (if `.json` file is attached)");
+  lines.push("2. Or copy this message and tap *Books & Packs* > *📋 Paste WhatsApp Message*!");
   lines.push("\n_ENGRAMOS — Memory, engineered._");
   var fullMsg = lines.join("\n");
   var waUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(fullMsg);
-  if(navigator.share && window.innerWidth < 768){
-    navigator.share({title: "ENGRAMOS · " + chName, text: fullMsg, url: magicLink}).catch(function(err){
-      if(err.name !== "AbortError") window.open(waUrl, "_blank");
-    });
-  } else {
+
+  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
+
+  var h = "<div style='text-align:center;padding:4px'>" +
+    "<div style='font-size:36px;margin-bottom:6px'>📱</div>" +
+    "<h3 style='margin:0 0 4px;font-size:1.15rem;color:var(--ink)'>Share Smart Pack on WhatsApp</h3>" +
+    "<p class='status' style='margin:0 0 12px;font-size:0.86rem'><b>" + esc(chName) + "</b> (" + pk.concepts.length + " concepts · " + (pk.qa || []).length + " Q&As)</p>" +
+    "<div style='text-align:left;background:var(--card);border:2px solid #25D366;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:0.82rem;line-height:1.5'>" +
+      "<div style='display:flex;align-items:center;gap:6px;font-weight:700;color:#059669;margin-bottom:6px'>" +
+        "<span>💾</span> File Downloaded: <code>" + esc(fileName) + "</code>" +
+      "</div>" +
+      "<p style='margin:0 0 6px;color:var(--ink);font-weight:700'>⚠️ WhatsApp requires you to attach the downloaded file:</p>" +
+      "<ol style='margin:0;padding-left:18px;color:var(--ink)'>" +
+        "<li>Tap <b>Open WhatsApp Chat</b> below.</li>" +
+        "<li>In your WhatsApp chat, tap <b>📎 (Paperclip) or ＋ &gt; Document</b>.</li>" +
+        "<li>Select <b>" + esc(fileName) + "</b> from your <b>Downloads</b> folder.</li>" +
+        "<li>Hit Send! Your classmate can import it into ENGRAMOS.</li>" +
+      "</ol>" +
+      "<div style='margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:0.78rem;color:var(--mute)'>" +
+        "💡 <b>No file needed:</b> Even if you only send the text message, your classmate can simply copy the WhatsApp text and tap <b>📋 Paste WhatsApp Message</b> in ENGRAMOS!" +
+      "</div>" +
+    "</div>" +
+    "<div style='display:flex;flex-direction:column;gap:8px'>" +
+      "<button class='primary' id='waPopOpen' style='background:#25D366;border-color:#25D366;color:#fff;font-weight:700;padding:11px 16px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:0.92rem'>" +
+        "<span>💬</span> Open WhatsApp Chat" +
+      "</button>" +
+      (isMobile && navigator.canShare ? "<button id='waPopSheet' style='font-size:0.84rem;padding:8px'>📱 Share via Device Share Sheet</button>" : "") +
+      "<button id='waPopSave' style='font-size:0.84rem;padding:8px'>💾 Download Pack File Again</button>" +
+      "<button id='waPopDone' style='font-size:0.84rem;padding:8px'>Done</button>" +
+    "</div>" +
+  "</div>";
+
+  var m = popup(h);
+  m.el.querySelector("#waPopOpen").onclick = function(){
     window.open(waUrl, "_blank");
+    toast("Opening WhatsApp — attach " + fileName + " in your chat");
+    m.close();
+  };
+  m.el.querySelector("#waPopSave").onclick = function(){
+    saveFile(fileName, jsonStr);
+    toast("Downloaded " + fileName);
+  };
+  if(m.el.querySelector("#waPopSheet")){
+    m.el.querySelector("#waPopSheet").onclick = function(){
+      m.close();
+      try {
+        var f = new File([jsonStr], fileName, {type: "application/json"});
+        navigator.share({ files: [f], title: "ENGRAMOS · " + chName, text: fullMsg });
+      } catch(e){}
+    };
   }
+  m.el.querySelector("#waPopDone").onclick = function(){ m.close(); };
+}
+
+function parseWhatsAppPack(text){
+  text = String(text || "").trim();
+  try {
+    var data = JSON.parse(text);
+    if(data.pack || data.concepts) return data;
+  } catch(_){}
+
+  var concepts = [];
+  var conceptRe = /(?:^|\n)\s*(\d+)\.\s*\*?([^*:\n]+)\*?:\s*([^\n_]+)(?:_\(e\.g\.\s*([^)]+)\)_)?/g;
+  var m;
+  while((m = conceptRe.exec(text)) !== null){
+    var term = m[2].replace(/^\*+|\*+$/g, "").trim();
+    var def = m[3].replace(/^\*+|\*+$/g, "").trim();
+    var ex = m[4] ? m[4].replace(/^\*+|\*+$/g, "").trim() : "";
+    if(term && def){
+      concepts.push({ t: term, d: def, ex: ex });
+    }
+  }
+
+  var qa = [];
+  var qaRe = /[•\-\*]\s*\*?Q:\*?\s*([^\n]+)\n\s*\*?A:\*?\s*([^\n]+)/gi;
+  while((m = qaRe.exec(text)) !== null){
+    var q = m[1].replace(/^\*+|\*+$/g, "").trim();
+    var a = m[2].replace(/^\*+|\*+$/g, "").trim();
+    if(q && a){
+      qa.push({ q: q, a: a });
+    }
+  }
+
+  var chName = "";
+  var chMatch = text.match(/📖\s*\*([^*]+)\*/) || text.match(/Pack File:\s*`?([^\n`\-]+)/i);
+  if(chMatch) chName = chMatch[1].trim();
+
+  if(!concepts.length && !qa.length) return null;
+  return {
+    chapter: chName,
+    pack: {
+      concepts: concepts,
+      qa: qa,
+      facts: [],
+      source: "whatsapp-import"
+    }
+  };
 }
 function checkIncomingSharedPack(){
   var hash = window.location.hash || "";
@@ -2596,14 +2736,7 @@ function aiCfg(){
 }
 function aiName(c){ var P = c && AI_PROVIDERS[c.provider]; return P ? P.name : "AI"; }
 function refreshKeyBtn(){
-  var b = $("bKey"); if(!b) return;
-  var c = aiCfg();
-  b.classList.toggle("hidden", HOSTED || !DB.profile);
-  if(c){
-    b.textContent = (c.starter && (!c.key || c.key === STARTER_GROQ_KEY)) ? "✦ Groq connected ✓" : "✦ " + aiName(c) + " connected ✓";
-  } else {
-    b.textContent = "✦ Connect AI";
-  }
+  var b = $("bKey"); if(b) b.classList.add("hidden");
   if(typeof refreshBanner === "function") refreshBanner();
 }
 function useAI(cfg){
@@ -2636,7 +2769,7 @@ function aiErrText(code){
 }
 function jsonFrom(call){
   return async function(p, opts){
-    opts = opts || {};
+    opts = Object.assign({json: true, maxTokens: 4000}, opts || {});
     var r = await call(p + "\n\nReturn ONLY valid JSON with no markdown fences or extra text.", opts);
     var t = String(r && r.text || "").replace(/```(?:json)?|```/gi, "").trim(), a = t.search(/[\[{]/);
     if(a < 0) throw aierr("api", "unreadable reply");
@@ -2660,12 +2793,15 @@ function jsonFrom(call){
         return JSON.parse(sanitized);
       } catch(err2){
         // Attempt repairing unclosed braces if truncated near the end
-        if(z < a){
+        if(z < a || depth > 0){
           var repaired = sanitized;
           if(inStr) repaired += '"';
           while(depth > 0){ repaired += close; depth--; }
           try { return JSON.parse(repaired); } catch(err3){}
         }
+        // Further repair: unescaped newlines inside strings
+        var fixedNewlines = sanitized.replace(/([^\\])\n/g, "$1\\n");
+        try { return JSON.parse(fixedNewlines); } catch(err4){}
         throw aierr("api", "unreadable reply: " + err1.message);
       }
     }
@@ -2686,18 +2822,30 @@ function mkOpenAI(ai){
     var apiKey = ai.key || (ai.provider === "groq" ? STARTER_GROQ_KEY : "");
     var h = {"content-type":"application/json", "authorization":"Bearer " + apiKey};
     if(ai.provider === "openrouter"){ h["HTTP-Referer"] = location.href; h["X-Title"] = "ENGRAMOS"; }
-    var r, reqTimeout = (opts && opts.timeout) || 60000;
-    try { r = await fetchWithTimeout(P.api, {method:"POST", headers:h, body: JSON.stringify({model: ai.model || P.model, max_tokens: 8000, stream: !!opts.onText, messages:[{role:"user", content: prompt}]})}, reqTimeout); }
+    var reqTimeout = (opts && opts.timeout) || 60000;
+    var maxTok = opts.maxTokens || 4000;
+    var reqBody = {
+      model: ai.model || P.model,
+      max_tokens: maxTok,
+      stream: !!opts.onText,
+      messages: [{role: "user", content: prompt}]
+    };
+    if(opts.json && (ai.provider === "groq" || ai.provider === "openrouter")){
+      reqBody.response_format = {type: "json_object"};
+    }
+    var r;
+    try { r = await fetchWithTimeout(P.api, {method:"POST", headers:h, body: JSON.stringify(reqBody)}, reqTimeout); }
     catch(e){ throw aierr("no_net", e); }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
       var isBadKey = (r.status === 401 || r.status === 403 || /invalid_api_key|invalid api key/i.test(t));
       var isBadModel = !isBadKey && (r.status === 404 || (r.status === 400 && /model_not_found|model.*does not exist|decommissioned/i.test(t)));
-      if(ai.provider === "groq" && isBadModel && (ai.model || P.model) !== "llama-3.1-8b-instant"){
+      if(ai.provider === "groq" && (isBadModel || r.status === 400 || r.status === 429) && (ai.model || P.model) !== "llama-3.1-8b-instant" && opts.allowFallback !== false){
+        console.warn("Groq 70B error, falling back to 8B instant:", r.status, t);
         ai.model = "llama-3.1-8b-instant";
         if(typeof DB !== "undefined" && DB && DB.ai) DB.ai.model = "llama-3.1-8b-instant";
         if(typeof save === "function") try { save(); } catch(e){}
-        return call(prompt, opts);
+        return call(prompt, Object.assign({}, opts, {allowFallback: false}));
       }
       throw aierr(isBadKey ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 402 ? "no_credit" : isBadModel ? "bad_model" : "api", t);
     }
@@ -3236,7 +3384,8 @@ async function getSample(){
 async function saveFile(name, text){
   try {
     if(HOSTED){ var d = await claude.use("downloads"); if(d){ await d.save({filename: name, data: text}); } else toast("Saving is not available here"); return; }
-    var url = URL.createObjectURL(new Blob([text], {type: "text/markdown"}));
+    var mime = (name && name.slice(-5) === ".json") ? "application/json" : "text/markdown";
+    var url = URL.createObjectURL(new Blob([text], {type: mime}));
     var a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){ try { URL.revokeObjectURL(url); } catch(e){} }, 1500);
   } catch(e){ toast("The file was not saved"); }
@@ -3327,27 +3476,47 @@ function newQuote(){
 /* ---------- navigation ---------- */
 /* Move the cursor and the page to the panel the student just opened, then
    flash it briefly so the eye can follow. */
+function getScrollParent(node){
+  if(!node) return null;
+  var parent = node.parentElement;
+  while(parent && parent !== document.body && parent !== document.documentElement){
+    var cs = window.getComputedStyle(parent);
+    if(/(auto|scroll)/.test(cs.overflowY) && parent.scrollHeight > parent.clientHeight + 4){
+      return parent;
+    }
+    parent = parent.parentElement;
+  }
+  return document.getElementById("main") || window;
+}
 function focusRegion(el, block){
   if(!el || (el.isConnected === false)) return;
   el.setAttribute("tabindex", "-1");
   try { el.focus({preventScroll: true}); } catch(e){ try { el.focus(); } catch(_e){} }
-  var rect = el.getBoundingClientRect(), vh = window.innerHeight || 0, target = null;
-  if(block === "nearest"){
-    if(!(rect.top >= 76 && rect.bottom <= vh - 12)) target = (window.pageYOffset || window.scrollY || 0) + rect.top - 80;
-  } else {
-    target = (window.pageYOffset || window.scrollY || 0) + rect.top - 84;
-  }
-  if(target !== null){
-    var max = Math.max(0, (document.documentElement.scrollHeight || document.body.scrollHeight) - vh);
-    target = Math.max(0, Math.min(target, max));
-    var y0 = window.pageYOffset || window.scrollY || 0;
-    try { window.scrollTo({top: target, behavior: "smooth"}); }
-    catch(e){ window.scrollTo(0, target); }
-    /* Some embedded browsers ignore smooth scrolling; make sure the move happens. */
+  
+  var scroller = getScrollParent(el);
+  if(scroller && scroller !== window){
+    var sRect = scroller.getBoundingClientRect();
+    var elRect = el.getBoundingClientRect();
+    var relTop = elRect.top - sRect.top + scroller.scrollTop;
+    var target = Math.max(0, relTop - 14);
+    try { scroller.scrollTo({top: target, behavior: "smooth"}); }
+    catch(e){ scroller.scrollTop = target; }
     setTimeout(function(){
-      var y = window.pageYOffset || window.scrollY || 0;
-      if(Math.abs(y - y0) < 4 && Math.abs(y - target) > 8) window.scrollTo(0, target);
-    }, 320);
+      if(Math.abs(scroller.scrollTop - target) > 10) scroller.scrollTop = target;
+    }, 280);
+  } else {
+    var rect = el.getBoundingClientRect(), vh = window.innerHeight || 0, target = null;
+    if(block === "nearest"){
+      if(!(rect.top >= 76 && rect.bottom <= vh - 12)) target = (window.pageYOffset || window.scrollY || 0) + rect.top - 80;
+    } else {
+      target = (window.pageYOffset || window.scrollY || 0) + rect.top - 84;
+    }
+    if(target !== null){
+      var max = Math.max(0, (document.documentElement.scrollHeight || document.body.scrollHeight) - vh);
+      target = Math.max(0, Math.min(target, max));
+      try { window.scrollTo({top: target, behavior: "smooth"}); }
+      catch(e){ window.scrollTo(0, target); }
+    }
   }
   el.classList.remove("focus-flash"); void el.offsetWidth; el.classList.add("focus-flash");
   clearTimeout(el.__flashT); el.__flashT = setTimeout(function(){ el.classList.remove("focus-flash"); }, 1000);
@@ -3362,6 +3531,39 @@ var SCREEN_NAMES = {intro:"", request:"", activate:"", onb:"", home:"", study:"S
 function methodLabel(k){ var m = (typeof METHODS !== "undefined" ? METHODS : []).filter(function(x){ return x.k === k; })[0]; return m ? m.n : "Study"; }
 function methodOpen(){ return document.body.classList.contains("method-open"); }
 function setScreenTitle(t){ var e = $("scTitle"); if(!e) return; e.textContent = t || ""; e.classList.toggle("hidden", !t); }
+
+/* ---------- Universal Focus Bar & Return Routing ---------- */
+function returnOriginStudy(){
+  var orig = window.lastStudyOrigin;
+  window.lastStudyOrigin = null;
+  if(orig && typeof orig.returnFn === "function"){
+    orig.returnFn();
+  } else if(orig && orig.from === "mindmap"){
+    mindmapStart(orig.mode || "radial");
+  } else if(orig && orig.from === "mist"){
+    show("mist");
+  } else if(orig && orig.from === "home"){
+    show("home");
+  } else if(orig && orig.from === "flash"){
+    openMethod("flash");
+  } else {
+    closeMethod();
+  }
+}
+function methodFocusBar(k, customTitle){
+  var mm = (typeof METHODS !== "undefined" ? METHODS : []).filter(function(x){ return x.k === k; })[0];
+  var title = customTitle || (mm ? mm.n : "Study Activity");
+  var icon = (typeof ICON !== "undefined" && ICON[k]) || (mm ? mm.icon : "📖");
+  var orig = window.lastStudyOrigin;
+  var backBtnText = (orig && orig.label) ? "← Back to " + orig.label : "← Back to Activities";
+  var backClick = (orig && (orig.label || orig.returnFn)) ? "returnOriginStudy()" : "closeMethod()";
+  return "<div class='focusTopBar' style='display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:2px 0;border-bottom:1px solid var(--line);padding-bottom:8px'>" +
+    "<button type='button' class='btn o focusBackBtn' style='padding:6px 14px;font-size:0.84rem;font-weight:700;display:inline-flex;align-items:center;gap:4px' onclick='" + backClick + "'>" + esc(backBtnText) + "</button>" +
+    "<span class='focusTitle' style='font-size:1rem;font-weight:800;color:var(--acc);letter-spacing:-0.01em'>" + icon + " " + esc(title) + "</span>" +
+    "<button type='button' class='focusCloseBtn' style='border:none;background:transparent;color:var(--mute);font-size:1.3rem;cursor:pointer;padding:2px 6px;line-height:1' onclick='closeMethod()' title='Close activity'>✕</button>" +
+    "</div>";
+}
+
 var NAV = [], NIDX = -1;
 function navPush(v){
   if(NIDX >= 0 && NAV[NIDX] === v) return;
@@ -3382,8 +3584,8 @@ function updateBackBtn(){
 function setMethodOpen(on, name){
   document.body.classList.toggle("method-open", on);
   var hasCh = !!cur(), sp = (typeof pend !== "undefined" && !!pend);
-  if($("chCard")) $("chCard").classList.toggle("hidden", on);
-  if($("chapterChipWrap")) $("chapterChipWrap").classList.toggle("hidden", on);
+  if($("chCard")) $("chCard").classList.toggle("hidden", on || hasCh);
+  if($("chapterChipWrap")) $("chapterChipWrap").classList.toggle("hidden", on || !hasCh);
   if($("methods")) $("methods").classList.toggle("hidden", on);
   if($("path")) $("path").classList.toggle("hidden", on || !hasCh);
   if($("vidAsk")) $("vidAsk").classList.toggle("hidden", on || !hasCh);
@@ -3423,13 +3625,11 @@ function showView(v){
   var hideNav = v === "intro" || v === "request" || v === "activate" || (v === "onb" && !authed);
   if($("bTheme")) $("bTheme").classList.toggle("hidden", hideNav);
   $("bProf").classList.toggle("hidden", hideNav);
-  $("bKey").classList.toggle("hidden", HOSTED || !authed || hideNav);
+  if($("bKey")) $("bKey").classList.add("hidden");
   setScreenTitle(SCREEN_NAMES[v] || "");
 
-  // Update avatar display with user initial
-  if($("bProf") && DB.profile && DB.profile.name){
-    $("bProf").innerHTML = "<span style='font-size:14px;font-weight:700'>" + esc(DB.profile.name.charAt(0).toUpperCase()) + "</span>";
-  }
+  // Update avatar display with user initials
+  refreshAvatar();
 
   // Update bottomNav active state and visibility
   var tabMap = {
@@ -3497,26 +3697,35 @@ function renderLoginChips(){
   if(hint) hint.textContent = AUTH.users.length ? "Students on this device (tap a username to fill it):" : "";
 }
 var PROF_SVG = null;
+function profileInitials(name){
+  var s = String(name || "").trim();
+  if(!s) return "S";
+  var parts = s.split(/\s+/).filter(Boolean);
+  if(parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  if(s.length <= 2) return s.toUpperCase();
+  return s.charAt(0).toUpperCase();
+}
 function refreshAvatar(){
   var pic = safePic(DB.profile && DB.profile.pic);
   var b = $("bProf");
+  var init = profileInitials(DB.profile && DB.profile.name);
   if(b){
     if(pic) b.innerHTML = "<img src='" + pic + "' alt=''>";
     else {
-      var init = ((DB.profile && DB.profile.name) || "S").trim().charAt(0).toUpperCase();
-      b.innerHTML = "<span style='font-size:14px;font-weight:700;color:#fff'>" + esc(init) + "</span>";
+      b.innerHTML = "<span style='font-size:13px;font-weight:800;letter-spacing:-0.02em;color:#fff'>" + esc(init) + "</span>";
     }
+    b.title = DB.profile ? (DB.profile.name + " · My details") : "My details";
   }
   var ai = $("authInitial");
   if(ai){
     if(pic) ai.innerHTML = "<img src='" + pic + "' alt=''>";
-    else ai.textContent = ((DB.profile && DB.profile.name) || "S").trim().charAt(0).toUpperCase();
+    else ai.textContent = init;
   }
 }
 function refreshBanner(){
   var w = $("whoChip"), onb = AUTH_VIEWS.indexOf(curView) >= 0 || !DB.profile;
   refreshAvatar();
-  if(w){ w.textContent = DB.profile ? DB.profile.name : ""; w.classList.toggle("hidden", onb); }
+  if(w){ w.textContent = DB.profile ? DB.profile.name : ""; w.classList.add("hidden"); }
   var a = $("aiStat");
   if(a){
     var c = aiCfg(), on = isOnline();
@@ -4034,8 +4243,24 @@ RENDER.home = function(){
   var gp = greetingPool(), g0 = gp[0] || {w: "Namaste", l: "English"};
   var dg = dailyGoalInfo(), st = streak(), c = cur(), due = dueReviews()[0];
 
+  var h = "";
+  var isCloudConn = !!(DB.save && DB.save.enabled && (FOLDER.handle || DB.save.type === "cloud_file")) || !!localStorage.getItem("engramos_safari_cloud_file_name");
+  var showCloudReminder = !isCloudConn && (DB.chapters && DB.chapters.length > 0) && sessionStorage.getItem("engramos_cloud_reminder_dismissed") !== "1";
+  if(showCloudReminder){
+    h += "<div class='cloudReminderBanner' id='hmCloudReminder' style='display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;margin-bottom:12px;background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(168,85,247,0.08));border:1px solid rgba(99,102,241,0.25);border-radius:12px'>" +
+      "<div style='display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink)'>" +
+        "<span style='font-size:18px'>☁️</span>" +
+        "<span><strong>Study anywhere:</strong> Connect iCloud Drive or Cloud Folder to auto-save and sync across your devices.</span>" +
+      "</div>" +
+      "<div style='display:flex;align-items:center;gap:6px;flex-shrink:0'>" +
+        "<button type='button' class='btn' id='hmConnectCloudBtn' style='padding:4px 10px;font-size:11.5px;font-weight:700'>Connect</button>" +
+        "<button type='button' class='btn o' id='hmDismissCloudBtn' style='padding:4px 8px;font-size:11.5px;line-height:1'>✕</button>" +
+      "</div>" +
+    "</div>";
+  }
+
   // 1. Focus Hero Card
-  var h = "<div class='homeHeroCard'>" +
+  h += "<div class='homeHeroCard'>" +
     "<small>" + esc(g0.w) + ", " + esc(p.name) + "</small>" +
     "<b>Today’s One More</b>" +
     "<div class='homeProgressBar'><i style='width:" + dg.pct + "%'></i></div>" +
@@ -4137,6 +4362,26 @@ RENDER.home = function(){
       else showView(act);
     };
   });
+
+  if($("hmConnectCloudBtn")){
+    $("hmConnectCloudBtn").onclick = function(){
+      showView("tools");
+      setTimeout(function(){
+        var row = $("rowCloudSync");
+        if(row){
+          row.classList.add("open");
+          row.scrollIntoView({behavior: "smooth", block: "center"});
+        }
+      }, 100);
+    };
+  }
+  if($("hmDismissCloudBtn")){
+    $("hmDismissCloudBtn").onclick = function(){
+      sessionStorage.setItem("engramos_cloud_reminder_dismissed", "1");
+      var banner = $("hmCloudReminder");
+      if(banner) banner.remove();
+    };
+  }
 
   if($("hmQuoteChip")){
     $("hmQuoteChip").onclick = function(){
@@ -4341,11 +4586,26 @@ function sampleChapterModal(){
 
 /* ---------- smart pack: build once online, then use it offline ---------- */
 function cleanPack(d){
+  if(!d) return {v: 1, at: Date.now(), grade: (DB.profile && DB.profile.cls) || "", concepts: [], qa: [], facts: []};
   d = d && (d.pack || d.data || d.result || d.smart_pack || d.knowledge_pack) || d;
   var out = {v: 1, at: Date.now(), grade: (DB.profile && DB.profile.cls) || "", concepts: [], qa: [], facts: []}, sc = {}, sq = {}, sf = {};
+
+  // Recursive scan for concepts list if not found directly at root
   var list = d && (d.concepts || d.concept || d.topics || d.items || []);
-  if(!Array.isArray(list) && typeof d === "object" && d){
-    for(var k in d){ if(Array.isArray(d[k]) && d[k].length && d[k][0] && (d[k][0].t || d[k][0].term || d[k][0].name)){ list = d[k]; break; } }
+  if((!Array.isArray(list) || !list.length) && typeof d === "object" && d){
+    function findArrayWithItems(obj, depth){
+      if(!obj || typeof obj !== "object" || depth > 3) return null;
+      if(Array.isArray(obj) && obj.length && obj[0] && (obj[0].t || obj[0].term || obj[0].name || obj[0].title)) return obj;
+      for(var k in obj){
+        if(obj[k] && typeof obj[k] === "object"){
+          var found = findArrayWithItems(obj[k], depth + 1);
+          if(found) return found;
+        }
+      }
+      return null;
+    }
+    var foundList = findArrayWithItems(d, 0);
+    if(foundList) list = foundList;
   }
   if(!Array.isArray(list)) list = [];
   list.forEach(function(x){
@@ -4357,7 +4617,24 @@ function cleanPack(d){
     if(!t || !m || sc[k]) return;
     sc[k] = 1; out.concepts.push({t: trunc(t, 90), d: trunc(m, 440), ex: trunc(ex, 320)});
   });
+
+  // Scan for qa
   var qs = d && (d.qa || d.questions || d.qas || d.exam_questions || []);
+  if((!Array.isArray(qs) || !qs.length) && typeof d === "object" && d){
+    function findQa(obj, depth){
+      if(!obj || typeof obj !== "object" || depth > 3) return null;
+      if(Array.isArray(obj) && obj.length && obj[0] && (obj[0].q || obj[0].question)) return obj;
+      for(var k in obj){
+        if(obj[k] && typeof obj[k] === "object"){
+          var found = findQa(obj[k], depth + 1);
+          if(found) return found;
+        }
+      }
+      return null;
+    }
+    var foundQa = findQa(d, 0);
+    if(foundQa) qs = foundQa;
+  }
   if(!Array.isArray(qs)) qs = [];
   qs.forEach(function(x){
     if(!x) return;
@@ -4367,7 +4644,24 @@ function cleanPack(d){
     if(!q || !a || !k || sq[k]) return;
     sq[k] = 1; out.qa.push({q: trunc(q, 240), a: trunc(a, 720)});
   });
+
+  // Scan for facts
   var fs = d && (d.facts || d.fact || d.key_facts || []);
+  if((!Array.isArray(fs) || !fs.length) && typeof d === "object" && d){
+    function findFacts(obj, depth){
+      if(!obj || typeof obj !== "object" || depth > 3) return null;
+      if(Array.isArray(obj) && obj.length && (typeof obj[0] === "string" || (obj[0] && (obj[0].f || obj[0].fact || obj[0].text)))) return obj;
+      for(var k in obj){
+        if(obj[k] && typeof obj[k] === "object"){
+          var found = findFacts(obj[k], depth + 1);
+          if(found) return found;
+        }
+      }
+      return null;
+    }
+    var foundFs = findFacts(d, 0);
+    if(foundFs) fs = foundFs;
+  }
   if(!Array.isArray(fs)) fs = [];
   fs.forEach(function(x){
     var f = String(typeof x === "string" ? x : (x && (x.f || x.fact || x.text)) || "").replace(/\s+/g, " ").trim();
@@ -4380,9 +4674,85 @@ function cleanPack(d){
   out.facts = out.facts.slice(0, 10);
   return out;
 }
+
+/* Fallback on-device pack generator: extracts terms, definitions and Q&As directly from textbook text */
+function buildLocalPack(c){
+  if(!c) return null;
+  var txt = String(c.text || "");
+  var paras = txt.split(/\n{2,}|\r\n\r\n/).map(function(p){ return p.trim(); }).filter(function(p){ return p.length > 30; });
+  var concepts = [], qa = [], facts = [], seen = {};
+
+  // 1. Extract definitions & concepts from bold terms, quotes, or colon/dash patterns
+  var lines = txt.split(/\n+/);
+  lines.forEach(function(line){
+    line = line.trim();
+    var m = line.match(/^([A-Z][A-Za-z0-9\s\-_]{2,40})[:\-–—]\s*(.{20,300})/);
+    if(m){
+      var t = m[1].trim(), d = m[2].trim(), k = t.toLowerCase();
+      if(!seen[k] && concepts.length < 20){
+        seen[k] = 1;
+        concepts.push({t: t, d: d, ex: "Key concept in " + c.name});
+      }
+    }
+  });
+
+  // 2. Extract from sentences with standard definition verbs
+  if(concepts.length < 8){
+    var sents = txt.match(/[^.!?]+[.!?]+/g) || [];
+    sents.forEach(function(s){
+      s = s.trim().replace(/\s+/g, " ");
+      var m = s.match(/([A-Z][A-Za-z0-9\s]{2,35})\s+(?:is defined as|refers to|means|is known as|is called)\s+(.{20,250})/i);
+      if(m){
+        var t = m[1].trim(), d = s, k = t.toLowerCase();
+        if(!seen[k] && concepts.length < 20){
+          seen[k] = 1;
+          concepts.push({t: t, d: d, ex: "Core principle in " + c.name});
+        }
+      }
+    });
+  }
+
+  // 3. Fallback to paragraph topic sentences if needed
+  if(!concepts.length && paras.length){
+    paras.slice(0, 15).forEach(function(p, i){
+      var firstDot = p.indexOf(".");
+      var title = p.slice(0, Math.min(firstDot > 0 ? firstDot : 40, 40)).trim();
+      concepts.push({t: title || (c.name + " Concept " + (i + 1)), d: p.slice(0, 300), ex: "Topic in " + c.name});
+    });
+  }
+
+  // 4. Generate study Q&As
+  concepts.slice(0, 15).forEach(function(item){
+    qa.push({
+      q: "Explain " + item.t + " in " + c.name + ".",
+      a: item.d + (item.ex ? " (" + item.ex + ")" : "")
+    });
+  });
+
+  // 5. Extract key facts
+  paras.slice(0, 8).forEach(function(p){
+    var firstSent = (p.match(/[^.!?]+[.!?]+/) || [p.slice(0, 180)])[0].trim();
+    if(firstSent.length > 25 && facts.length < 8){
+      facts.push(firstSent);
+    }
+  });
+
+  return {
+    v: 1,
+    at: Date.now(),
+    grade: (DB.profile && DB.profile.cls) || "",
+    source: "local-device",
+    concepts: concepts.slice(0, 24),
+    qa: qa.slice(0, 18),
+    facts: facts.slice(0, 10)
+  };
+}
+
 function packPrompt(c){
   var txt = String(c.text || "");
-  if(txt.length > 24000) txt = txt.slice(0, 21000) + "\n…\n" + txt.slice(-3000);
+  var cAi = aiCfg();
+  var maxLen = (cAi && cAi.provider === "groq") ? 14000 : 24000;
+  if(txt.length > maxLen) txt = txt.slice(0, maxLen - 3000) + "\n…\n" + txt.slice(-3000);
   var a = ageOf();
   return "Build a deep, well-researched offline knowledge pack for one student.\n\n" +
     "STUDENT: " + levelName() + (a ? ", age " + a : "") + ", studying in " + (DB.profile.lang || "English") + ". Pitch everything for " + levelHint() + ".\n" +
@@ -4417,12 +4787,38 @@ function buildPack(){
 }
 async function buildPackFor(c){
   if(!c) throw aierr("api", "no chapter");
-  var s = await getSample(); if(!s) throw aierr("no_net");
-  var d = await s.json(packPrompt(c), {cache: false, modelTier: "default", timeout: 90000});
-  var pk = cleanPack(d);
-  if(!pk.concepts.length) throw aierr("api", "empty pack");
+  var s = null;
+  try { s = await getSample(); } catch(e){}
+  var pk = null;
+  if(s && isOnline()){
+    try {
+      var d = await s.json(packPrompt(c), {cache: false, modelTier: "default", timeout: 80000, maxTokens: 3500});
+      pk = cleanPack(d);
+    } catch(aiErr){
+      console.warn("AI pack generation failed for " + c.name + ", attempting fallback:", aiErr);
+      var cAi = aiCfg();
+      if(cAi && cAi.provider === "groq" && (cAi.model || "").indexOf("8b") < 0){
+        try {
+          cAi.model = "llama-3.1-8b-instant";
+          var s2 = wrapSample(mkApi(cAi));
+          var d2 = await s2.json(packPrompt(c), {cache: false, modelTier: "default", timeout: 60000, maxTokens: 3000});
+          pk = cleanPack(d2);
+        } catch(e2){
+          console.warn("Groq 8B instant fallback failed:", e2);
+        }
+      }
+    }
+  }
+  // If AI did not return concepts, fallback to on-device textbook extraction
+  if(!pk || !pk.concepts || !pk.concepts.length){
+    console.info("Using robust on-device pack generator for " + c.name);
+    pk = buildLocalPack(c);
+  }
+  if(!pk || !pk.concepts || !pk.concepts.length){
+    throw aierr("api", "empty pack");
+  }
   c.pack = pk; delete PREP[c.id]; save();
-  logEv("pack", "Built smart pack: " + c.name);
+  logEv("pack", "Built smart pack: " + c.name + " (" + (pk.source === "local-device" ? "On-Device" : "AI") + ")");
   return pk;
 }
 async function runPack(cid){
@@ -4430,17 +4826,19 @@ async function runPack(cid){
   var btn = $("chPack"), old = btn ? btn.textContent : "";
   if(btn){ btn.disabled = true; btn.textContent = "Building…"; }
   setMsg("");
-  $("packInfo").innerHTML = "<span class='status'>Searching online and writing a compact pack… this can take a minute.</span>";
+  $("packInfo").innerHTML = "<span class='status'>Analyzing chapter and building Smart Pack… this can take a moment.</span>";
   try {
     var pk = await buildPackFor(c);
-    setMsg("Smart pack ready — " + pk.concepts.length + " concepts, " + pk.qa.length + " Q&As and " + pk.facts.length + " facts saved on this device.");
-    toast("Smart pack saved");
+    var srcTxt = pk.source === "local-device" ? " (on-device engine)" : "";
+    setMsg("Smart pack ready — " + pk.concepts.length + " concepts, " + pk.qa.length + " Q&As and " + pk.facts.length + " facts saved on this device" + srcTxt + ".");
+    toast("Smart pack saved" + srcTxt);
   } catch(e){
     $("packInfo").innerHTML = "";
     aiErr(e);
-    var errReason = e && e.code === "rate_limited" ? "AI rate limit reached — please wait 15 seconds" :
+    var errReason = e && e.code === "rate_limited" ? "AI rate limit reached — please wait 20 seconds" :
                     e && e.code === "no_net" ? "Connection timeout or offline" :
-                    e && e.code === "bad_key" ? "AI key error — reconnect key" : "Could not build the smart pack";
+                    e && e.code === "bad_key" ? "AI key error — reconnect key" : 
+                    (e && e.detail ? ("Could not build pack: " + e.detail) : "Could not build the smart pack");
     toast(errReason);
   } finally {
     if(btn){ btn.disabled = false; btn.textContent = old; }
@@ -4614,8 +5012,13 @@ function manageBooksModal(){
     h += "</div>";
   });
   h += "</div>"; // end booksList
-  h += "<div class='row' style='margin-top:14px;justify-content:space-between'>";
+  h += "<div class='row' style='margin-top:14px;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px'>";
+  h += "<div style='display:flex;gap:8px;align-items:center;flex-wrap:wrap'>";
   h += "<button id='bmAddMore'>＋ Add another book (PDF)</button>";
+  h += "<button id='bmImportPack' style='background:rgba(99,102,241,0.08);color:var(--acc);border-color:var(--acc);font-weight:600' title='Import a .json Smart Pack received on WhatsApp or downloaded'>📥 Import Pack File (.json)</button>";
+  h += "<button id='bmPastePack' style='background:rgba(37,211,102,0.1);color:#059669;border-color:#059669;font-weight:600' title='Paste WhatsApp message or text to import Smart Pack'>📋 Paste WhatsApp Message</button>";
+  h += "<input type='file' id='bmPackFile' accept='.json,application/json' style='display:none'>";
+  h += "</div>";
   h += "<button data-close class='primary'>Done</button>";
   h += "</div>";
   h += "</div>"; // end booksManageWrap
@@ -4626,6 +5029,94 @@ function manageBooksModal(){
   var el = m.el;
   var am = el.querySelector("#bmAddMore");
   if(am) am.onclick = function(){ m.el.remove(); askBookMeta(false, function(){ $("file").click(); }); };
+
+  var pasteBtn = el.querySelector("#bmPastePack");
+  if(pasteBtn){
+    pasteBtn.onclick = function(){
+      var ph = "<div style='padding:4px'>" +
+        "<h3 style='margin:0 0 6px;font-size:1.15rem'>📋 Import from WhatsApp Message</h3>" +
+        "<p class='status' style='margin:0 0 10px;font-size:0.84rem'>Copy the WhatsApp message and paste it below. ENGRAMOS will extract the concepts, Q&amp;As and chapter details automatically.</p>" +
+        "<textarea id='txtPastePack' placeholder='Paste the WhatsApp message or JSON here...' style='width:100%;height:140px;font-size:0.82rem;font-family:monospace;margin-bottom:12px'></textarea>" +
+        "<div class='row' style='justify-content:flex-end;gap:8px'>" +
+          "<button data-close>Cancel</button>" +
+          "<button class='primary' id='btnDoPastePack'>Import Pack</button>" +
+        "</div>" +
+      "</div>";
+      var pm = popup(ph);
+      if(navigator.clipboard && navigator.clipboard.readText){
+        navigator.clipboard.readText().then(function(clip){
+          if(clip && (clip.indexOf("Smart Pack") >= 0 || clip.indexOf("Top Recall") >= 0 || clip.indexOf("Key Concepts") >= 0 || clip.indexOf("{") >= 0)){
+            var ta = pm.el.querySelector("#txtPastePack");
+            if(ta) ta.value = clip;
+          }
+        }).catch(function(){});
+      }
+      pm.el.querySelector("#btnDoPastePack").onclick = function(){
+        var raw = pm.el.querySelector("#txtPastePack").value;
+        var parsed = parseWhatsAppPack(raw);
+        if(!parsed || !parsed.pack || (!parsed.pack.concepts.length && !parsed.pack.qa.length)){
+          toast("Could not find any concepts or Q&As in the pasted text.");
+          return;
+        }
+        var targetCh = null;
+        if(parsed.chapter){
+          var norm = parsed.chapter.toLowerCase().replace(/chapter\s*\d+\s*[:\-]?\s*/i, "").trim();
+          targetCh = DB.chapters.find(function(c){
+            var cNorm = c.name.toLowerCase().replace(/chapter\s*\d+\s*[:\-]?\s*/i, "").trim();
+            return c.name.toLowerCase() === parsed.chapter.toLowerCase() || (norm && cNorm.indexOf(norm) >= 0) || (norm && norm.indexOf(cNorm) >= 0);
+          });
+        }
+        if(!targetCh) targetCh = cur() || DB.chapters[0];
+        if(!targetCh){ toast("No chapter found to attach this pack to."); return; }
+        targetCh.pack = parsed.pack;
+        if(PREP[targetCh.id]) delete PREP[targetCh.id];
+        save(); fillSel();
+        toast("✓ Successfully imported Smart Pack for “" + targetCh.name + "” (" + (parsed.pack.concepts.length || parsed.pack.qa.length) + " items)!");
+        pm.close();
+        m.el.remove();
+        manageBooksModal();
+      };
+    };
+  }
+
+  var impBtn = el.querySelector("#bmImportPack");
+  var impInput = el.querySelector("#bmPackFile");
+  if(impBtn && impInput){
+    impBtn.onclick = function(){ impInput.click(); };
+    impInput.onchange = function(){
+      if(!this.files || !this.files[0]) return;
+      var file = this.files[0];
+      file.text().then(function(txt){
+        try {
+          var data = JSON.parse(txt);
+          var pk = data.pack || (data.concepts ? data : null);
+          if(!pk || !pk.concepts || !pk.concepts.length){
+            toast("Invalid pack file: no concepts found.");
+            return;
+          }
+          var targetCh = null;
+          if(data.chapter){
+            targetCh = DB.chapters.find(function(c){ return c.name.toLowerCase() === data.chapter.toLowerCase(); });
+          }
+          if(!targetCh){
+            targetCh = cur() || DB.chapters[0];
+          }
+          if(!targetCh){
+            toast("No chapter available to attach this pack to.");
+            return;
+          }
+          targetCh.pack = pk;
+          if(PREP[targetCh.id]) delete PREP[targetCh.id];
+          save(); fillSel();
+          toast("✓ Successfully imported Smart Pack for “" + targetCh.name + "” (" + pk.concepts.length + " concepts)!");
+          m.el.remove();
+          manageBooksModal();
+        } catch(err){
+          toast("Could not read JSON file: " + err.message);
+        }
+      });
+    };
+  }
 
   el.querySelectorAll("[data-act]").forEach(function(btn){
     btn.onclick = async function(){
@@ -4677,7 +5168,6 @@ function manageBooksModal(){
         var cid = btn.dataset.cid;
         var c = DB.chapters.filter(function(x){ return x.id === cid; })[0];
         if(!c) return;
-        if(!isOnline()){ toast("Go online first to build Smart Packs"); return; }
         btn.disabled = true; btn.textContent = "Building…";
         try {
           await runPack(c.id);
@@ -4738,6 +5228,7 @@ async function buildBookPacks(b, btn, statEl, modal){
   var oldTxt = btn.textContent;
   var done = 0;
   var errCount = 0;
+  var lastErrReason = "";
   for(var i = 0; i < targets.length; i++){
     var ch = targets[i];
     btn.textContent = "Building " + (i + 1) + " of " + targets.length + "…";
@@ -4748,9 +5239,10 @@ async function buildBookPacks(b, btn, statEl, modal){
       if(i < targets.length - 1) await sleep(2500);
     } catch(e){
       console.warn("Pack build error for " + ch.name, e);
+      lastErrReason = e && e.code === "rate_limited" ? "AI rate limit reached" : (e && e.detail ? e.detail : "AI generation issue");
       if(e && e.code === "rate_limited"){
-        if(statEl) statEl.innerHTML = "<span class='status' style='color:var(--acc2)'>Free AI limit hit — cooling down 12s for <b>" + esc(ch.name) + "</b>…</span>";
-        await sleep(12000);
+        if(statEl) statEl.innerHTML = "<span class='status' style='color:var(--acc2)'>Free AI limit hit — cooling down 20s for <b>" + esc(ch.name) + "</b>…</span>";
+        await sleep(20000);
         try {
           await buildPackFor(ch);
           done++;
@@ -4765,7 +5257,7 @@ async function buildBookPacks(b, btn, statEl, modal){
   btn.disabled = false;
   btn.textContent = oldTxt;
   if(done === 0 && targets.length > 0){
-    toast("Could not build packs — please check AI key or connection");
+    toast(lastErrReason ? ("Could not build packs — " + lastErrReason) : "Could not build packs — please check AI key or connection");
   } else {
     toast("Finished building " + done + " smart pack" + (done > 1 ? "s" : "") + " for “" + b.book + "”!" + (errCount > 0 ? " (" + errCount + " failed)" : ""));
   }
@@ -5076,14 +5568,7 @@ function openMethod(k){
   }
   if(c){ var mm = METHODS.filter(function(x){return x.k === k})[0]; DB.last = {cid: c.id, method: k, text: "Started " + (mm ? mm.n : k), t: Date.now()}; save(); }
   if(k === "explain"){
-    var backBarHtml = "";
-    if(window.lastStudyOrigin && window.lastStudyOrigin.method === "map"){
-      backBarHtml = "<div class='card' style='margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;background:var(--accbg);border:1.5px solid var(--acc);border-radius:14px;padding:9px 14px;box-shadow:var(--shadow-sm)'>" +
-        "<span style='font-size:0.88rem;font-weight:700;color:var(--acc);display:flex;align-items:center;gap:6px'><span>🗺️</span> <span>Concept from Mind Map</span></span>" +
-        "<button class='primary' id='btnBackToMM' type='button' style='padding:6px 14px;font-size:0.84rem;font-weight:700;border-radius:10px;cursor:pointer'>← Back to Mind Map</button>" +
-        "</div>";
-    }
-    mp.innerHTML = backBarHtml + "<div class='row'><select id='exMode'><option value='all'>Whole chapter, concept by concept</option><option value='topic'>One topic</option></select><input type='text' id='exTopic' placeholder='Which topic?' class='hidden'><select id='exLevel'><option value='very simple, like explaining to a friend, with everyday examples'>Very simple</option><option value='clear with practical examples'>With examples</option><option value='exam-oriented, with definitions and key points that fetch marks'>Exam style</option></select></div><button class='primary' id='exGo'>Explain </button><div class='out' id='exOut'></div>";
+    mp.innerHTML = methodFocusBar("explain") + "<div class='row'><select id='exMode'><option value='all'>Whole chapter, concept by concept</option><option value='topic'>One topic</option></select><input type='text' id='exTopic' placeholder='Which topic?' class='hidden'><select id='exLevel'><option value='very simple, like explaining to a friend, with everyday examples'>Very simple</option><option value='clear with practical examples'>With examples</option><option value='exam-oriented, with definitions and key points that fetch marks'>Exam style</option></select></div><button class='primary' id='exGo'>Explain </button><div class='out' id='exOut'></div>";
     var bmm = $("btnBackToMM");
     if(bmm){
       bmm.onclick = function(){
@@ -5097,12 +5582,12 @@ function openMethod(k){
       var r = await run(($("exMode").value === "topic" && t) ? "Explain the topic “" + t + "” from this chapter in a way that is " + lvl + ". Use headings, short paragraphs, one real-life example and a 2-line summary." : "Find every important concept in this chapter, in order. For each: a heading, a clear explanation that is " + lvl + ", a quick example, and a line starting with “Remember:” with the key exam point. End with a short summary.", $("exOut"), $("exGo"), {ctx: "explain", key: "ex|" + lvl + "|" + (($("exMode").value === "topic" && t) ? t : "all"), q: ($("exMode").value === "topic" && t) ? t : "", local: function(){ return localExplain(($("exMode").value === "topic" && t) ? t : "", lvl); }});
       if(r){ logEv("explain", t ? "Explained: " + t : "Explained the whole chapter"); markDone("explain"); } };
   } else if(k === "notes"){
-    mp.innerHTML = "<div class='row'><select id='ntType'><option value='short bullet-point notes with bold key terms'>Short bullet notes</option><option value='detailed notes with headings, definitions, features, merits and demerits where applicable'>Detailed notes</option><option value='a quick revision sheet: key terms, definitions, classifications, and a comparison table where useful'>Quick revision sheet</option></select></div><button class='primary' id='ntGo'>Make my notes </button> <button id='ntSave' class='hidden'> Save notes</button><div class='out' id='ntOut'></div>";
+    mp.innerHTML = methodFocusBar("notes") + "<div class='row'><select id='ntType'><option value='short bullet-point notes with bold key terms'>Short bullet notes</option><option value='detailed notes with headings, definitions, features, merits and demerits where applicable'>Detailed notes</option><option value='a quick revision sheet: key terms, definitions, classifications, and a comparison table where useful'>Quick revision sheet</option></select></div><button class='primary' id='ntGo'>Make my notes </button> <button id='ntSave' class='hidden'> Save notes</button><div class='out' id='ntOut'></div>";
     var last = "";
     $("ntGo").onclick = async function(){ var t = await run("Prepare " + $("ntType").value + " for the entire chapter, organised by topic with clear headings. Short lines, key terms in bold, and a final list titled “Most important points for exams”.", $("ntOut"), $("ntGo"), {ctx: "notes", key: "nt|" + $("ntType").value, local: function(){ return localNotes($("ntType").selectedIndex); }}); if(t){ last = t; if($("ntSave")) $("ntSave").classList.remove("hidden"); logEv("notes", "Made notes"); markDone("notes"); } };
     $("ntSave").onclick = function(){ saveFile(c.name.replace(/[^\w\- ]+/g, "") + "-notes.md", last); };
   } else if(k === "doubt"){
-    mp.innerHTML = "<div class='row'><input type='text' id='askQ' placeholder='Type your doubt here…'><button class='primary' id='askGo'>Ask </button></div><div class='out' id='askOut'></div>";
+    mp.innerHTML = methodFocusBar("doubt") + "<div class='row'><input type='text' id='askQ' placeholder='Type your doubt here…'><button class='primary' id='askGo'>Ask </button></div><div class='out' id='askOut'></div>";
     $("askGo").onclick = async function(){
       var q = $("askQ").value.trim(); if(!q) return;
       /* A short follow-up (“why is it important?”) keeps the previous topic. */
@@ -5128,7 +5613,7 @@ function openMethod(k){
       focusRegion(mp, "start"); return;
     }
     var ex = k === "exam";
-    mp.innerHTML = "<h3 style='margin-top:0'>" + (ex ? " Fire Drill" : " Recall Drill") + "</h3><p class='status'>" + (ex ? "Timed test, one minute per question. Answers are shown only after you submit, just like the real thing." : "You get feedback after every answer. A wrong answer opens a small window explaining it.") + "</p><div class='row'><select id='qzN'><option value='5'>5 questions</option><option value='10' selected>10 questions</option><option value='15'>15 questions</option>" + (ex ? "<option value='20'>20 questions</option>" : "") + "</select><select id='qzD'><option value='a mix of easy, medium and tricky'>Mixed</option><option value='easy, to build basics'>Easy</option><option value='hard, application-based and exam-tricky'>Hard</option></select></div><button class='primary' id='qzGo'>" + (ex ? "Start Fire Drill " : "Start recall ") + "</button><div id='qzScore' class='status' style='margin-top:10px'></div><div id='qzOut'></div><div id='qzRes'></div>";
+    mp.innerHTML = methodFocusBar(k) + "<h3 style='margin-top:0'>" + (ex ? " Fire Drill" : " Recall Drill") + "</h3><p class='status'>" + (ex ? "Timed test, one minute per question. Answers are shown only after you submit, just like the real thing." : "You get feedback after every answer. A wrong answer opens a small window explaining it.") + "</p><div class='row'><select id='qzN'><option value='5'>5 questions</option><option value='10' selected>10 questions</option><option value='15'>15 questions</option>" + (ex ? "<option value='20'>20 questions</option>" : "") + "</select><select id='qzD'><option value='a mix of easy, medium and tricky'>Mixed</option><option value='easy, to build basics'>Easy</option><option value='hard, application-based and exam-tricky'>Hard</option></select></div><button class='primary' id='qzGo'>" + (ex ? "Start Fire Drill " : "Start recall ") + "</button><div id='qzScore' class='status' style='margin-top:10px'></div><div id='qzOut'></div><div id='qzRes'></div>";
     $("qzGo").onclick = function(){ startTest(k); }; paperUi();
   }
   focusRegion(mp, "start");
@@ -5203,7 +5688,21 @@ function drawMap(scope){
   function add(t, d, at, sc){
     t = String(t || "").replace(/\s+/g, " ").trim(); if(!t) return;
     var k = termKey(t) || t.toLowerCase(); if(seen[k]) return;
-    seen[k] = 1; nodes.push({t: t, d: d || "", si: at, sec: sc, score: 0, re: termRe(t)});
+    var defText = String(d || "").trim();
+    if(!defText && c0 && c0.text){
+      var re = termRe(t);
+      var sents = P.sents || [];
+      for(var si = 0; si < sents.length; si++){
+        if(re.test(sents[si]) && sents[si].length > 25){
+          defText = sents[si].trim();
+          break;
+        }
+      }
+      if(!defText){
+        defText = "Important core concept explored in " + (c0.name || "this chapter") + ".";
+      }
+    }
+    seen[k] = 1; nodes.push({t: t, d: defText, si: at, sec: sc, score: 0, re: termRe(t)});
   }
   P.defs.forEach(function(d){
     var at = d.si, sc = at != null ? (P.secs[P.secOf[at]] || {}).label : "";
@@ -5314,7 +5813,7 @@ function drawMap(scope){
         "</div>";
       var bw = $("mapWhy"); if(bw) bw.onclick = function(){ explainTopic(n.t, "concept"); };
       var br = $("mapRead"); if(br) br.onclick = function(){ speakText(n.t + ". " + (n.d || "")); };
-      focusRegion(dBox, "nearest");
+      focusRegion(dBox, "start");
     }
   }
 
@@ -5426,7 +5925,21 @@ function mmData(){
   function add(t, d, ex){
     t = String(t || "").replace(/\s+/g, " ").trim(); if(!t) return;
     var k = termKey(t) || t.toLowerCase(); if(seen[k]) return; seen[k] = 1;
-    out.push({t: t, d: String(d || "").trim(), ex: String(ex || "").trim()});
+    var defText = String(d || "").trim();
+    if(!defText && c && c.text){
+      var re = termRe(t);
+      var sents = P.sents || [];
+      for(var si = 0; si < sents.length; si++){
+        if(re.test(sents[si]) && sents[si].length > 25){
+          defText = sents[si].trim();
+          break;
+        }
+      }
+      if(!defText){
+        defText = "Key concept and foundational principle in " + (c.name || "this chapter") + ".";
+      }
+    }
+    out.push({t: t, d: defText, ex: String(ex || "").trim()});
   }
   if(c.pack && c.pack.concepts) c.pack.concepts.forEach(function(x){ add(x.t, x.d, x.ex); });
   if(out.length < 6) P.defs.forEach(function(d){ add(d.term, defText(d), ""); });
@@ -5446,14 +5959,14 @@ function mindmapStart(mode){
   var c = cur(); if(!c) return;
   if(mode === "concept"){
     var P = prep(c), secs = (P.secs || []).map(function(s, i){ return {i: i, label: s.label}; }).filter(function(x){ return x.label && x.label.length < 40 && secNodeCount(P, x.i) >= 3; });
-    var h = "<div class='focusTopBar'>" +
-      "<button class='focusCloseBtn' id='mmClose' title='Back to Study'>✕</button>" +
-      "<span class='focusTitle' style='font-size:17px;font-weight:800;letter-spacing:-0.01em;color:var(--acc)'>Mind Map</span>" +
+    var h = "<div class='mmHeaderBar'>" +
+      "<button class='btn o mmBackBtn' id='mmClose' title='Back to Study'>← Back to Study</button>" +
+      "<div class='mmTogglePills'>" +
+      "<button class='btn o mmPill' id='mmModeRad'>Radial</button>" +
+      "<button class='btn mmPill' id='mmModeCon'>Connections</button>" +
+      "</div>" +
       "</div>";
-    h += "<div class='g2' style='margin-bottom:10px'>" +
-      "<button class='btn o' id='mmModeRad'>Radial</button>" +
-      "<button class='btn' id='mmModeCon'>Connections</button>" +
-      "</div><p class='status'>A picture of how important ideas in this chapter connect. Tap any node to read it.</p><div class='row'><select id='mapScope' style='flex:1;min-width:180px'><option value='all'>Whole chapter</option>" + secs.map(function(x){ return "<option value='" + x.i + "'>" + esc(x.label) + "</option>"; }).join("") + "</select><button class='btn' id='mapGo'>Draw my map</button></div><div id='mapOut' style='margin-top:10px'></div>";
+    h += "<div class='row' style='margin:0 0 8px;gap:6px'><select id='mapScope' style='flex:1;min-width:140px;font-size:0.82rem;padding:5px 8px'><option value='all'>Whole chapter</option>" + secs.map(function(x){ return "<option value='" + x.i + "'>" + esc(x.label) + "</option>"; }).join("") + "</select><button class='btn' id='mapGo' style='padding:5px 12px;font-size:0.82rem'>Draw map</button></div><div id='mapOut'></div>";
     $("mp").innerHTML = h;
     $("mmClose").onclick = function(){ closeMethod(); };
     $("mmModeRad").onclick = function(){ mindmapStart("radial"); };
@@ -5463,23 +5976,21 @@ function mindmapStart(mode){
     return;
   }
   var data = mmData();
-  var h = "<div class='focusTopBar'>" +
-    "<button class='focusCloseBtn' id='mmClose' title='Back to Study'>✕</button>" +
-    "<span class='focusTitle' style='font-size:17px;font-weight:800;letter-spacing:-0.01em;color:var(--acc)'>Mind Map</span>" +
-    "</div>";
-  h += "<div class='g2' style='margin-bottom:10px'>" +
-    "<button class='btn' id='mmModeRad'>Radial</button>" +
-    "<button class='btn o' id='mmModeCon'>Connections</button>" +
+  var h = "<div class='mmHeaderBar'>" +
+    "<button class='btn o mmBackBtn' id='mmClose' title='Back to Study'>← Back to Study</button>" +
+    "<div class='mmTogglePills'>" +
+    "<button class='btn mmPill' id='mmModeRad'>Radial</button>" +
+    "<button class='btn o mmPill' id='mmModeCon'>Connections</button>" +
+    "</div>" +
     "</div>";
   if(data.length < 2){
-    $("mp").innerHTML = h + "<p class='status'>This chapter is too short to grow a mind map yet. Add more of its text, or open another chapter.</p>";
+    $("mp").innerHTML = h + "<p class='status' style='margin-top:12px'>This chapter is too short to grow a mind map yet. Add more of its text, or open another chapter.</p>";
     $("mmClose").onclick = function(){ closeMethod(); };
     $("mmModeCon").onclick = function(){ mindmapStart("concept"); };
     return;
   }
   MM = {data: data, sel: -1, vb: {x: 0, y: 0, w: 900, h: 640}};
-  h += "<p class='status' style='margin:4px 0 8px'>Tap a branch to read it. Pinch or drag to explore.</p>" +
-    "<div class='mmWrap' style='border-radius:16px;overflow:hidden'><div class='mmTools'><button id='mmIn' title='Zoom in'>＋</button><button id='mmOut' title='Zoom out'>−</button><button id='mmFit' title='Fit'>Fit</button></div><svg class='mmSvg' id='mmSvg'></svg></div>" +
+  h += "<div class='mmWrap'><div class='mmTools'><button id='mmIn' title='Zoom in'>＋</button><button id='mmOut' title='Zoom out'>−</button><button id='mmFit' title='Fit'>Fit</button></div><svg class='mmSvg' id='mmSvg'></svg></div>" +
     "<div id='mmDetail' class='nodeSheet'><b id='mmDetailTitle'>Mind Map Branch</b><p id='mmDetailDesc'>Tap any branch above to see its clear explanation here.</p></div>";
   $("mp").innerHTML = h;
   $("mmClose").onclick = function(){ closeMethod(); };
@@ -5503,10 +6014,11 @@ function mmDraw(){
     d.x = x; d.y = y;
     h += "<line class='mmBranch' x1='" + cx + "' y1='" + cy + "' x2='" + x.toFixed(1) + "' y2='" + y.toFixed(1) + "'/>";
     var r = MM.sel === i ? 60 : 56, label = d.t.length > 16 ? d.t.slice(0, 14) + "…" : d.t;
-    h += "<g class='mmNode' data-i='" + i + "' role='button' tabindex='0' style='animation-delay:" + (i * 0.05).toFixed(2) + "s'>" +
+    h += "<g class='mmNode' data-i='" + i + "' role='button' tabindex='0' style='cursor:pointer;animation-delay:" + (i * 0.05).toFixed(2) + "s'>" +
       "<title>" + esc(d.t) + "</title>" +
+      "<circle class='touchTarget' cx='" + x.toFixed(1) + "' cy='" + y.toFixed(1) + "' r='48' fill='transparent' pointer-events='all' style='cursor:pointer'/>" +
       "<circle cx='" + x.toFixed(1) + "' cy='" + y.toFixed(1) + "' r='" + r + "' fill='" + (MM.sel === i ? "var(--accbg)" : "var(--card)") + "' stroke='var(--acc)' stroke-width='" + (MM.sel === i ? 3.4 : 2.2) + "'/>" +
-      "<text x='" + x.toFixed(1) + "' y='" + (y + 4).toFixed(1) + "' text-anchor='middle' font-size='11' font-weight='600' fill='var(--ink)'>" + esc(label) + "</text></g>";
+      "<text x='" + x.toFixed(1) + "' y='" + (y + 4).toFixed(1) + "' text-anchor='middle' font-size='11' font-weight='600' fill='var(--ink)' pointer-events='none'>" + esc(label) + "</text></g>";
   });
   /* The chapter name sits in the middle. Split it over two lines so long
      names stay inside the core instead of running over the edge. */
@@ -5519,18 +6031,26 @@ function mmDraw(){
   svg.setAttribute("viewBox", vb.x + " " + vb.y + " " + vb.w + " " + vb.h);
   svg.innerHTML = h;
   svg.querySelectorAll(".mmNode").forEach(function(g){
-    var go = function(){ mmSelect(+g.getAttribute("data-i")); };
-    g.onclick = go;
-    g.onkeydown = function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); } };
+    var idx = +g.getAttribute("data-i");
+    var act = function(ev){
+      if(ev){ ev.preventDefault(); ev.stopPropagation(); }
+      mmSelect(idx);
+    };
+    g.onclick = act;
+    g.addEventListener("touchend", act);
+    g.onkeydown = function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); act(); } };
   });
 }
 function mmSelect(i){
   MM.sel = i; mmDraw();
   var d = MM.data[i], box = $("mmDetail");
-  box.innerHTML = "<h3 style='margin:0 0 6px'>" + esc(d.t) + "</h3>" + (d.d ? "<p style='margin:0 0 8px'>" + esc(d.d) + "</p>" : "<p class='status'>No definition was found in the chapter text.</p>") + (d.ex ? "<p class='status' style='margin:0 0 8px'><b>Example:</b> " + esc(d.ex) + "</p>" : "") + "<div class='row'><button class='primary' id='mmWhy'>Explain this simply</button><button id='mmRead'>Read aloud</button></div><div class='out' id='mmEx'></div>";
-  $("mmWhy").onclick = function(){ explainTopic(d.t); };
+  box.innerHTML = "<h3 style='margin:0 0 6px;color:var(--acc)'>" + esc(d.t) + "</h3>" +
+    "<p style='margin:0 0 8px;font-size:0.96rem;line-height:1.45'>" + esc(d.d) + "</p>" +
+    (d.ex ? "<p class='status' style='margin:0 0 8px'><b>Example:</b> " + esc(d.ex) + "</p>" : "") +
+    "<div class='row' style='margin-top:10px'><button class='primary' id='mmWhy' style='font-size:0.9rem;padding:9px 16px'>Explain this simply</button><button id='mmRead' style='font-size:0.9rem;padding:9px 14px'>Read aloud</button></div><div class='out' id='mmEx'></div>";
+  $("mmWhy").onclick = function(){ explainTopic(d.t, "radial"); };
   $("mmRead").onclick = function(){ speakText(d.t + ". " + d.d + (d.ex ? " For example, " + d.ex : "")); };
-  focusRegion(box, "nearest");
+  focusRegion(box, "start");
 }
 function mmZoom(f){
   if(!MM) return;
@@ -7376,7 +7896,7 @@ function qaShow(){
   var c = cur();
   var pct = Math.round((s.i + 1) * 100 / s.items.length);
   var h = "<div class='focusTopBar'>" +
-    "<button class='focusCloseBtn' id='qaClose' title='Back to Study'>✕</button>" +
+    "<button class='btn o focusBackBtn' id='qaClose' style='padding:5px 12px;font-size:0.82rem;font-weight:700' title='Back to Study Activities'>← Back</button>" +
     "<div class='focusProgressBar'><i style='width:" + pct + "%'></i></div>" +
     "<span class='focusStepCount'>" + (s.i + 1) + "/" + s.items.length + "</span>" +
     "<button class='focusTtsBtn' id='qaTts' title='Read aloud'>🔊</button>" +
@@ -7422,7 +7942,7 @@ async function flashStart(){
     var x = d[F.i], flipped = false;
     var pct = Math.round((F.i + 1) * 100 / d.length);
     var h = "<div class='focusTopBar'>" +
-      "<button class='focusCloseBtn' id='flClose' title='Back to Study'>✕</button>" +
+      "<button class='btn o focusBackBtn' id='flClose' style='padding:5px 12px;font-size:0.82rem;font-weight:700' title='Back to Study Activities'>← Back</button>" +
       "<div class='focusProgressBar'><i style='width:" + pct + "%'></i></div>" +
       "<span class='focusStepCount'>" + (F.i + 1) + "/" + d.length + "</span>" +
       "</div>";
@@ -9696,7 +10216,7 @@ function cramStart(){
     return;
   }
   var d = localCram(c);
-  var h = "<h3 style='margin-top:0'>⚡ 5-Min Cram — " + esc(c.name) + "</h3>" +
+  var h = methodFocusBar("cram") + "<h3 style='margin-top:0'>⚡ 5-Min Cram — " + esc(c.name) + "</h3>" +
     "<p class='status'>1-page pre-exam cheat sheet: core ideas, past error traps and 3 rapid recall checks.</p>" +
     "<div class='row'><button id='crSaveNb'>☆ Save to notebook</button><button id='crSaveFile'>⬇ Save .md</button><button id='crRead'>🔊 Read aloud</button>" +
     (aiCfg() ? "<button class='primary' id='crAi'>✦ Enhance with AI</button>" : "") + "</div>";
@@ -10242,7 +10762,7 @@ function mistakePractice(scope){
 }
 RENDER.mist = function(){
   var el = $("miIn"), items = mistakeItems("*");
-  var h = "<h1>My Error Ledger</h1><p class='sub'>Every wrong answer is a clue about what to practise next. Fix it here, then say “I know this now”.</p>";
+  var h = "<div class='subviewTopBar' style='display:flex;align-items:center;justify-content:space-between;margin-bottom:12px'><button type='button' class='btn o' onclick='show(\"tools\")' style='padding:6px 14px;font-size:0.86rem;font-weight:700'>← Back to More</button><span style='font-size:1.1rem;font-weight:800;color:var(--acc)'>Error Ledger</span><span style='width:60px'></span></div><h1>My Error Ledger</h1><p class='sub'>Every wrong answer is a clue about what to practise next. Fix it here, then say “I know this now”.</p>";
   if(!items.length){
     h += "<div class='card hero' style='text-align:center'>" + plantSvg(1, 64) + "<p>No errors saved yet. Take an MCQ practice or an exam and every wrong answer will land here.</p><div class='row' style='justify-content:center'><button class='primary' id='miGo'>Go to Study</button></div></div>";
     el.innerHTML = h; $("miGo").onclick = function(){ show("study"); }; return;
@@ -10506,19 +11026,7 @@ RENDER.tools = function(){
       "<div class='settingsRowRight'><span class='settingsStatusPill " + (ai ? 'on' : '') + "'>" + (ai ? esc(aiName(ai)) + ' Active' : 'Offline Engine') + "</span><span class='settingsChevron'>›</span></div>" +
     "</div>" +
   "</div>";
-  h += folderCardHtml();
-  h += "<div class='settingsRow' data-act='bk'>" +
-    "<div class='settingsRowSummary'>" +
-      "<div class='settingsRowLeft'><div class='settingsRowIcon'>💾</div><div class='settingsRowText'><div class='settingsRowTitle'>Back Up Data</div><div class='settingsRowSub'>Export an offline backup file (JSON) of all books and progress</div></div></div>" +
-      "<div class='settingsRowRight'><span class='settingsStatusPill " + (needBk ? 'warn' : '') + "'>" + (needBk ? 'Backup Due' : (DB.lastBackup ? fmtD(DB.lastBackup) : 'Backup Now')) + "</span><span class='settingsChevron'>⬇</span></div>" +
-    "</div>" +
-  "</div>";
-  h += "<div class='settingsRow' data-act='rs'>" +
-    "<div class='settingsRowSummary'>" +
-      "<div class='settingsRowLeft'><div class='settingsRowIcon'>📂</div><div class='settingsRowText'><div class='settingsRowTitle'>Restore Backup</div><div class='settingsRowSub'>Restore study progress, notes, and packs from a backup file</div></div></div>" +
-      "<div class='settingsRowRight'><span class='settingsStatusPill'>Choose File</span><span class='settingsChevron'>⬆</span></div>" +
-    "</div>" +
-  "</div>";
+  h += cloudSyncCardHtml();
   h += "</div>";
 
   h += "<div class='moreSectionKicker'><span>Account &amp; Access</span><span>Settings</span></div>";
@@ -10606,7 +11114,7 @@ function playConcepts(){
 RENDER.play = function(){
   clearPlayTimer();
   var el = $("plIn"), c = cur(), best = playDB().best || {};
-  var h = "<h1>Play</h1><p class='sub'>Play with the words and ideas of <strong>" + esc(c ? c.name : "your chapter") + "</strong>. Every game is built from your own book, so playing is also revising.</p>";
+  var h = "<div class='subviewTopBar' style='display:flex;align-items:center;justify-content:space-between;margin-bottom:12px'><button type='button' class='btn o' onclick='show(\"tools\")' style='padding:6px 14px;font-size:0.86rem;font-weight:700'>← Back to More</button><span style='font-size:1.1rem;font-weight:800;color:var(--acc)'>Play &amp; Games</span><span style='width:60px'></span></div><h1>Play</h1><p class='sub'>Play with the words and ideas of <strong>" + esc(c ? c.name : "your chapter") + "</strong>. Every game is built from your own book, so playing is also revising.</p>";
   if(!c){
     h += "<div class='card hero' style='text-align:center'>" + plantSvg(1, 64) + "<p>Add a book or chapter first, then come back to play.</p><div class='row' style='justify-content:center'><button class='primary' id='plGo'>Go to Study</button></div></div>";
     el.innerHTML = h; $("plGo").onclick = function(){ show("study"); }; return;
@@ -10848,7 +11356,7 @@ function tipsMnemonic(){
 }
 RENDER.tips = function(){
   var el = $("tpIn"), c = cur();
-  var h = "<h1>Hacks &amp; Tips</h1><p class='sub'>Proven ways to remember what you study, quick memory tricks, and wisdom from the Upanishads, the Gita, Chanakya, Kautilya and the Panchatantra.</p>";
+  var h = "<div class='subviewTopBar' style='display:flex;align-items:center;justify-content:space-between;margin-bottom:12px'><button type='button' class='btn o' onclick='show(\"tools\")' style='padding:6px 14px;font-size:0.86rem;font-weight:700'>← Back to More</button><span style='font-size:1.1rem;font-weight:800;color:var(--acc)'>Hacks &amp; Tips</span><span style='width:60px'></span></div><h1>Hacks &amp; Tips</h1><p class='sub'>Proven ways to remember what you study, quick memory tricks, and wisdom from the Upanishads, the Gita, Chanakya, Kautilya and the Panchatantra.</p>";
   if(c){
     var mm = tipsMnemonic();
     h += "<div class='card'><strong>For this chapter: " + esc(c.name) + "</strong>";
@@ -10890,6 +11398,319 @@ function restoreData(f){
     });
   }).catch(function(){ toast("That is not a ENGRAMOS backup file"); });
 }
+// ===== UNIVERSAL CLOUDSYNC & SMART MERGE ENGINE (EngramosSync) =====
+var EngramosSync = {
+  getDeviceName: function(){
+    try {
+      var ua = navigator.userAgent || "";
+      if(/iPhone/i.test(ua)) return "iPhone";
+      if(/iPad/i.test(ua)) return "iPad";
+      if(/Macintosh|Mac OS X/i.test(ua)) return "Mac";
+      if(/Windows/i.test(ua)) return "Windows PC";
+      if(/Android/i.test(ua)) return "Android Device";
+      return "Web Device";
+    } catch(_) { return "Device"; }
+  },
+  getDeviceId: function(){
+    try {
+      var id = localStorage.getItem("engramos_device_id");
+      if(!id){
+        id = "dev_" + Math.random().toString(36).slice(2, 9) + "_" + Date.now().toString(36);
+        localStorage.setItem("engramos_device_id", id);
+      }
+      return id;
+    } catch(_) { return "dev_" + Math.random().toString(36).slice(2, 9); }
+  },
+  syncEnvelope: function(){
+    if(typeof DB === "undefined" || !DB) return null;
+    DB._sync = DB._sync || {};
+    DB._sync.appId = "ENGRAMOS";
+    DB._sync.studentId = AUTH.session || "student";
+    DB._sync.studentName = (DB.profile && DB.profile.name) || "Student";
+    DB._sync.rev = (DB._sync.rev || 0) + 1;
+    DB._sync.lastModified = new Date().toISOString();
+    DB._sync.deviceId = this.getDeviceId();
+    DB._sync.deviceName = this.getDeviceName();
+    return DB._sync;
+  },
+  detectConflict: function(local, incoming){
+    if(!local || !local.chapters || !local.chapters.length) return false;
+    if(!incoming || !incoming.chapters || !incoming.chapters.length) return false;
+    var lSync = local._sync || {}, rSync = incoming._sync || {};
+    if(rSync.deviceId && lSync.deviceId && rSync.deviceId !== lSync.deviceId){
+      return true;
+    }
+    var lMod = local.updatedAt || local.at || (lSync.lastModified ? new Date(lSync.lastModified).getTime() : 0);
+    var rMod = incoming.updatedAt || incoming.at || (rSync.lastModified ? new Date(rSync.lastModified).getTime() : 0);
+    if(rMod && lMod && Math.abs(rMod - lMod) > 3000){
+      var lChMap = {};
+      (local.chapters || []).forEach(function(c){ lChMap[c.id] = (c.pack ? 1 : 0); });
+      var rChMap = {};
+      (incoming.chapters || []).forEach(function(c){ rChMap[c.id] = (c.pack ? 1 : 0); });
+      var allIds = Object.keys(Object.assign({}, lChMap, rChMap));
+      if(allIds.length !== (local.chapters || []).length) return true;
+      for(var i = 0; i < allIds.length; i++){
+        var id = allIds[i];
+        if(lChMap[id] !== rChMap[id]) return true;
+      }
+      var lAttCount = 0, rAttCount = 0;
+      Object.keys(local.progress || {}).forEach(function(k){ lAttCount += ((local.progress[k] && local.progress[k].attempts) || []).length; });
+      Object.keys(incoming.progress || {}).forEach(function(k){ rAttCount += ((incoming.progress[k] && incoming.progress[k].attempts) || []).length; });
+      if(lAttCount !== rAttCount) return true;
+    }
+    return false;
+  },
+  smartMerge: function(local, incoming){
+    var res = Object.assign({}, local, incoming);
+    res.profile = Object.assign({}, incoming.profile || {}, local.profile || {});
+    if(local.profile && incoming.profile){
+      res.profile.level = Math.max(local.profile.level || 0, incoming.profile.level || 0);
+    }
+    var lCh = local.chapters || [], rCh = incoming.chapters || [];
+    var chMap = {};
+    lCh.forEach(function(c){ chMap[c.id] = Object.assign({}, c); });
+    rCh.forEach(function(c){
+      if(!chMap[c.id]){
+        chMap[c.id] = Object.assign({}, c);
+      } else {
+        var base = chMap[c.id];
+        if(c.pack && (!base.pack || !base.pack.concepts || base.pack.concepts.length < (c.pack.concepts || []).length)){
+          base.pack = c.pack;
+        }
+        if((c.text || "").length > (base.text || "").length){
+          base.text = c.text;
+        }
+        if(c.pages && (!base.pages || c.pages > base.pages)) base.pages = c.pages;
+        chMap[c.id] = base;
+      }
+    });
+    res.chapters = Object.keys(chMap).map(function(k){ return chMap[k]; });
+
+    var bkMap = {};
+    (local.book || []).forEach(function(b){ bkMap[b.id || b.name] = b; });
+    (incoming.book || []).forEach(function(b){
+      var k = b.id || b.name;
+      if(!bkMap[k]) bkMap[k] = b;
+      else bkMap[k] = Object.assign({}, bkMap[k], b);
+    });
+    res.book = Object.keys(bkMap).map(function(k){ return bkMap[k]; });
+
+    res.progress = {};
+    var allProgKeys = Object.keys(Object.assign({}, local.progress || {}, incoming.progress || {}));
+    allProgKeys.forEach(function(k){
+      var lp = (local.progress && local.progress[k]) || {attempts: [], done: {}};
+      var rp = (incoming.progress && incoming.progress[k]) || {attempts: [], done: {}};
+      var done = Object.assign({}, rp.done || {}, lp.done || {});
+      var attSeen = {}, attCombined = [];
+      (lp.attempts || []).concat(rp.attempts || []).forEach(function(a){
+        var key = a.t + "_" + a.m + "_" + a.score;
+        if(!attSeen[key]){
+          attSeen[key] = true;
+          attCombined.push(a);
+        }
+      });
+      attCombined.sort(function(a, b){ return (a.t || 0) - (b.t || 0); });
+      res.progress[k] = { attempts: attCombined, done: done };
+    });
+
+    res.daily = {};
+    var allDays = Object.keys(Object.assign({}, local.daily || {}, incoming.daily || {}));
+    allDays.forEach(function(day){
+      var ld = (local.daily && local.daily[day]) || {xp: 0, done: []};
+      var rd = (incoming.daily && incoming.daily[day]) || {xp: 0, done: []};
+      var xp = Math.max(ld.xp || 0, rd.xp || 0);
+      var doneUnion = Array.from(new Set([].concat(ld.done || [], rd.done || [])));
+      res.daily[day] = { xp: xp, done: doneUnion };
+    });
+
+    res.facts = Object.assign({}, incoming.facts || {}, local.facts || {});
+    res.cache = Object.assign({}, incoming.cache || {}, local.cache || {});
+    res.qaMarks = Object.assign({}, incoming.qaMarks || {}, local.qaMarks || {});
+
+    var mistMap = {};
+    (local.mist || []).forEach(function(m){ mistMap[m.id || m.q] = m; });
+    (incoming.mist || []).forEach(function(m){
+      var k = m.id || m.q;
+      if(!mistMap[k]) mistMap[k] = m;
+      else {
+        var baseM = mistMap[k];
+        if(m.fixed) baseM.fixed = true;
+        mistMap[k] = Object.assign({}, baseM, m);
+      }
+    });
+    res.mist = Object.keys(mistMap).map(function(k){ return mistMap[k]; });
+
+    res.badges = Object.assign({}, incoming.badges || {}, local.badges || {});
+    res.freeze = Object.assign({}, incoming.freeze || {}, local.freeze || {});
+    res.freeze.count = Math.max((local.freeze && local.freeze.count) || 0, (incoming.freeze && incoming.freeze.count) || 0);
+
+    res.ai = local.ai || incoming.ai;
+    res.save = local.save || incoming.save;
+    res.pilot = local.pilot || incoming.pilot;
+    res.sub = local.sub || incoming.sub;
+
+    res._sync = {
+      appId: "ENGRAMOS",
+      studentId: AUTH.session || "student",
+      studentName: (res.profile && res.profile.name) || "Student",
+      rev: Math.max((local._sync && local._sync.rev) || 0, (incoming._sync && incoming._sync.rev) || 0) + 1,
+      lastModified: new Date().toISOString(),
+      deviceId: this.getDeviceId(),
+      deviceName: this.getDeviceName(),
+      lastAction: "smart_merge"
+    };
+    res.updatedAt = Date.now();
+    return normalizeStudy(res);
+  },
+  presentMergeConflict: function(local, incoming, onResolved){
+    var prev = document.querySelector(".kw-conflict-modal");
+    if(prev) prev.remove();
+    var lSync = local._sync || {}, rSync = incoming._sync || {};
+    var lDev = lSync.deviceName || this.getDeviceName() || "This Device";
+    var rDev = rSync.deviceName || "Remote / Cloud File";
+    var lAt = local.updatedAt || local.at || (lSync.lastModified ? new Date(lSync.lastModified).getTime() : Date.now());
+    var rAt = incoming.updatedAt || incoming.at || (rSync.lastModified ? new Date(rSync.lastModified).getTime() : Date.now());
+    var lChCount = (local.chapters || []).length, rChCount = (incoming.chapters || []).length;
+    var isRemoteNewer = (rAt > lAt);
+    var newerLabel = isRemoteNewer ? rDev + " (Newer)" : lDev + " (Newer)";
+
+    var d = document.createElement("div");
+    d.className = "modal kw-conflict-modal";
+    d.style.zIndex = "10000";
+    d.innerHTML = "<div class='modal-card' style='max-width:540px;width:92%;padding:22px;border-radius:14px;background:var(--card);box-shadow:0 24px 38px rgba(0,0,0,0.3)'>" +
+      "<div style='display:flex;align-items:center;gap:12px;margin-bottom:12px;border-bottom:1px solid var(--line);padding-bottom:12px'>" +
+        "<span style='font-size:32px'>⚡</span>" +
+        "<div>" +
+          "<h3 style='margin:0;font-size:16px;font-weight:700;color:var(--ink)'>Study Data Conflict Detected</h3>" +
+          "<div style='font-size:12px;color:var(--mut);margin-top:2px'>Another device or file has updated this student\u2019s data. Choose how to reconcile.</div>" +
+        "</div>" +
+      "</div>" +
+      "<div style='display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0'>" +
+        "<div style='border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:rgba(99,102,241,0.05)'>" +
+          "<div style='font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase'>🖥️ " + esc(lDev) + "</div>" +
+          "<div style='font-size:13px;font-weight:700;margin-top:4px'><b>" + lChCount + "</b> Chapter(s)</div>" +
+          "<div style='font-size:11px;color:var(--mut);margin-top:2px'>Saved: <b>" + fmtD(lAt) + " " + fmtT(lAt) + "</b></div>" +
+        "</div>" +
+        "<div style='border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:rgba(16,185,129,0.05)'>" +
+          "<div style='font-size:11px;font-weight:700;color:#059669;text-transform:uppercase'>☁️ " + esc(rDev) + "</div>" +
+          "<div style='font-size:13px;font-weight:700;margin-top:4px'><b>" + rChCount + "</b> Chapter(s)</div>" +
+          "<div style='font-size:11px;color:var(--mut);margin-top:2px'>Saved: <b>" + fmtD(rAt) + " " + fmtT(rAt) + "</b></div>" +
+        "</div>" +
+      "</div>" +
+      "<div style='display:flex;flex-direction:column;gap:8px;margin-top:16px'>" +
+        "<button class='primary' id='sync-btn-smart-merge' style='display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;font-size:14px;font-weight:700'>" +
+          "<span>🔄</span> Smart Merge (Recommended)" +
+        "</button>" +
+        "<div style='font-size:11.5px;color:var(--mut);text-align:center;margin-top:-2px;margin-bottom:6px'>" +
+          "Combines chapters, study progress, flashcards, error ledger, and notes from both versions without losing data." +
+        "</div>" +
+        "<div style='display:flex;gap:8px'>" +
+          "<button id='sync-btn-use-latest' style='flex:1;padding:8px;font-size:12px;font-weight:600'>" +
+            "⏱️ Use Latest (" + esc(newerLabel) + ")" +
+          "</button>" +
+          "<button id='sync-btn-backup-remote' style='flex:1;padding:8px;font-size:12px'>" +
+            "📄 Backup &amp; Use Remote" +
+          "</button>" +
+        "</div>" +
+      "</div>" +
+    "</div>";
+    document.body.appendChild(d);
+
+    var self = this;
+    d.querySelector("#sync-btn-smart-merge").onclick = function(){
+      d.remove();
+      var merged = self.smartMerge(local, incoming);
+      if(typeof onResolved === "function") onResolved(merged, "merge");
+    };
+    d.querySelector("#sync-btn-use-latest").onclick = function(){
+      d.remove();
+      var chosen = isRemoteNewer ? incoming : local;
+      chosen.updatedAt = Date.now();
+      if(typeof onResolved === "function") onResolved(chosen, "latest");
+    };
+    d.querySelector("#sync-btn-backup-remote").onclick = function(){
+      d.remove();
+      backupData();
+      incoming.updatedAt = Date.now();
+      if(typeof onResolved === "function") onResolved(incoming, "remote_with_backup");
+    };
+  },
+  pickCloudFile: function(){
+    var input = document.getElementById("engramos-cloud-file-input");
+    if(!input){
+      input = document.createElement("input");
+      input.type = "file";
+      input.id = "engramos-cloud-file-input";
+      input.accept = ".json,application/json";
+      input.style.display = "none";
+      document.body.appendChild(input);
+    }
+    input.value = "";
+    var self = this;
+    input.onchange = function(){
+      if(input.files && input.files[0]){
+        var file = input.files[0];
+        file.text().then(function(txt){
+          var incoming = JSON.parse(txt);
+          if(!incoming || !incoming.chapters) throw new Error("Invalid ENGRAMOS file");
+          localStorage.setItem("engramos_safari_cloud_file_name", file.name);
+          DB.save = DB.save || {};
+          DB.save.asked = true;
+          DB.save.enabled = true;
+          DB.save.name = file.name;
+          DB.save.type = "cloud_file";
+          DB.save.at = Date.now();
+
+          if(self.detectConflict(DB, incoming)){
+            self.presentMergeConflict(DB, incoming, function(resolved, action){
+              DB = resolved;
+              save();
+              toast("Reconciled with iCloud Drive (" + action + ")");
+              refreshFolderChip();
+              if(curView === "tools") RENDER.tools();
+            });
+          } else {
+            DB = self.smartMerge(DB, incoming);
+            save();
+            toast("Connected to iCloud Drive: " + file.name);
+            refreshFolderChip();
+            if(curView === "tools") RENDER.tools();
+          }
+        }).catch(function(e){
+          toast("Could not read iCloud file: " + (e.message || e));
+        });
+      }
+    };
+    input.click();
+  },
+  checkCloudConflict: function(){
+    var self = this;
+    if(FOLDER.handle){
+      var name = folderFileName();
+      return FOLDER.handle.getFileHandle(name).then(function(fh){
+        return fh.getFile().then(function(f){ return f.text(); });
+      }).then(function(txt){
+        var remote = JSON.parse(txt);
+        if(self.detectConflict(DB, remote)){
+          self.presentMergeConflict(DB, remote, function(resolved, action){
+            DB = resolved;
+            save();
+            writeFolderNow();
+            toast("Reconciliation complete (" + action + "). In sync.");
+            if(curView === "tools") RENDER.tools();
+          });
+        } else {
+          toast("File is up to date. No remote conflicts found.");
+        }
+      }).catch(function(e){
+        toast("Could not check folder file: " + (e && (e.message || e.name)));
+      });
+    }
+    this.pickCloudFile();
+  }
+};
+window.EngramosSync = EngramosSync;
+
 /* ---------- save folder: keep a live copy in a chosen folder ----------
    Uses the File System Access API. The directory handle is stored in
    IndexedDB (per student) so it can be reused without asking again. Cloud
@@ -10954,8 +11775,9 @@ function folderFileName(){
 }
 function folderSnapshot(){
   var d = studySnapshot(DB);
-  if(d.save) d.save = {asked: !!d.save.asked, enabled: !!d.save.enabled, name: d.save.name || "", file: d.save.file || "", at: Date.now()};
+  if(d.save) d.save = {asked: !!d.save.asked, enabled: !!d.save.enabled, name: d.save.name || "", file: d.save.file || "", at: Date.now(), type: d.save.type || ""};
   d.app = "ENGRAMOS"; d.kind = "data"; d.at = Date.now();
+  if(typeof EngramosSync !== "undefined" && EngramosSync.syncEnvelope) d._sync = EngramosSync.syncEnvelope();
   return d;
 }
 function scheduleFolderSave(){
@@ -10966,7 +11788,7 @@ function scheduleFolderSave(){
     FOLDER.timer = null;
     if(FOLDER.writing){ FOLDER.queued = true; return; }
     writeFolderNow();
-  }, 800);
+  }, 300);
 }
 function writeFolderNow(){
   if(LOCKED) return Promise.resolve(false);
@@ -11002,6 +11824,11 @@ function writeFolderNow(){
 function attachFolder(){
   if(!DB.save) DB.save = {asked: false, enabled: false, name: "", file: "", at: 0};
   if(!DB.save.enabled){ refreshFolderChip(); return Promise.resolve(false); }
+  var safariFileName = localStorage.getItem("engramos_safari_cloud_file_name");
+  if(DB.save.type === "cloud_file" || safariFileName){
+    refreshFolderChip();
+    return Promise.resolve(true);
+  }
   if(!folderSupported()){ FOLDER.pending = true; FOLDER.lasted = "not supported here"; refreshFolderChip(); return Promise.resolve(false); }
   return fdbGet("folder_" + AUTH.session).then(function(h){
     if(!h){ FOLDER.pending = true; FOLDER.lasted = "link lost"; refreshFolderChip(); return false; }
@@ -11015,7 +11842,64 @@ function attachFolder(){
     });
   }).catch(function(){ FOLDER.pending = true; FOLDER.lasted = "error"; refreshFolderChip(); return false; });
 }
-function chooseFolder(){
+var ENGRAMOS_CLOUD_PROVIDERS = [
+  { id: "gdrive", name: "Google Drive", icon: "🔵", brand: "Google Drive", hint: "Google Drive > My Drive or streamed folder" },
+  { id: "onedrive", name: "Microsoft OneDrive", icon: "🔷", brand: "OneDrive", hint: "OneDrive folder or SharePoint synced drive" },
+  { id: "dropbox", name: "Dropbox", icon: "📦", brand: "Dropbox", hint: "Dropbox synced personal or team folder" },
+  { id: "icloud", name: "Apple iCloud Drive", icon: "☁️", brand: "iCloud Drive", hint: "iCloud Drive (Finder sidebar or Files app)" },
+  { id: "local", name: "Local / Network Drive", icon: "📁", brand: "Local Drive", hint: "Local Documents or corporate network drive" }
+];
+
+function getEngramosCloudProvider(id){
+  for(var i = 0; i < ENGRAMOS_CLOUD_PROVIDERS.length; i++){
+    if(ENGRAMOS_CLOUD_PROVIDERS[i].id === id) return ENGRAMOS_CLOUD_PROVIDERS[i];
+  }
+  return folderSupported() ? ENGRAMOS_CLOUD_PROVIDERS[4] : ENGRAMOS_CLOUD_PROVIDERS[3];
+}
+
+function renderEngramosProviderGrid(activeProvId){
+  var h = "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:10px'>";
+  ENGRAMOS_CLOUD_PROVIDERS.forEach(function(p){
+    var isCurrent = (activeProvId === p.id);
+    h += "<div style='border:1.5px solid " + (isCurrent ? "var(--acc)" : "var(--line)") + ";background:" + (isCurrent ? "rgba(99,102,241,0.06)" : "var(--card)") + ";border-radius:10px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;gap:6px'>" +
+      "<div>" +
+        "<div style='display:flex;align-items:center;justify-content:space-between'>" +
+          "<span style='font-size:20px'>" + p.icon + "</span>" +
+          (isCurrent ? "<span style='font-size:10px;font-weight:700;color:var(--acc);background:rgba(99,102,241,0.12);padding:2px 6px;border-radius:10px'>ACTIVE</span>" : "") +
+        "</div>" +
+        "<div style='font-weight:700;font-size:12.5px;color:var(--ink);margin-top:4px'>" + p.name + "</div>" +
+        "<div style='font-size:11px;color:var(--mut);margin-top:2px;line-height:1.3'>" + p.hint + "</div>" +
+      "</div>" +
+      "<button type='button' class='" + (isCurrent ? "primary" : "") + "' data-act='prov_pick' data-prov='" + p.id + "' style='font-size:11px;padding:5px 8px;margin-top:4px'>" +
+        (isCurrent ? "✓ Reconnect / Change" : "Connect " + p.brand) +
+      "</button>" +
+    "</div>";
+  });
+  h += "</div>";
+  return h;
+}
+
+function connectEngramosProvider(provId){
+  if(provId){
+    try { localStorage.setItem("engramos_cloud_provider", provId); } catch(_){}
+  }
+  if(provId === "icloud" && !folderSupported()){
+    EngramosSync.pickCloudFile();
+    return;
+  }
+  if(folderSupported()){
+    chooseFolder(provId).then(function(){
+      if(curView === "tools" && RENDER.tools) RENDER.tools();
+    });
+  } else {
+    EngramosSync.pickCloudFile();
+  }
+}
+
+function chooseFolder(provId){
+  if(provId){
+    try { localStorage.setItem("engramos_cloud_provider", provId); } catch(_){}
+  }
   if(!folderSupported()){ toast("This browser cannot save to a folder directly"); return Promise.resolve(false); }
   var pick;
   try { pick = window.showDirectoryPicker({id: "gurukul", mode: "readwrite", startIn: "documents"}); }
@@ -11030,6 +11914,18 @@ function chooseFolder(){
       FOLDER.handle = h; FOLDER.pending = false; FOLDER.lasted = "";
       DB.save = DB.save || {asked: false, enabled: false, name: "", file: "", at: 0};
       DB.save.asked = true; DB.save.enabled = true; DB.save.name = h.name || "folder"; DB.save.at = Date.now();
+
+      var curP = localStorage.getItem("engramos_cloud_provider");
+      if(!curP && h && h.name){
+        var nl = h.name.toLowerCase();
+        if(nl.indexOf("google") >= 0 || nl.indexOf("gdrive") >= 0) curP = "gdrive";
+        else if(nl.indexOf("onedrive") >= 0) curP = "onedrive";
+        else if(nl.indexOf("dropbox") >= 0) curP = "dropbox";
+        else if(nl.indexOf("icloud") >= 0) curP = "icloud";
+        else curP = "local";
+        try { localStorage.setItem("engramos_cloud_provider", curP); } catch(_){}
+      }
+
       return fdbPut("folder_" + AUTH.session, h).catch(function(){ return true; }).then(function(){
         save();
         if(FOLDER.timer){ clearTimeout(FOLDER.timer); FOLDER.timer = null; }
@@ -11065,32 +11961,67 @@ function folderTurnOff(){
     save(); refreshFolderChip(); toast("Folder saving turned off");
   });
 }
-function folderCardHtml(){
-  var s = DB.save || {asked: false, enabled: false, name: "", at: 0}, sup = folderSupported(), state, btns, pillTxt = "Off", pillCls = "";
-  if(!s.enabled){
-    pillTxt = "Not Set";
-    state = sup ? "Auto-saves your progress to iCloud, Google Drive, or any local folder." : "Direct folder write unavailable in this browser. Use Back Up Data to keep offline copies.";
-    btns = sup ? "<button class='primary' data-act='foldpick'>Choose a Folder</button>" : "";
-  } else if(!sup){
-    pillTxt = "Unavailable"; pillCls = "warn";
-    state = "Saved earlier to \u201C" + esc(s.name) + "\u201D, but this browser cannot write to it.";
-    btns = "";
-  } else if(FOLDER.pending){
-    pillTxt = "Needs Permission"; pillCls = "warn";
-    state = "Saving to \u201C" + esc(s.name) + "\u201D" + (FOLDER.lasted ? " \u2014 write error (" + esc(FOLDER.lasted) + ")" : "") + ". Tap Reconnect to allow.";
-    btns = "<button data-act='foldchg'>Change Folder</button> <button class='primary' data-act='foldrec'>Reconnect</button> <button data-act='foldoff'>Turn Off</button>";
+function cloudSyncCardHtml(){
+  var s = DB.save || {asked: false, enabled: false, name: "", at: 0};
+  var sup = folderSupported();
+  var safariFileName = localStorage.getItem("engramos_safari_cloud_file_name");
+  var isCloudFile = (s.type === "cloud_file") || (safariFileName && s.enabled);
+  var isFolder = s.enabled && !isCloudFile && (FOLDER.handle || s.name);
+  var provId = localStorage.getItem("engramos_cloud_provider") || (isCloudFile ? "icloud" : (isFolder ? "local" : ""));
+  var curProv = getEngramosCloudProvider(provId);
+  var state, btns, pillTxt = "Local Storage", pillCls = "", subTxt = "";
+
+  if(isCloudFile){
+    pillTxt = curProv.brand + " Active"; pillCls = "on";
+    var fn = s.name || safariFileName || folderFileName();
+    subTxt = curProv.icon + " " + curProv.name + " · " + esc(fn) + " (300ms auto-save)";
+    state = "Connected to " + curProv.name + " file \u201C<b>" + esc(fn) + "</b>\u201D. Your notes, flashcards, error ledger, and chapter progress are automatically synced across devices.";
+    btns = "<button class='primary' data-act='sync_check'>⚡ Check Updates / Reconcile</button> " +
+           "<button data-act='cloud_pick'>Choose Another File</button> " +
+           "<button data-act='cloud_disconnect' style='color:var(--crit);'>Disconnect</button>";
+  } else if(isFolder){
+    if(!FOLDER.handle || FOLDER.pending){
+      pillTxt = "Needs Permission"; pillCls = "warn";
+      subTxt = curProv.icon + " " + curProv.name + " · Permission Required";
+      state = "Saving to " + curProv.name + " folder \u201C<b>" + esc(s.name) + "</b>\u201D" + (FOLDER.lasted ? " — error: " + esc(FOLDER.lasted) : "") + ". Tap Reconnect to allow folder access.";
+      btns = "<button class='primary' data-act='foldrec'>⚡ Reconnect Folder</button> " +
+             "<button data-act='foldchg'>Change Folder</button> " +
+             "<button data-act='cloud_disconnect' style='color:var(--crit);'>Disconnect</button>";
+    } else {
+      pillTxt = curProv.brand + " Active"; pillCls = "on";
+      subTxt = curProv.icon + " " + curProv.name + " · " + esc(s.name) + " (300ms auto-save)";
+      state = "Auto-saving to " + curProv.name + " folder \u201C<b>" + esc(s.name) + "</b>\u201D" + (s.at ? " · last save " + fmtT(s.at) : "") + ". All changes sync automatically in the background.";
+      btns = "<button class='primary' data-act='sync_check'>⚡ Check Updates / Reconcile</button> " +
+             "<button data-act='foldchg'>Change Folder</button> " +
+             "<button data-act='cloud_disconnect' style='color:var(--crit);'>Disconnect</button>";
+    }
   } else {
-    pillTxt = "Active"; pillCls = "on";
-    state = "Auto-saving to \u201C" + esc(s.name) + "\u201D" + (s.at ? " · last save " + fmtT(s.at) : "") + ".";
-    btns = "<button data-act='foldchg'>Change Folder</button> <button data-act='foldoff'>Turn Off</button>";
+    pillTxt = "Local Storage"; pillCls = "";
+    subTxt = "💾 Local Device Database · Auto-saves instantly in browser";
+    state = "Your study progress is saved in this browser\u2019s local database. Connect Google Drive, OneDrive, Dropbox, or iCloud Drive to study seamlessly across your phone, tablet, and computer.";
   }
-  return "<div class='settingsRow hasDrawer' id='rowFolder'>" +
+
+  var providerSection = "<div style='margin-top:14px;padding-top:12px;border-top:1px solid var(--line)'>" +
+    "<div style='font-size:0.8rem;font-weight:700;color:var(--ink);margin-bottom:4px'>Cloud Storage Providers</div>" +
+    "<div style='font-size:0.75rem;color:var(--mut);margin-bottom:8px'>Select your cloud storage service for automatic background syncing:</div>" +
+    renderEngramosProviderGrid(isCloudFile || isFolder ? provId : null) +
+  "</div>";
+
+  var utils = "<div style='margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px'>" +
+    "<span style='font-size:0.75rem;color:var(--mut)'>Offline Backup Files</span>" +
+    "<div style='display:flex;gap:8px'>" +
+      "<button type='button' data-act='bk' style='font-size:0.75rem;padding:4px 10px'>💾 Export Backup (.json)</button>" +
+      "<button type='button' data-act='rs' style='font-size:0.75rem;padding:4px 10px'>📂 Restore Backup (.json)</button>" +
+    "</div>" +
+  "</div>";
+
+  return "<div class='settingsRow hasDrawer' id='rowCloudSync'>" +
     "<div class='settingsRowSummary'>" +
       "<div class='settingsRowLeft'>" +
-        "<div class='settingsRowIcon'>📁</div>" +
+        "<div class='settingsRowIcon'>" + (isCloudFile || isFolder ? curProv.icon : "☁️") + "</div>" +
         "<div class='settingsRowText'>" +
-          "<div class='settingsRowTitle'>Save Folder</div>" +
-          "<div class='settingsRowSub'>Auto-saves progress to a local or cloud folder</div>" +
+          "<div class='settingsRowTitle'>Cloud Storage &amp; Sync</div>" +
+          "<div class='settingsRowSub'>" + subTxt + "</div>" +
         "</div>" +
       "</div>" +
       "<div class='settingsRowRight'>" +
@@ -11099,31 +12030,37 @@ function folderCardHtml(){
       "</div>" +
     "</div>" +
     "<div class='settingsDrawer'>" +
-      "<p class='status' style='margin:0 0 10px'>" + state + "</p>" +
+      "<p class='status' style='margin:0 0 10px;font-size:0.84rem;line-height:1.45'>" + state + "</p>" +
       (btns ? "<div class='row' style='gap:8px;flex-wrap:wrap'>" + btns + "</div>" : "") +
+      providerSection +
+      utils +
     "</div>" +
   "</div>";
 }
+var folderCardHtml = cloudSyncCardHtml;
 function refreshFolderChip(){ if(curView === "tools" && RENDER.tools) RENDER.tools(); }
 function folderWelcomeModal(){
   DB.save = DB.save || {asked: false, enabled: false, name: "", file: "", at: 0};
   var ok = folderSupported();
-  var h = "<h3 style='margin-top:0'>Where should I save your work?</h3>" +
-    "<p>Choose a folder for <b>" + esc((DB.profile && DB.profile.name) || "your") + "\u2019s ENGRAMOS data. I will keep a copy there and update it automatically every time something changes, so your progress is safe even if this browser is cleared.</p>" +
-    "<p class='status'>You can choose a <b>cloud folder</b> \u2014 iCloud Drive, OneDrive, Google Drive or Dropbox \u2014 if its desktop app is installed on this computer. It then syncs just like any other folder.</p>";
-  if(ok) h += "<p class='status'>The app keeps one file there: <b>" + esc(folderFileName()) + "</b>.</p>";
-  else h += "<p class='status' style='color:var(--bad)'>This browser cannot write to a folder directly. Try Chrome or Edge, or open the app from its local server. Your work will stay in this browser; use <b>Back up my data</b> in Settings to download a copy you can keep anywhere.</p>";
-  h += "<div class='row' style='margin-top:12px'>" + (ok ? "<button class='primary' id='fwPick'>Choose a folder</button>" : "") + "<button id='fwLater'>" + (ok ? "Keep in this browser for now" : "Continue") + "</button></div>";
+  var h = "<h3 style='margin-top:0'>Where should I save your study data?</h3>" +
+    "<p>Select your cloud storage provider or folder for <b>" + esc((DB.profile && DB.profile.name) || "your") + "\u2019s</b> ENGRAMOS data. Your chapters, flashcards, and progress will sync automatically across all devices.</p>" +
+    renderEngramosProviderGrid(null) +
+    "<div class='row' style='margin-top:14px;justify-content:flex-end'>" +
+      "<button id='fwLater'>Keep in this browser for now</button>" +
+    "</div>";
   var m = popup(h);
   m.el.querySelector("#fwLater").onclick = function(){
     DB.save.asked = true; save(); m.close();
-    toast(ok ? "Your work is kept in this browser. You can choose a folder in Settings." : "You can back up any time in Settings.");
+    toast("Your work is kept in this browser. You can connect cloud storage any time in Settings.");
   };
-  if(ok){
-    m.el.querySelector("#fwPick").onclick = function(){
-      chooseFolder().then(function(got){ if(got){ save(); if(m.el.parentNode) m.close(); } });
-    };
-  }
+  m.el.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest("[data-act='prov_pick']");
+    if(b){
+      var pid = b.getAttribute("data-prov");
+      m.close();
+      connectEngramosProvider(pid);
+    }
+  });
 }
 function afterLoginFolders(){
   if(!DB.save) DB.save = {asked: false, enabled: false, name: "", file: "", at: 0};
@@ -11135,6 +12072,7 @@ function afterLoginFolders(){
 try {
   document.addEventListener("visibilitychange", function(){ if(document.visibilityState === "hidden" && typeof DB !== "undefined" && DB && DB.save && DB.save.enabled) writeFolderNow(); });
   window.addEventListener("pagehide", function(){ if(typeof DB !== "undefined" && DB && DB.save && DB.save.enabled) writeFolderNow(); });
+  window.addEventListener("beforeunload", function(){ if(typeof DB !== "undefined" && DB && DB.save && DB.save.enabled) writeFolderNow(); });
 } catch(e){}
 /* ---------- ENGRAMOS Pilot: invite codes, validity, consent, usage reports ----------
    One code per student. The code carries its own end date (ENGM-YYMMDD-XXXX), so
@@ -12068,7 +13006,7 @@ function addSaveBtn(outEl, opt, text){
 }
 RENDER.note = function(){
   var el = $("nbIn"), list = (DB.book || []).slice();
-  var h = "<h1>Notebook</h1><p class='sub'>Save the explanations, answers and notes you want to revisit. Everything stays on this device.</p>";
+  var h = "<div class='subviewTopBar' style='display:flex;align-items:center;justify-content:space-between;margin-bottom:12px'><button type='button' class='btn o' onclick='show(\"tools\")' style='padding:6px 14px;font-size:0.86rem;font-weight:700'>← Back to More</button><span style='font-size:1.1rem;font-weight:800;color:var(--acc)'>Notebook</span><span style='width:60px'></span></div><h1>Notebook</h1><p class='sub'>Save the explanations, answers and notes you want to revisit. Everything stays on this device.</p>";
   h += "<div class='card'><strong>Write your own note</strong><textarea id='nbText' placeholder='A definition, a doubt, a formula, or something you want to remember…' style='margin-top:8px'></textarea><div class='row' style='margin-top:8px'><button class='primary' id='nbAdd'>Save note</button>" + (list.length ? "<button id='nbExport'>Export all</button>" : "") + "</div></div>";
   if(!list.length){
     h += "<div class='card hero' style='text-align:center'><p>Your notebook is empty. When an explanation is useful, press <b>☆ Save to notebook</b> under it.</p><button class='primary' id='nbGo'>Go to Study</button></div>";
@@ -12389,7 +13327,32 @@ function speechSettings(){
     var fi = $("fLangImport");
     if(fi) fi.click();
   }
- else if(a === "books") manageBooksModal(); else if(a === "ai") connectModal(); else if(a === "voice") speechSettings(); else if(a === "foldpick" || a === "foldchg") chooseFolder().then(function(){ if(curView === "tools") RENDER.tools(); }); else if(a === "foldrec") folderReconnect(); else if(a === "foldoff") folderTurnOff(); });
+  else if(a === "books") manageBooksModal();
+  else if(a === "ai") connectModal();
+  else if(a === "voice") speechSettings();
+  else if(a === "prov_pick"){
+    var pId = b.getAttribute("data-prov");
+    connectEngramosProvider(pId);
+  }
+  else if(a === "foldpick" || a === "foldchg") chooseFolder().then(function(){ if(curView === "tools") RENDER.tools(); });
+  else if(a === "foldrec") folderReconnect();
+  else if(a === "foldoff") folderTurnOff();
+  else if(a === "cloud_pick") EngramosSync.pickCloudFile();
+  else if(a === "sync_check") EngramosSync.checkCloudConflict();
+  else if(a === "cloud_disconnect" || a === "cloud_off"){
+    askYes("Disconnect cloud storage? Your study data and progress stay completely safe in this browser.", function(){
+      localStorage.removeItem("engramos_safari_cloud_file_name");
+      localStorage.removeItem("engramos_cloud_provider");
+      FOLDER.handle = null; FOLDER.pending = false; FOLDER.lasted = "";
+      if(DB.save){ DB.save.enabled = false; DB.save.type = ""; DB.save.name = ""; }
+      try { fdbDel("folder_" + AUTH.session); } catch(e){}
+      save();
+      refreshFolderChip();
+      toast("Cloud storage disconnected");
+      if(curView === "tools") RENDER.tools();
+    });
+  }
+});
   document.addEventListener("change", function(e){ var t = e.target; if(t.id === "fRs" && t.files[0]) restoreData(t.files[0]); if(t.id === "fCls" && t.files.length) classView(t.files);
     
   if(t.id === "fLangImport" && t.files[0]){
@@ -12904,7 +13867,7 @@ RENDER.rec = function(host){
 
 /* ---------- Fun facts ---------- */
 RENDER.fun = function(){
-  var el = $("fnIn"), c = cur(), key = c ? c.id : "general", h = "<h1> Fun Facts</h1><p class='sub'>Little surprises to make learning fun.</p>" + pickHtml("fnSel") + "<div class='row'><button class='primary' id='fnGo'> Show me new fun facts</button></div><div id='fnOut'></div>";
+  var el = $("fnIn"), c = cur(), key = c ? c.id : "general", h = "<div class='subviewTopBar' style='display:flex;align-items:center;justify-content:space-between;margin-bottom:12px'><button type='button' class='btn o' onclick='show(\"tools\")' style='padding:6px 14px;font-size:0.86rem;font-weight:700'>← Back to More</button><span style='font-size:1.1rem;font-weight:800;color:var(--acc)'>Fun Facts</span><span style='width:60px'></span></div><h1> Fun Facts</h1><p class='sub'>Little surprises to make learning fun.</p>" + pickHtml("fnSel") + "<div class='row'><button class='primary' id='fnGo'> Show me new fun facts</button></div><div id='fnOut'></div>";
   el.innerHTML = h; var draw = function(list){ $("fnOut").innerHTML = list.map(function(f, i){ return "<div class='fact' style='animation-delay:" + i * 120 + "ms'>" + "<span class='ic' style='display:inline-block;width:20px;height:20px;vertical-align:-4px;margin-right:6px'>" + svgIc("fun") + "</span>" + inline(String(f.f)) + "</div>"; }).join(""); };
   if(DB.facts[key]) draw(DB.facts[key]);
   if($("fnSel")) $("fnSel").onchange = function(){ DB.cur = this.value; save(); RENDER.fun(); };
