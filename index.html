@@ -2703,10 +2703,11 @@ var AI_PROVIDERS = {
     {id:"openai/gpt-oss-120b", label:"🌟 OpenAI GPT-OSS 120B (High Capability)"},
     {id:"openai/gpt-oss-20b", label:"⚡ OpenAI GPT-OSS 20B (Fast Open Model)"}
   ]},
-  gemini: {name:"Google Gemini", tag:"1M Context · 1,500/day free", desc:"Google Gemini: ultra-fast, handles entire 40-page chapters at once, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.5-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:[
-    {id:"gemini-2.5-flash", label:"⚡ Gemini 2.5 Flash (Ultra-Fast · Default & Recommended)"},
+  gemini: {name:"Google Gemini", tag:"1M Context · 1,500/day free", desc:"Google Gemini: ultra-fast, handles entire 40-page chapters at once, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-3.8-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:[
+    {id:"gemini-3.8-flash", label:"⚡ Gemini 3.8 Flash (Ultra-Fast · Default & Recommended)"},
     {id:"gemini-2.0-flash", label:"🚀 Gemini 2.0 Flash (Next-Gen · 1M Context)"},
     {id:"gemini-2.5-pro", label:"🧠 Gemini 2.5 Pro (Deep Reasoning & Analysis)"},
+    {id:"gemini-2.5-flash", label:"⚡ Gemini 2.5 Flash"},
     {id:"gemini-2.0-flash-exp", label:"🧪 Gemini 2.0 Flash Experimental"}
   ]},
   puter: {name:"Free AI (Puter)", tag:"Email sign-in · no key", desc:"Sign in with email for a shared monthly allowance. (Note: slower during peak hours).", model:"gpt-5.4-nano", free:true, link:"https://puter.com"},
@@ -2770,7 +2771,7 @@ function aiErrText(code, detail){
   }
   if(code === "bad_model"){
     var cleanDet = det.replace(/[\r\n]+/g, " ").slice(0, 140);
-    return "Model rejected" + (cleanDet ? " (" + cleanDet + ")" : "") + ". Try switching to Gemini 2.5 Flash or Gemini 2.0 Flash.";
+    return "Model rejected" + (cleanDet ? " (" + cleanDet + ")" : "") + ". Try switching to Gemini 3.8 Flash or Gemini 2.0 Flash.";
   }
   if(code === "no_credit") return "This key has no credit left. Try Free AI (email sign-in), Gemini or Groq instead.";
   if(code === "rate_limited") return "The free rate limit was reached or the provider is busy. Try another model, or wait a minute.";
@@ -2896,7 +2897,7 @@ function mkGemini(ai){
   var P = AI_PROVIDERS[ai.provider];
   var call = async function(prompt, opts){
     opts = opts || {};
-    var rawModel = ai.model || P.model || "gemini-2.5-flash";
+    var rawModel = ai.model || P.model || "gemini-3.8-flash";
     var model = String(rawModel).replace(/^models\//, "").trim();
     var key = cleanApiKey(ai.key || "", "gemini");
     var reqTimeout = (opts && opts.timeout) || 60000;
@@ -2922,9 +2923,16 @@ function mkGemini(ai){
       var errObj = null; try { errObj = JSON.parse(t); } catch(e){}
       var errMsg = (errObj && errObj.error && errObj.error.message) || t || ("HTTP " + r.status);
       var isAuthErr = (r.status === 401 || r.status === 403 || (r.status === 400 && /API key|API_KEY|UNAUTHENTICATED|ACCESS_TOKEN/i.test(t)) || /ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(t));
-      var isModelErr = (r.status === 404 || (r.status === 400 && /not found|not supported|invalid model|unsupported model/i.test(t) && !isAuthErr));
+      var isModelErr = (r.status === 404 || (r.status === 400 && /not found|not supported|invalid model|unsupported model|no longer available/i.test(t) && !isAuthErr));
       if(isModelErr && !isAuthErr && !opts._retriedGemini){
-        var geminiFallbacks = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.0-flash-exp"];
+        var suggM = t.match(/models\/([a-zA-Z0-9_\-\.]+)/);
+        var suggestedModel = suggM ? suggM[1] : null;
+        var geminiFallbacks = ["gemini-3.8-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash-exp"];
+        if(suggestedModel && geminiFallbacks.indexOf(suggestedModel) < 0 && suggestedModel !== model){
+          geminiFallbacks.unshift(suggestedModel);
+        } else if(suggestedModel && geminiFallbacks.indexOf(suggestedModel) >= 0 && suggestedModel !== model){
+          geminiFallbacks = [suggestedModel].concat(geminiFallbacks.filter(function(m){ return m !== suggestedModel; }));
+        }
         var nextModel = geminiFallbacks.find(function(m){ return m !== model; });
         if(nextModel){
           ai.model = nextModel;
@@ -3186,7 +3194,7 @@ function connectModal(){
               return (m.name || "").replace(/^models\//, "");
             }).filter(Boolean);
             if(activeIds.length){
-              var preferredOrder = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.0-flash-exp"];
+              var preferredOrder = ["gemini-3.8-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash-exp"];
               activeIds.sort(function(a, b){
                 var ia = preferredOrder.indexOf(a), ib = preferredOrder.indexOf(b);
                 if(ia >= 0 && ib >= 0) return ia - ib;
@@ -3197,14 +3205,15 @@ function connectModal(){
               var curVal = (o.querySelector("#kMod") || {}).value;
               var friendly = activeIds.map(function(id){
                 var lbl = id;
-                if(id === "gemini-2.5-flash") lbl = "⚡ " + id + " (Ultra-Fast · Default & Recommended)";
+                if(id === "gemini-3.8-flash") lbl = "⚡ " + id + " (Ultra-Fast · Default & Recommended)";
                 else if(id === "gemini-2.0-flash") lbl = "🚀 " + id + " (Next-Gen · 1M Context)";
                 else if(id === "gemini-2.5-pro") lbl = "🧠 " + id + " (Deep Reasoning & Analysis)";
+                else if(id === "gemini-2.5-flash") lbl = "⚡ " + id;
                 else if(id.includes("flash")) lbl = "⚡ " + id;
                 else if(id.includes("pro")) lbl = "🧠 " + id;
                 return {id: id, label: lbl};
               });
-              var bestDefault = activeIds.indexOf("gemini-2.5-flash") >= 0 ? "gemini-2.5-flash" : (activeIds.indexOf("gemini-2.0-flash") >= 0 ? "gemini-2.0-flash" : friendly[0].id);
+              var bestDefault = activeIds.indexOf("gemini-3.8-flash") >= 0 ? "gemini-3.8-flash" : (activeIds.indexOf("gemini-2.0-flash") >= 0 ? "gemini-2.0-flash" : (activeIds.indexOf("gemini-2.5-flash") >= 0 ? "gemini-2.5-flash" : friendly[0].id));
               var pickTarget = (curVal && activeIds.indexOf(curVal) >= 0) ? curVal : bestDefault;
               fillModels(friendly, pickTarget);
               msg("");
@@ -3514,7 +3523,16 @@ function connectModal(){
             }
             if(!healed) throw err;
           } else if(pick === "gemini" && err && (err.code === "bad_model" || err.code === "api")){
-            var geminiFallbacks = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.0-flash-exp"].filter(function(m){ return m !== cfg.model; });
+            var errDetailStr = String(err && (err.detail || err.message) || "");
+            var suggM = errDetailStr.match(/models\/([a-zA-Z0-9_\-\.]+)/);
+            var suggestedModel = suggM ? suggM[1] : null;
+
+            var geminiFallbacks = ["gemini-3.8-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash-exp"].filter(function(m){ return m !== cfg.model; });
+            if(suggestedModel && geminiFallbacks.indexOf(suggestedModel) < 0 && suggestedModel !== cfg.model){
+              geminiFallbacks.unshift(suggestedModel);
+            } else if(suggestedModel && geminiFallbacks.indexOf(suggestedModel) >= 0){
+              geminiFallbacks = [suggestedModel].concat(geminiFallbacks.filter(function(m){ return m !== suggestedModel; }));
+            }
             var healedGemini = false;
             var lastErr = err;
             for(var gi = 0; gi < geminiFallbacks.length; gi++){
@@ -11024,8 +11042,7 @@ function planAccessRowHtml(){
       "</div>" +
     "</div>" +
     "<div class='settingsDrawer'>" +
-      "<p class='status' style='margin:0 0 10px'><b>Free Student Edition</b> · All learning features, unlimited books, chapters, flashcards, 5-Min Cram, Fire Drill, and AI Smart Packs are completely unlocked and 100% free forever for all students. No subscription, card, or payment required.</p>" +
-      "<div class='row' style='gap:8px;flex-wrap:wrap'><button type='button' data-act='feedback'>💡 Share Feedback / Wishlist</button><button type='button' data-act='plmail'>Contact Organiser</button></div>" +
+      "<p class='status' style='margin:0'><b>Free Student Edition</b> · All learning features, unlimited books, chapters, flashcards, 5-Min Cram, Fire Drill, and AI Smart Packs are completely unlocked and 100% free forever for all students. No subscription, card, or payment required.</p>" +
     "</div>" +
   "</div>";
 }
@@ -11182,11 +11199,7 @@ RENDER.tools = function(){
   "</div>";
   h += "</div>";
 
-  h += "<p class='status' style='text-align:center;font-size:.78rem;margin:20px 0 0'>ENGRAMOS runs privately on your device · Data stays in your browser</p>";
-  h += "<div style='text-align:center;margin-top:8px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap'>" +
-    "<button type='button' class='pill' data-act='check_update' style='font-size:11px;padding:5px 12px;opacity:.9'>🔄 Check for updates / refresh app</button>" +
-    "<button type='button' class='pill' data-act='feedback' style='font-size:11px;padding:5px 12px;opacity:.9'>💡 Send feedback / wish</button>" +
-  "</div>";
+  h += "<p class='status' style='text-align:center;font-size:.78rem;margin:24px 0 10px'>ENGRAMOS runs privately on your device · Data stays in your browser</p>";
   h += "</div>";
 
   $("tlIn").innerHTML = h;
@@ -12399,7 +12412,7 @@ function pilotCardHtml(){
   var p = DB.pilot || {}, h = "<div class='card'><strong>Student Edition</strong>";
   var repBtn = OWNER_COPY ? "<button data-act='plexp'>Download my report</button>" : "";
   h += "<p class='status'>ENGRAMOS is 100% free forever for all students. Unlimited books, flashcards, drills, and AI smart packs are available with zero restrictions.</p>";
-  h += "<div class='row' style='margin:8px 0 0'>" + repBtn + "<button data-act='plmail'>Email organiser</button></div>";
+  if(repBtn) h += "<div class='row' style='margin:8px 0 0'>" + repBtn + "</div>";
   h += "</div>";
   return h;
 }
