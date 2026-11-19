@@ -2762,22 +2762,25 @@ function aiErrText(code, detail){
   var det = String(detail || "");
   if(code === "bad_key"){
     if(/ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(det)){
-      return "Google reported ACCESS_TOKEN_TYPE_UNSUPPORTED. In Google Cloud Console > Credentials, ensure your API key restriction is set to 'Generative Language API' (not 'Gemini API'), or use an unrestricted key.";
+      return "Google reported ACCESS_TOKEN_TYPE_UNSUPPORTED: Check API restrictions in Google Cloud Console > Credentials. Set restriction to 'Generative Language API' (not 'Gemini API'), or select 'Don't restrict key'.";
     }
     if(/API_KEY_INVALID|API key not valid/i.test(det)){
       return "Google rejected this key: 'API key not valid'. Please copy your full key from Google AI Studio (aistudio.google.com/apikey).";
     }
-    return "That key was not accepted. Please check the key and try again.";
+    return "That API key was not accepted. " + (det ? "(" + det.slice(0, 160) + ")" : "Please check the key and try again.");
   }
-  if(code === "bad_model") return "That model name was not accepted. Try another model or switch to Gemini 1.5 Flash.";
+  if(code === "bad_model"){
+    var cleanDet = det.replace(/[\r\n]+/g, " ").slice(0, 140);
+    return "Model rejected" + (cleanDet ? " (" + cleanDet + ")" : "") + ". Try switching to Gemini 1.5 Flash or Gemini 2.0 Flash.";
+  }
   if(code === "no_credit") return "This key has no credit left. Try Free AI (email sign-in), Gemini or Groq instead.";
-  if(code === "rate_limited") return "The free limit is used up or the provider is busy. Try another model, or wait a little.";
+  if(code === "rate_limited") return "The free rate limit was reached or the provider is busy. Try another model, or wait a minute.";
   if(code === "no_net") return "No internet connection right now. Check your connection and try again.";
   if(code === "origin") return "Sign-in needs this page opened from a web address (http:// or https://), not as a file.";
   if(code === "cancelled") return "Sign-in was closed before it finished. Please try again.";
   if(code === "popup") return "The sign-in window was blocked. Please allow pop-ups for this page and try again.";
   if(code === "signed_out") return "Please sign in with your email first.";
-  return "Could not connect. Please check the key and model, then try again.";
+  return "Could not connect: " + (det ? det.slice(0, 160) : "Please check your key and model, then try again.");
 }
 function jsonFrom(call){
   return async function(p, opts){
@@ -2896,19 +2899,21 @@ function mkGemini(ai){
     opts = opts || {};
     var rawModel = ai.model || P.model || "gemini-1.5-flash";
     var model = String(rawModel).replace(/^models\//, "").trim();
+    var key = cleanApiKey(ai.key || "", "gemini");
     var reqTimeout = (opts && opts.timeout) || 60000;
-    var url = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(model) + ":generateContent?key=" + encodeURIComponent(ai.key);
+    var url = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(model) + ":generateContent?key=" + encodeURIComponent(key);
+    var isVerifyPing = (prompt === "Reply with the single word OK.");
     var r;
     try {
       r = await fetchWithTimeout(url, {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "x-goog-api-key": ai.key
+          "x-goog-api-key": key
         },
         body: JSON.stringify({
           contents: [{role: "user", parts: [{text: prompt}]}],
-          generationConfig: {maxOutputTokens: 8192, temperature: 0.4}
+          generationConfig: isVerifyPing ? {maxOutputTokens: 128, temperature: 0.2} : {maxOutputTokens: 8192, temperature: 0.4}
         })
       }, reqTimeout);
     } catch(e){
@@ -2916,6 +2921,8 @@ function mkGemini(ai){
     }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
+      var errObj = null; try { errObj = JSON.parse(t); } catch(e){}
+      var errMsg = (errObj && errObj.error && errObj.error.message) || t || ("HTTP " + r.status);
       var isAuthErr = (r.status === 401 || r.status === 403 || (r.status === 400 && /API key|API_KEY|UNAUTHENTICATED|ACCESS_TOKEN/i.test(t)) || /ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(t));
       var isModelErr = (r.status === 404 || (r.status === 400 && /not found|not supported|invalid model|unsupported model/i.test(t) && !isAuthErr));
       if(isModelErr && !isAuthErr && !opts._retriedGemini){
@@ -2933,7 +2940,7 @@ function mkGemini(ai){
         r.status === 429 ? "rate_limited" :
         isAuthErr ? "bad_key" :
         isModelErr ? "bad_model" : "api",
-        t
+        errMsg
       );
     }
     var j = await r.json(), cand = j.candidates && j.candidates[0], parts = cand && cand.content && cand.content.parts || [];
@@ -3077,20 +3084,22 @@ function cleanApiKey(raw, provider){
     var idx = k.indexOf("AIza");
     if(idx >= 0){
       k = k.slice(idx).trim();
-      k = k.split(/\s+/)[0].replace(/[.,;`'"“”‘’]+$/, "");
     } else {
       var aqIdx = k.indexOf("AQ.");
       if(aqIdx >= 0){
         k = k.slice(aqIdx).trim();
-        k = k.split(/\s+/)[0].replace(/[;,`'"“”‘’]+$/, "");
       }
     }
+    // Clean trailing punctuation including trailing dots, commas, semicolons, quotes, whitespace
+    k = k.split(/\s+/)[0].replace(/[.,;:?`'"“”‘’\s]+$/, "");
   } else if(provider === "groq"){
     var gidx = k.indexOf("gsk_");
     if(gidx >= 0){
       k = k.slice(gidx).trim();
-      k = k.split(/\s+/)[0].replace(/[.,;`'"“”‘’]+$/, "");
     }
+    k = k.split(/\s+/)[0].replace(/[.,;:?`'"“”‘’\s]+$/, "");
+  } else {
+    k = k.split(/\s+/)[0].replace(/[.,;:?`'"“”‘’\s]+$/, "");
   }
   return k;
 }
@@ -3176,6 +3185,14 @@ function connectModal(){
               return (m.name || "").replace(/^models\//, "");
             }).filter(Boolean);
             if(activeIds.length){
+              var preferredOrder = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash-8b", "gemini-2.0-flash-exp", "gemini-1.5-flash-latest"];
+              activeIds.sort(function(a, b){
+                var ia = preferredOrder.indexOf(a), ib = preferredOrder.indexOf(b);
+                if(ia >= 0 && ib >= 0) return ia - ib;
+                if(ia >= 0) return -1;
+                if(ib >= 0) return 1;
+                return a.localeCompare(b);
+              });
               var curVal = (o.querySelector("#kMod") || {}).value;
               var friendly = activeIds.map(function(id){
                 var lbl = id;
@@ -3186,23 +3203,28 @@ function connectModal(){
                 else if(id.includes("pro")) lbl = "🧠 " + id;
                 return {id: id, label: lbl};
               });
-              fillModels(friendly, activeIds.indexOf(curVal) >= 0 ? curVal : friendly[0].id);
+              var bestDefault = activeIds.indexOf("gemini-1.5-flash") >= 0 ? "gemini-1.5-flash" : (activeIds.indexOf("gemini-2.0-flash") >= 0 ? "gemini-2.0-flash" : friendly[0].id);
+              var pickTarget = (curVal && activeIds.indexOf(curVal) >= 0) ? curVal : bestDefault;
+              fillModels(friendly, pickTarget);
+              msg("");
               if(showToast) toast("Loaded " + activeIds.length + " Google Gemini models for your key");
             }
           }
         } else {
           var tErr = await r.text().catch(function(){ return ""; });
-          if(showToast){
-            if(/ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(tErr)){
-              msg("Google reported ACCESS_TOKEN_TYPE_UNSUPPORTED: Check API restrictions in Google Cloud Console or use an unrestricted key.");
-            } else if(/API key not valid|API_KEY_INVALID/i.test(tErr)){
-              msg("Google says: API key not valid. Please verify the key in Google AI Studio.");
-            } else {
-              msg("Google error: " + (tErr.slice(0, 140)));
-            }
+          var errObj = null; try { errObj = JSON.parse(tErr); } catch(e){}
+          var errDetail = (errObj && errObj.error && errObj.error.message) || tErr || ("HTTP " + r.status);
+          if(/ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(tErr)){
+            msg("Google reported ACCESS_TOKEN_TYPE_UNSUPPORTED: Check API restrictions in Google Cloud Console > Credentials. Set to 'Generative Language API' (not 'Gemini API'), or select 'Don't restrict key'.");
+          } else if(/API key not valid|API_KEY_INVALID/i.test(tErr)){
+            msg("Google says: API key not valid. Please copy your full key from Google AI Studio.");
+          } else {
+            msg("Google says: " + errDetail.slice(0, 140));
           }
         }
-      } catch(e){}
+      } catch(e){
+        if(showToast) msg("Could not reach Google. Check your internet connection.");
+      }
       finally {
         if(refBtn){ refBtn.disabled = false; refBtn.textContent = "🔄 Refresh"; }
       }
@@ -3243,9 +3265,8 @@ function connectModal(){
           "</div>" +
           "</div>" +
           "<label style='font-weight:600;font-size:12px;color:var(--ink);margin-bottom:4px;display:block'>Personal Groq Key (optional for dedicated 14,400 req/day):</label>" +
-          "<div class='row' style='gap:6px;margin-bottom:6px'>" +
-          "<input type='text' id='kKey' placeholder='Optional: paste personal gsk_… key' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && !cfg.starter && cfg.key || "") + "'>" +
-          "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
+          "<div style='margin-bottom:6px'>" +
+          "<input type='text' id='kKey' placeholder='Optional: paste personal gsk_… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='width:100%;box-sizing:border-box;font-family:monospace;font-size:13px;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)' value='" + esc(cfg && !cfg.starter && cfg.key || "") + "'>" +
           "</div>" +
           "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from dropdown):</label>" +
           "<div class='row' style='gap:6px;margin-bottom:2px'>" +
@@ -3268,9 +3289,8 @@ function connectModal(){
           "</div>" +
           "</div>" +
           "<label style='font-weight:600;font-size:12px;color:var(--ink);margin-bottom:4px;display:block'>Gemini API Key (starts with <code>AIza…</code> or <code>AQ.…</code>):</label>" +
-          "<div class='row' style='gap:6px;margin-bottom:6px'>" +
-          "<input type='text' id='kKey' placeholder='Paste your AIza… or AQ.… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
-          "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
+          "<div style='margin-bottom:6px'>" +
+          "<input type='text' id='kKey' placeholder='Paste your Gemini API key here (AIza… or AQ.…)' autocapitalize='none' autocomplete='off' spellcheck='false' style='width:100%;box-sizing:border-box;font-family:monospace;font-size:13px;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)' value='" + esc(cfg && cfg.key || "") + "'>" +
           "</div>" +
           "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from dropdown):</label>" +
           "<div class='row' style='gap:6px;margin-bottom:2px'>" +
@@ -3299,8 +3319,15 @@ function connectModal(){
         if(qBtn) qBtn.onclick = function(){ groqGuideModal(); };
         var ki = o.querySelector("#kKey");
         if(ki){
-          ki.onchange = function(){ fetchGroqModels(ki.value, false); };
-          ki.onblur = function(){ fetchGroqModels(ki.value, false); };
+          var onGroqUpdate = function(){
+            var raw = ki.value;
+            var cleaned = cleanApiKey(raw, "groq");
+            if(cleaned !== raw) ki.value = cleaned;
+            if(cleaned && cleaned.length >= 20) fetchGroqModels(cleaned, false);
+          };
+          ki.oninput = onGroqUpdate;
+          ki.onchange = onGroqUpdate;
+          ki.onblur = onGroqUpdate;
         }
         var refBtn = o.querySelector("#btnRefreshModels");
         if(refBtn){
@@ -3319,8 +3346,15 @@ function connectModal(){
         if(gBtn) gBtn.onclick = function(){ geminiGuideModal(); };
         var gki = o.querySelector("#kKey");
         if(gki){
-          gki.onchange = function(){ fetchGeminiModels(gki.value, false); };
-          gki.onblur = function(){ fetchGeminiModels(gki.value, false); };
+          var onGeminiUpdate = function(){
+            var raw = gki.value;
+            var cleaned = cleanApiKey(raw, "gemini");
+            if(cleaned !== raw) gki.value = cleaned;
+            if(cleaned && cleaned.length >= 20) fetchGeminiModels(cleaned, false);
+          };
+          gki.oninput = onGeminiUpdate;
+          gki.onchange = onGeminiUpdate;
+          gki.onblur = onGeminiUpdate;
         }
         var gRefBtn = o.querySelector("#btnRefreshGeminiModels");
         if(gRefBtn){
