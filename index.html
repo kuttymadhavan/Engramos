@@ -2389,7 +2389,8 @@ function geminiGuideModal(){
     "</div>" +
     "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>" +
     "<b style='color:var(--acc);display:block;margin-bottom:4px'>Step 2: Create your free API key</b>" +
-    "<p style='margin:0;font-size:13px'>Click the blue <b>“+ Create API key”</b> button, select any project (or default), and click <b>“Copy”</b>. Your key starts with <code>AIzaSy…</code>.</p>" +
+    "<p style='margin:0 0 6px;font-size:13px'>Click the blue <b>“+ Create API key”</b> button, select <b>“Create in new project”</b> (or default), and click <b>“Copy”</b>. Your key starts with <code>AIzaSy…</code> or <code>AQ.…</code>.</p>" +
+    "<small style='color:var(--mute);font-size:11px;display:block'>💡 Tip: If you set API restrictions in Google Cloud Console, choose <b>Generative Language API</b> (do NOT restrict to 'Gemini API', which blocks standard endpoints), or leave unrestricted.</small>" +
     "</div>" +
     "<div style='background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>" +
     "<b style='color:var(--acc);display:block;margin-bottom:4px'>Step 3: Paste into ENGRAMOS</b>" +
@@ -2757,9 +2758,18 @@ function dropAI(){
   save(); refreshKeyBtn();
   if($("engSel")) $("engSel").value = DB.engine;
 }
-function aiErrText(code){
-  if(code === "bad_key") return "That key was not accepted. Please check it and try again.";
-  if(code === "bad_model") return "That model name was not accepted. Try another model from the list.";
+function aiErrText(code, detail){
+  var det = String(detail || "");
+  if(code === "bad_key"){
+    if(/ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(det)){
+      return "Google reported ACCESS_TOKEN_TYPE_UNSUPPORTED. In Google Cloud Console > Credentials, ensure your API key restriction is set to 'Generative Language API' (not 'Gemini API'), or use an unrestricted key.";
+    }
+    if(/API_KEY_INVALID|API key not valid/i.test(det)){
+      return "Google rejected this key: 'API key not valid'. Please copy your full key from Google AI Studio (aistudio.google.com/apikey).";
+    }
+    return "That key was not accepted. Please check the key and try again.";
+  }
+  if(code === "bad_model") return "That model name was not accepted. Try another model or switch to Gemini 1.5 Flash.";
   if(code === "no_credit") return "This key has no credit left. Try Free AI (email sign-in), Gemini or Groq instead.";
   if(code === "rate_limited") return "The free limit is used up or the provider is busy. Try another model, or wait a little.";
   if(code === "no_net") return "No internet connection right now. Check your connection and try again.";
@@ -2906,8 +2916,9 @@ function mkGemini(ai){
     }
     if(!r.ok){
       var t = ""; try { t = await r.text(); } catch(e){}
-      var isModelErr = (r.status === 404 || (r.status === 400 && /not found|not supported|invalid model|unsupported model/i.test(t)));
-      if(isModelErr && !opts._retriedGemini){
+      var isAuthErr = (r.status === 401 || r.status === 403 || (r.status === 400 && /API key|API_KEY|UNAUTHENTICATED|ACCESS_TOKEN/i.test(t)) || /ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(t));
+      var isModelErr = (r.status === 404 || (r.status === 400 && /not found|not supported|invalid model|unsupported model/i.test(t) && !isAuthErr));
+      if(isModelErr && !isAuthErr && !opts._retriedGemini){
         var geminiFallbacks = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-flash-latest", "gemini-2.0-flash-exp", "gemini-1.5-pro"];
         var nextModel = geminiFallbacks.find(function(m){ return m !== model; });
         if(nextModel){
@@ -2920,7 +2931,7 @@ function mkGemini(ai){
       }
       throw aierr(
         r.status === 429 ? "rate_limited" :
-        r.status === 401 || r.status === 403 || (r.status === 400 && /API key|API_KEY|API_KEY_INVALID/i.test(t)) ? "bad_key" :
+        isAuthErr ? "bad_key" :
         isModelErr ? "bad_model" : "api",
         t
       );
@@ -3067,6 +3078,12 @@ function cleanApiKey(raw, provider){
     if(idx >= 0){
       k = k.slice(idx).trim();
       k = k.split(/\s+/)[0].replace(/[.,;`'"“”‘’]+$/, "");
+    } else {
+      var aqIdx = k.indexOf("AQ.");
+      if(aqIdx >= 0){
+        k = k.slice(aqIdx).trim();
+        k = k.split(/\s+/)[0].replace(/[;,`'"“”‘’]+$/, "");
+      }
     }
   } else if(provider === "groq"){
     var gidx = k.indexOf("gsk_");
@@ -3143,7 +3160,7 @@ function connectModal(){
     };
     var fetchGeminiModels = async function(key, showToast){
       key = cleanApiKey(key || "", "gemini");
-      if(!key || key.indexOf("AIza") !== 0) return;
+      if(!key || key.length < 20) return;
       var refBtn = o.querySelector("#btnRefreshGeminiModels");
       if(refBtn){ refBtn.disabled = true; refBtn.textContent = "⏳…"; }
       try {
@@ -3171,6 +3188,17 @@ function connectModal(){
               });
               fillModels(friendly, activeIds.indexOf(curVal) >= 0 ? curVal : friendly[0].id);
               if(showToast) toast("Loaded " + activeIds.length + " Google Gemini models for your key");
+            }
+          }
+        } else {
+          var tErr = await r.text().catch(function(){ return ""; });
+          if(showToast){
+            if(/ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(tErr)){
+              msg("Google reported ACCESS_TOKEN_TYPE_UNSUPPORTED: Check API restrictions in Google Cloud Console or use an unrestricted key.");
+            } else if(/API key not valid|API_KEY_INVALID/i.test(tErr)){
+              msg("Google says: API key not valid. Please verify the key in Google AI Studio.");
+            } else {
+              msg("Google error: " + (tErr.slice(0, 140)));
             }
           }
         }
@@ -3239,9 +3267,9 @@ function connectModal(){
           "<a href='https://aistudio.google.com/apikey' target='_blank' rel='noopener' class='btn' style='font-size:12px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px'>🔗 Open Google AI Studio ↗</a>" +
           "</div>" +
           "</div>" +
-          "<label style='font-weight:600;font-size:12px;color:var(--ink);margin-bottom:4px;display:block'>Gemini API Key (starts with <code>AIza…</code>):</label>" +
+          "<label style='font-weight:600;font-size:12px;color:var(--ink);margin-bottom:4px;display:block'>Gemini API Key (starts with <code>AIza…</code> or <code>AQ.…</code>):</label>" +
           "<div class='row' style='gap:6px;margin-bottom:6px'>" +
-          "<input type='text' id='kKey' placeholder='Paste your AIza… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
+          "<input type='text' id='kKey' placeholder='Paste your AIza… or AQ.… key here' autocapitalize='none' autocomplete='off' spellcheck='false' style='flex:1;min-width:0;font-family:monospace;font-size:13px;padding:9px 11px' value='" + esc(cfg && cfg.key || "") + "'>" +
           "<button type='button' id='btnPasteKey' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0'>📋 Paste</button>" +
           "</div>" +
           "<label style='font-size:12px;color:var(--mute);margin-top:6px;display:block'>Model (Select from dropdown):</label>" +
@@ -3409,9 +3437,9 @@ function connectModal(){
             msg("That Groq key looks incomplete (" + key.length + " chars). Groq keys are ~56 characters starting with gsk_… Please copy the full key from Groq Console.");
             return;
           }
-          if(pick === "gemini" && key.length < 30){
+          if(pick === "gemini" && key.length < 25){
             ok.disabled = false; ok.textContent = btnOld;
-            msg("That Gemini key looks incomplete (" + key.length + " chars). Gemini keys are ~39 characters starting with AIza… Please copy the full key from Google AI Studio.");
+            msg("That Gemini key looks incomplete (" + key.length + " chars). Gemini keys are ~39 characters starting with AIza… or AQ.… Please copy the full key from Google AI Studio.");
             return;
           }
           if(pick === "groq"){
@@ -3427,8 +3455,9 @@ function connectModal(){
           t = await api("Reply with the single word OK.", {});
           if(!/ok/i.test(String(t && t.text || ""))) throw aierr("api");
         } catch(err){
-          if(err && (err.code === "bad_key" || /invalid_api_key|API_KEY_INVALID/i.test(String(err && (err.detail || err.message) || "")))){
-            throw aierr("bad_key");
+          var errDetail = String(err && (err.detail || err.message) || "");
+          if(err && (err.code === "bad_key" || /invalid_api_key|API_KEY_INVALID|UNAUTHENTICATED|ACCESS_TOKEN/i.test(errDetail))){
+            throw aierr("bad_key", errDetail);
           }
           if(pick === "groq" && err && (err.code === "bad_model" || err.code === "api")){
             var fallbacks = ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "llama3-8b-8192"].filter(function(m){ return m !== cfg.model; });
@@ -3452,6 +3481,7 @@ function connectModal(){
           } else if(pick === "gemini" && err && (err.code === "bad_model" || err.code === "api")){
             var geminiFallbacks = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-flash-latest", "gemini-2.0-flash-exp", "gemini-1.5-pro"].filter(function(m){ return m !== cfg.model; });
             var healedGemini = false;
+            var lastErr = err;
             for(var gi = 0; gi < geminiFallbacks.length; gi++){
               var altGemModel = geminiFallbacks[gi];
               try {
@@ -3465,9 +3495,14 @@ function connectModal(){
                   healedGemini = true;
                   break;
                 }
-              } catch(e3){}
+              } catch(e3){
+                lastErr = e3;
+                if(e3 && (e3.code === "bad_key" || /invalid_api_key|API_KEY_INVALID|UNAUTHENTICATED|ACCESS_TOKEN/i.test(String(e3 && (e3.detail || e3.message) || "")))){
+                  throw aierr("bad_key", e3 && (e3.detail || e3.message));
+                }
+              }
             }
-            if(!healedGemini) throw err;
+            if(!healedGemini) throw (lastErr || err);
           } else {
             throw err;
           }
@@ -3476,7 +3511,7 @@ function connectModal(){
       } catch(e){
         ok.disabled = false; ok.textContent = btnOld;
         if(!e.code && /fetch|network|load failed/i.test(String(e))) e = aierr("no_net");
-        msg(aiErrText(e && e.code));
+        msg(aiErrText(e && e.code, e && (e.detail || e.message)));
       }
     };
   });
@@ -11153,9 +11188,16 @@ RENDER.tools = function(){
     "</div>" +
   "</div>";
   h += teacherToolsRowHtml();
+  h += "<div class='settingsRow' data-act='check_update'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>🔄</div><div class='settingsRowText'><div class='settingsRowTitle'>Check for Updates</div><div class='settingsRowSub'>Refresh app shell &amp; flush cached updates (PWA auto-update)</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill'>Refresh</span><span class='settingsChevron'>›</span></div>" +
+    "</div>" +
+  "</div>";
   h += "</div>";
 
   h += "<p class='status' style='text-align:center;font-size:.78rem;margin:20px 0 0'>ENGRAMOS runs privately on your device · Data stays in your browser</p>";
+  h += "<div style='text-align:center;margin-top:8px'><button type='button' class='pill' data-act='check_update' style='font-size:11px;padding:5px 12px;opacity:.9'>🔄 Check for updates / refresh app</button></div>";
   h += "</div>";
 
   $("tlIn").innerHTML = h;
@@ -13485,6 +13527,7 @@ function speechSettings(){
       if(curView === "tools") RENDER.tools();
     });
   }
+  else if(a === "check_update") forceAppUpdate();
 });
   document.addEventListener("change", function(e){ var t = e.target; if(t.id === "fRs" && t.files[0]) restoreData(t.files[0]); if(t.id === "fCls" && t.files.length) classView(t.files);
     
@@ -14032,12 +14075,54 @@ window.addEventListener("orientationchange", function(){
 });
 load(); anaInit(); pilotLoadPending(); setViewH(); if(aiCfg() && !IDB_HYDRATING) save(); if(DB.engine === "ai" && !aiCfg()){ DB.engine = "local"; if(!IDB_HYDRATING) save(); } refreshKeyBtn();
 try { pilotRetryRequest(); subRetryQueue(); } catch(e){}
+/* ---------- iOS / WebKit PWA Auto-Update Lifecycle & Cache-Buster System ---------- */
+var refreshingPWA = false;
+if(typeof navigator !== "undefined" && "serviceWorker" in navigator){
+  navigator.serviceWorker.addEventListener("controllerchange", function(){
+    if(refreshingPWA) return;
+    refreshingPWA = true;
+    try { window.location.reload(true); } catch(e){ window.location.reload(); }
+  });
+}
+async function forceAppUpdate(){
+  toast("Checking for updates and refreshing app shell…");
+  try {
+    if(typeof navigator !== "undefined" && "serviceWorker" in navigator){
+      var regs = await navigator.serviceWorker.getRegistrations();
+      if(regs && regs.length){
+        await Promise.all(regs.map(function(r){ return r.unregister(); }));
+      }
+    }
+    if(typeof caches !== "undefined" && caches.keys){
+      var keys = await caches.keys();
+      if(keys && keys.length){
+        await Promise.all(keys.map(function(k){ return caches.delete(k); }));
+      }
+    }
+  } catch(e){}
+  setTimeout(function(){
+    try { window.location.reload(true); } catch(e){ window.location.reload(); }
+  }, 350);
+}
 try {
   if(!OWNER_COPY && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")){
     if(!document.querySelector("link[rel='manifest']")){
       var ml = document.createElement("link"); ml.rel = "manifest"; ml.href = "manifest.webmanifest"; document.head.appendChild(ml);
     }
-    if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(function(){}); }
+    if("serviceWorker" in navigator){
+      navigator.serviceWorker.register("sw.js").then(function(reg){
+        if(!reg) return;
+        // 1. Immediately invoke update on initial load
+        try { reg.update(); } catch(e){}
+
+        // 2. Silently trigger update when user returns/switches back to app
+        document.addEventListener("visibilitychange", function(){
+          if(document.visibilityState === "visible"){
+            try { reg.update(); } catch(e){}
+          }
+        });
+      }).catch(function(){});
+    }
   }
 } catch(e){}
 authMode = AUTH.users.length ? "login" : "create";
