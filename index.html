@@ -1874,19 +1874,19 @@ var PILOT = {
 };
 var LOCKED = false, ANA = null;
 var OWNER_COPY = true;   /* build-student.sh rewrites this to false for the distributed file */
-var PILOT_GATE = false;  /* Development mode: holds Step 2 invite-code gate until ready to distribute (set to true before release) */
-var PAYWALL_ACTIVE = false; /* Development mode: holds hard Pro paywall until launch; use "Preview Free limits" in Settings to test locally */
-var FREE_CHAPTER_LIMIT = 3;
-var DEV_UNLOCKED = true; /* Developer build: every option is open on every screen (no Pro upsell / no locks). Set to false to restore the ENGRAMOS Pro paywall later. */
+var PILOT_GATE = false;
+var PAYWALL_ACTIVE = false;
+var FREE_CHAPTER_LIMIT = 999999; /* 100% Free for students - no chapter caps */
+var DEV_UNLOCKED = true; /* 100% Free for students: every option is permanently unlocked on every screen */
 var SUB_PLAN = {
-  name: "ENGRAMOS Pro",
-  priceInr: 999,        /* ₹ per year */
-  monthlyInr: 99,       /* ₹ per month */
-  mrpInr: 1999,         /* strike-through anchor for the yearly plan */
-  days: 365,
-  monthDays: 30,
-  razorpayKey: "",     /* optional Razorpay Key ID (baked via build-student.sh / engramos-endpoint.txt) */
-  upiId: "",           /* optional direct UPI ID e.g. engramos@okaxis */
+  name: "ENGRAMOS",
+  priceInr: 0,
+  monthlyInr: 0,
+  mrpInr: 0,
+  days: 36500,
+  monthDays: 3000,
+  razorpayKey: "",
+  upiId: "",
   upiName: "ENGRAMOS"
 };
 var PAY_Q_KEY = "ocm_study_pending_payments";
@@ -2703,12 +2703,11 @@ var AI_PROVIDERS = {
     {id:"openai/gpt-oss-120b", label:"🌟 OpenAI GPT-OSS 120B (High Capability)"},
     {id:"openai/gpt-oss-20b", label:"⚡ OpenAI GPT-OSS 20B (Fast Open Model)"}
   ]},
-  gemini: {name:"Google Gemini", tag:"1M Context · 1,500/day free", desc:"Google Gemini: ultra-fast, handles entire 40-page chapters at once, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-1.5-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:[
-    {id:"gemini-1.5-flash", label:"⚡ Gemini 1.5 Flash (Ultra-Fast · Stable & Recommended)"},
+  gemini: {name:"Google Gemini", tag:"1M Context · 1,500/day free", desc:"Google Gemini: ultra-fast, handles entire 40-page chapters at once, top Hindi/Indic language quality. 100% free with your Gmail account.", api:"https://generativelanguage.googleapis.com/v1beta/models/", kind:"gemini", model:"gemini-2.5-flash", free:true, link:"https://aistudio.google.com/apikey", hint:"AIza…", models:[
+    {id:"gemini-2.5-flash", label:"⚡ Gemini 2.5 Flash (Ultra-Fast · Default & Recommended)"},
     {id:"gemini-2.0-flash", label:"🚀 Gemini 2.0 Flash (Next-Gen · 1M Context)"},
-    {id:"gemini-2.0-flash-exp", label:"🧪 Gemini 2.0 Flash Experimental"},
-    {id:"gemini-1.5-flash-latest", label:"📚 Gemini 1.5 Flash Latest"},
-    {id:"gemini-1.5-pro", label:"🧠 Gemini 1.5 Pro (Deep Analysis)"}
+    {id:"gemini-2.5-pro", label:"🧠 Gemini 2.5 Pro (Deep Reasoning & Analysis)"},
+    {id:"gemini-2.0-flash-exp", label:"🧪 Gemini 2.0 Flash Experimental"}
   ]},
   puter: {name:"Free AI (Puter)", tag:"Email sign-in · no key", desc:"Sign in with email for a shared monthly allowance. (Note: slower during peak hours).", model:"gpt-5.4-nano", free:true, link:"https://puter.com"},
   openrouter: {name:"OpenRouter", tag:"Free models · API key", desc:"One key opens many free models. Names ending in :free cost nothing.", api:"https://openrouter.ai/api/v1/chat/completions", kind:"openai", model:"nvidia/nemotron-3-ultra-550b-a55b:free", free:true, link:"https://openrouter.ai/keys", hint:"sk-or-…", models:[
@@ -2771,7 +2770,7 @@ function aiErrText(code, detail){
   }
   if(code === "bad_model"){
     var cleanDet = det.replace(/[\r\n]+/g, " ").slice(0, 140);
-    return "Model rejected" + (cleanDet ? " (" + cleanDet + ")" : "") + ". Try switching to Gemini 1.5 Flash or Gemini 2.0 Flash.";
+    return "Model rejected" + (cleanDet ? " (" + cleanDet + ")" : "") + ". Try switching to Gemini 2.5 Flash or Gemini 2.0 Flash.";
   }
   if(code === "no_credit") return "This key has no credit left. Try Free AI (email sign-in), Gemini or Groq instead.";
   if(code === "rate_limited") return "The free rate limit was reached or the provider is busy. Try another model, or wait a minute.";
@@ -2897,12 +2896,11 @@ function mkGemini(ai){
   var P = AI_PROVIDERS[ai.provider];
   var call = async function(prompt, opts){
     opts = opts || {};
-    var rawModel = ai.model || P.model || "gemini-1.5-flash";
+    var rawModel = ai.model || P.model || "gemini-2.5-flash";
     var model = String(rawModel).replace(/^models\//, "").trim();
     var key = cleanApiKey(ai.key || "", "gemini");
     var reqTimeout = (opts && opts.timeout) || 60000;
     var url = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(model) + ":generateContent?key=" + encodeURIComponent(key);
-    var isVerifyPing = (prompt === "Reply with the single word OK.");
     var r;
     try {
       r = await fetchWithTimeout(url, {
@@ -2913,7 +2911,7 @@ function mkGemini(ai){
         },
         body: JSON.stringify({
           contents: [{role: "user", parts: [{text: prompt}]}],
-          generationConfig: isVerifyPing ? {maxOutputTokens: 128, temperature: 0.2} : {maxOutputTokens: 8192, temperature: 0.4}
+          generationConfig: {maxOutputTokens: 4096, temperature: 0.4}
         })
       }, reqTimeout);
     } catch(e){
@@ -2926,7 +2924,7 @@ function mkGemini(ai){
       var isAuthErr = (r.status === 401 || r.status === 403 || (r.status === 400 && /API key|API_KEY|UNAUTHENTICATED|ACCESS_TOKEN/i.test(t)) || /ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(t));
       var isModelErr = (r.status === 404 || (r.status === 400 && /not found|not supported|invalid model|unsupported model/i.test(t) && !isAuthErr));
       if(isModelErr && !isAuthErr && !opts._retriedGemini){
-        var geminiFallbacks = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-flash-latest", "gemini-2.0-flash-exp", "gemini-1.5-pro"];
+        var geminiFallbacks = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.0-flash-exp"];
         var nextModel = geminiFallbacks.find(function(m){ return m !== model; });
         if(nextModel){
           ai.model = nextModel;
@@ -2944,7 +2942,10 @@ function mkGemini(ai){
       );
     }
     var j = await r.json(), cand = j.candidates && j.candidates[0], parts = cand && cand.content && cand.content.parts || [];
-    var text = parts.map(function(x){ return x.text || ""; }).join("");
+    // Filter out internal thinking monologue from reasoning models like gemini-2.5-flash
+    var answerParts = parts.filter(function(x){ return !x.thought; });
+    var textParts = answerParts.length ? answerParts : parts;
+    var text = textParts.map(function(x){ return x.text || ""; }).join("").trim();
     if(!text && j.promptFeedback && j.promptFeedback.blockReason) throw aierr("api", "blocked: " + j.promptFeedback.blockReason);
     if(opts.onText) opts.onText({text: text});
     return {text: text};
@@ -3185,7 +3186,7 @@ function connectModal(){
               return (m.name || "").replace(/^models\//, "");
             }).filter(Boolean);
             if(activeIds.length){
-              var preferredOrder = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash-8b", "gemini-2.0-flash-exp", "gemini-1.5-flash-latest"];
+              var preferredOrder = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.0-flash-exp"];
               activeIds.sort(function(a, b){
                 var ia = preferredOrder.indexOf(a), ib = preferredOrder.indexOf(b);
                 if(ia >= 0 && ib >= 0) return ia - ib;
@@ -3196,14 +3197,14 @@ function connectModal(){
               var curVal = (o.querySelector("#kMod") || {}).value;
               var friendly = activeIds.map(function(id){
                 var lbl = id;
-                if(id === "gemini-1.5-flash") lbl = "⚡ " + id + " (Ultra-Fast · Stable & Recommended)";
+                if(id === "gemini-2.5-flash") lbl = "⚡ " + id + " (Ultra-Fast · Default & Recommended)";
                 else if(id === "gemini-2.0-flash") lbl = "🚀 " + id + " (Next-Gen · 1M Context)";
-                else if(id === "gemini-1.5-pro") lbl = "🧠 " + id + " (Deep Analysis)";
+                else if(id === "gemini-2.5-pro") lbl = "🧠 " + id + " (Deep Reasoning & Analysis)";
                 else if(id.includes("flash")) lbl = "⚡ " + id;
                 else if(id.includes("pro")) lbl = "🧠 " + id;
                 return {id: id, label: lbl};
               });
-              var bestDefault = activeIds.indexOf("gemini-1.5-flash") >= 0 ? "gemini-1.5-flash" : (activeIds.indexOf("gemini-2.0-flash") >= 0 ? "gemini-2.0-flash" : friendly[0].id);
+              var bestDefault = activeIds.indexOf("gemini-2.5-flash") >= 0 ? "gemini-2.5-flash" : (activeIds.indexOf("gemini-2.0-flash") >= 0 ? "gemini-2.0-flash" : friendly[0].id);
               var pickTarget = (curVal && activeIds.indexOf(curVal) >= 0) ? curVal : bestDefault;
               fillModels(friendly, pickTarget);
               msg("");
@@ -3297,7 +3298,7 @@ function connectModal(){
           "<select id='kMod' style='flex:1;min-width:0;padding:9px 11px;font-size:13px;border-radius:10px;background:var(--card);color:var(--ink);border:1px solid var(--line)'></select>" +
           "<button type='button' id='btnRefreshGeminiModels' class='pill' style='padding:8px 12px;font-size:12px;flex-shrink:0' title='Check live models for this key'>🔄 Refresh</button>" +
           "</div>" +
-          "<small style='color:var(--mute);font-size:11px;display:block;margin-bottom:8px'>▾ Tap to choose model (Gemini 1.5 Flash recommended)</small>";
+          "<small style='color:var(--mute);font-size:11px;display:block;margin-bottom:8px'>▾ Tap to choose model (Gemini 2.5 Flash recommended)</small>";
       } else {
         var signed = pick === "puter" && puterSignedIn();
         if(pick === "puter"){
@@ -3487,7 +3488,7 @@ function connectModal(){
         var api = mkApi(cfg), t = null;
         try {
           t = await api("Reply with the single word OK.", {});
-          if(!/ok/i.test(String(t && t.text || ""))) throw aierr("api");
+          if(!t || !t.text) throw aierr("api", "Empty response from AI model");
         } catch(err){
           var errDetail = String(err && (err.detail || err.message) || "");
           if(err && (err.code === "bad_key" || /invalid_api_key|API_KEY_INVALID|UNAUTHENTICATED|ACCESS_TOKEN/i.test(errDetail))){
@@ -3502,7 +3503,7 @@ function connectModal(){
                 var altCfg = Object.assign({}, cfg, {model: altModel});
                 var altApi = mkApi(altCfg);
                 var altT = await altApi("Reply with the single word OK.", {});
-                if(/ok/i.test(String(altT && altT.text || ""))){
+                if(altT && altT.text){
                   cfg = altCfg;
                   var selMod = o.querySelector("#kMod");
                   if(selMod) selMod.value = altModel;
@@ -3513,7 +3514,7 @@ function connectModal(){
             }
             if(!healed) throw err;
           } else if(pick === "gemini" && err && (err.code === "bad_model" || err.code === "api")){
-            var geminiFallbacks = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-flash-latest", "gemini-2.0-flash-exp", "gemini-1.5-pro"].filter(function(m){ return m !== cfg.model; });
+            var geminiFallbacks = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-2.0-flash-exp"].filter(function(m){ return m !== cfg.model; });
             var healedGemini = false;
             var lastErr = err;
             for(var gi = 0; gi < geminiFallbacks.length; gi++){
@@ -3522,7 +3523,7 @@ function connectModal(){
                 var altGemCfg = Object.assign({}, cfg, {model: altGemModel});
                 var altGemApi = mkApi(altGemCfg);
                 var altGemT = await altGemApi("Reply with the single word OK.", {});
-                if(/ok/i.test(String(altGemT && altGemT.text || ""))){
+                if(altGemT && altGemT.text){
                   cfg = altGemCfg;
                   var selGemMod = o.querySelector("#kMod");
                   if(selGemMod) selGemMod.value = altGemModel;
@@ -4142,15 +4143,11 @@ RENDER.intro = function(){
   if(wrap){
     wrap.innerHTML = AUTH.users.length
       ? "Already have an account on this device? <button type='button' class='linkish' id='inLogin'>Log in</button>"
-      : (PILOT_GATE
-          ? "Invite-only for this pilot. Your details are used only to review your access request."
-          : (PAYWALL_ACTIVE
-              ? "Start with 3 free books, flashcard previews, recall drills and the Maths Workbench — go Pro anytime for unlimited chapters and fire drills."
-              : "Development mode: invite code is held so you can test all features on this device."));
+      : "100% Free for students forever. Unlimited books, flashcards, drills, and AI smart packs — no subscription or card needed.";
   }
-  if($("inReq")) $("inReq").textContent = PILOT_GATE ? "Request access" : "Create student account";
-  if($("inCode")) $("inCode").classList.toggle("hidden", !PILOT_GATE);
-  if($("inHowJoin")) $("inHowJoin").classList.toggle("hidden", !PILOT_GATE);
+  if($("inReq")) $("inReq").textContent = "Create student account";
+  if($("inCode")) $("inCode").classList.add("hidden");
+  if($("inHowJoin")) $("inHowJoin").classList.add("hidden");
   var lb = $("inLogin");
   if(lb) lb.onclick = function(){ authMode = "login"; show("onb"); };
   var note = $("ownerNote");
@@ -4636,7 +4633,7 @@ function fillSel(){
   var pk = has ? cur().pack : null;
   $("chPack").textContent = pk && pk.concepts && pk.concepts.length ? "✓ Smart pack (" + pk.concepts.length + ") · rebuild" : "⚡ Smart pack (online)";
   renderPackInfo();
-  $("info").textContent = has ? subjOf(cur()) + (semOf(cur()) !== "No semester" ? " · " + semOf(cur()) : "") + " · " + bookOf(cur()) + " · " + cur().pages + " pages · " + cur().text.length.toLocaleString() + " characters read" + (cur().cut ? " (long chapter: first part used)" : "") : "Upload a PDF with selectable text.";
+  $("info").textContent = has ? subjOf(cur()) + (semOf(cur()) !== "No semester" ? " · " + semOf(cur()) : "") + " · " + bookOf(cur()) + " · " + (cur().pages || 1) + " pages · " + ((cur().text || "").length).toLocaleString() + " characters read" + (cur().cut ? " (long chapter: first part used)" : "") : "Upload a PDF with selectable text.";
 }
 function clearOut(){ $("mp").innerHTML = "<p class='status'>Pick a method above to start </p>"; document.querySelectorAll("#methods .mth").forEach(function(b){ b.classList.remove("on"); }); setMethodOpen(false); setMsg(""); renderMethods(); renderPath(); askVideo(); }
 RENDER.study = function(){
@@ -4706,10 +4703,6 @@ var SAMPLE_CHAPTERS = [
   }
 ];
 function addChapterRecord(opts){
-  if(!subStatus().pro && (DB.chapters || []).length >= FREE_CHAPTER_LIMIT){
-    upgradeModal("You've used all " + FREE_CHAPTER_LIMIT + " free book slots. Go Pro for unlimited books and chapters.");
-    return;
-  }
   var raw = String(opts.text || "").trim(), cut = raw.length > LIM;
   var id = "c" + Date.now() + "_" + Math.floor(Math.random() * 1000);
   DB.chapters.push({
@@ -5634,27 +5627,20 @@ async function aiSplit(){
   } catch(e){ aiErr(e); btn.disabled = false; btn.textContent = " Detect chapters with AI"; }
 }
 function saveSplit(){
-  var isPro = subStatus().pro, curCount = (DB.chapters || []).length;
-  if(!isPro && curCount >= FREE_CHAPTER_LIMIT){
-    upgradeModal("Free plan supports up to " + FREE_CHAPTER_LIMIT + " chapters. Go Pro for unlimited chapters.");
-    return;
-  }
   var n = pend.pages.length, rows = pend.rows.slice().sort(function(a, b){return a.start - b.start}), starts = {}, ok = true;
   rows.forEach(function(r){ if(starts[r.start] || !r.name.trim()) ok = false; starts[r.start] = 1; });
   if(!ok || !rows.length){ $("spMsg").innerHTML = "<span class='err'>Each chapter needs a name and a different starting page.</span>"; return; }
-  var firstId = null, skipped = 0, capped = 0, added = 0, stamp = Date.now(), room = isPro ? rows.length : Math.max(0, FREE_CHAPTER_LIMIT - curCount);
+  var firstId = null, skipped = 0, added = 0, stamp = Date.now();
   rows.forEach(function(r, i){
     var end = i + 1 < rows.length ? rows[i+1].start - 1 : n, text = pend.pages.slice(r.start - 1, end).join("\n").trim();
     if(text.length < 100){ skipped++; return; }
-    if(added >= room){ capped++; return; }
     var cut = text.length > LIM, id = "c" + stamp + "_" + i; if(!firstId) firstId = id;
     DB.chapters.push({id: id, subject: pend.subject || "General", sem: pend.sem || "", book: pend.book, name: r.name.trim(), text: cut ? text.slice(0, LIM) : text, pages: end - r.start + 1, cut: cut});
     added++;
   });
   if(!firstId){ $("spMsg").innerHTML = "<span class='err'>No readable text in these page ranges.</span>"; return; }
   logEv("upload", "Added chapters from “" + pend.book + "” under " + (pend.subject || "General") + (pend.sem ? " · " + pend.sem : "")); DB.cur = firstId; pend = null; save(); $("split").classList.add("hidden"); $("v-study").classList.remove("split-mode"); setViewH(); fillSel(); clearOut();
-  if(capped){ upgradeModal("Added " + added + " chapter(s) up to the " + FREE_CHAPTER_LIMIT + "-chapter Free limit (" + capped + " skipped). Go Pro for full multi-chapter books."); }
-  else if(skipped) setMsg(skipped + " empty section(s) were skipped.");
+  if(skipped) setMsg(skipped + " empty section(s) were skipped.");
 }
 
 
@@ -5783,12 +5769,6 @@ function openMethod(k){
   else if(k === "flash"){ flashStart(); }
   else if(k === "cram"){ cramStart(); }
   else if(k === "mcq" || k === "exam"){
-    /* Paywall gate: dormant while DEV_UNLOCKED is true (dev builds), active again for freemium/release builds. */
-    if(k === "exam" && !subStatus().pro){
-      mp.innerHTML = "<div class='card hero' style='text-align:center'><span class='proBadge'>Pro</span><h3 style='margin:8px 0 4px'>Fire Drill</h3><p class='status'>A timed mock test that feels like the real thing, with answer review. Unlock with ENGRAMOS Pro.</p><button class='primary' id='upExBtn'>Go Pro (₹" + SUB_PLAN.priceInr + "/yr or ₹" + SUB_PLAN.monthlyInr + "/mo)</button></div>";
-      if($("upExBtn")) $("upExBtn").onclick = function(){ upgradeModal("Fire Drill"); };
-      focusRegion(mp, "start"); return;
-    }
     var ex = k === "exam";
     mp.innerHTML = methodFocusBar(k) + "<h3 style='margin-top:0'>" + (ex ? " Fire Drill" : " Recall Drill") + "</h3><p class='status'>" + (ex ? "Timed test, one minute per question. Answers are shown only after you submit, just like the real thing." : "You get feedback after every answer. A wrong answer opens a small window explaining it.") + "</p><div class='row'><select id='qzN'><option value='5'>5 questions</option><option value='10' selected>10 questions</option><option value='15'>15 questions</option>" + (ex ? "<option value='20'>20 questions</option>" : "") + "</select><select id='qzD'><option value='a mix of easy, medium and tricky'>Mixed</option><option value='easy, to build basics'>Easy</option><option value='hard, application-based and exam-tricky'>Hard</option></select></div><button class='primary' id='qzGo'>" + (ex ? "Start Fire Drill " : "Start recall ") + "</button><div id='qzScore' class='status' style='margin-top:10px'></div><div id='qzOut'></div><div id='qzRes'></div>";
     $("qzGo").onclick = function(){ startTest(k); }; paperUi();
@@ -10386,12 +10366,6 @@ function localCram(c){
 }
 function cramStart(){
   var c = cur(), mp = $("mp"); if(!c || !mp) return;
-  /* Paywall gate: dormant while DEV_UNLOCKED is true (dev builds), active again for freemium/release builds. */
-  if(!subStatus().pro){
-    mp.innerHTML = "<div class='card hero' style='text-align:center'><span class='proBadge'>Pro</span><h3 style='margin:8px 0 4px'>⚡ 5-Min Cram</h3><p class='status'>Pre-exam 1-page cheat sheets combining key formulas, error traps, and rapid self-checks.</p><button class='primary' id='upCrBtn'>Go Pro (₹" + SUB_PLAN.priceInr + "/yr or ₹" + SUB_PLAN.monthlyInr + "/mo)</button></div>";
-    if($("upCrBtn")) $("upCrBtn").onclick = function(){ upgradeModal("5-Min Cram pre-exam sheets"); };
-    return;
-  }
   var d = localCram(c);
   var h = methodFocusBar("cram") + "<h3 style='margin-top:0'>⚡ 5-Min Cram — " + esc(c.name) + "</h3>" +
     "<p class='status'>1-page pre-exam cheat sheet: core ideas, past error traps and 3 rapid recall checks.</p>" +
@@ -11035,51 +11009,23 @@ function myLevelRowHtml(){
 }
 
 function planAccessRowHtml(){
-  var s = subStatus(), p = DB.pilot || {};
-  var pillTxt = "Free Plan", pillCls = "";
-  if(s.paidActive){ pillTxt = "Pro Active"; pillCls = "on"; }
-  else if(s.unlocked){ pillTxt = "Developer Build"; pillCls = "on"; }
-  else if(s.pilotActive){ pillTxt = "Pilot · " + s.daysLeft + "d left"; pillCls = "on"; }
-  else if(p.code && p.code.indexOf("ENGM-") === 0){ pillTxt = "License Active"; pillCls = "on"; }
-
-  var desc = "";
-  var btns = "";
-  if(s.paidActive){
-    desc = "Plan: <b>" + esc(planName(s.plan)) + "</b>" + (s.validUntil ? " · valid until " + fmtD(s.validUntil) + " (" + s.daysLeft + " days left)" : "") + ". Unlimited books, chapters, and smart packs.";
-    btns = "<button data-act='subrec'>⬇ Parent Receipt</button> <button data-act='subup'>Extend 1 Year</button>";
-  } else if(s.unlocked){
-    desc = "Developer Build · All features unlocked (unlimited books, AI packs, 5-Min Cram &amp; Fire Drill).";
-    btns = "<button data-act='subprev'>" + (s.previewFree ? "Exit Free Preview" : "Preview Free Limits") + "</button>";
-  } else {
-    desc = "Upgrade to <b>ENGRAMOS Pro</b> (₹" + SUB_PLAN.priceInr + "/yr) for unlimited books, 5-Min Cram, and AI Smart Packs.";
-    if(s.pendingPayment){
-      desc += "<br><span style='color:var(--acc)'>UTR submitted: <code>" + esc(s.pendingPayment.paymentId) + "</code> (pending verification).</span>";
-    }
-    btns = "<button class='primary' data-act='subup'>Go Pro (₹" + SUB_PLAN.priceInr + "/yr)</button> <button data-act='subcode'>Enter License Key</button>";
-    if(s.pendingPayment) btns += " <button data-act='subchk'>Check Payment</button>";
-  }
-  if(p.code && p.code !== "DEV-LOCAL" && !s.paidActive){
-    desc += "<br><small style='color:var(--mute)'>School Code: <b>" + esc(p.code) + "</b>" + (p.validUntil ? " · until " + fmtD(p.validUntil) : "") + "</small>";
-  }
-  btns += " <button type='button' data-act='plmail'>Email Organiser</button>";
-
   return "<div class='settingsRow hasDrawer' id='rowPlan'>" +
     "<div class='settingsRowSummary'>" +
       "<div class='settingsRowLeft'>" +
-        "<div class='settingsRowIcon'>⭐</div>" +
+        "<div class='settingsRowIcon'>🎓</div>" +
         "<div class='settingsRowText'>" +
-          "<div class='settingsRowTitle'>Plan &amp; Access</div>" +
-          "<div class='settingsRowSub'>Subscription tier, license keys, and receipts</div>" +
+          "<div class='settingsRowTitle'>Access &amp; Edition</div>" +
+          "<div class='settingsRowSub'>100% Free Forever for Students</div>" +
         "</div>" +
       "</div>" +
       "<div class='settingsRowRight'>" +
-        "<span class='settingsStatusPill " + pillCls + "'>" + pillTxt + "</span>" +
+        "<span class='settingsStatusPill on'>Free Forever</span>" +
         "<span class='settingsChevron'>›</span>" +
       "</div>" +
     "</div>" +
     "<div class='settingsDrawer'>" +
-      "<p class='status' style='margin:0 0 10px'>" + desc + "</p>" +
-      "<div class='row' style='gap:8px;flex-wrap:wrap'>" + btns + "</div>" +
+      "<p class='status' style='margin:0 0 10px'><b>Free Student Edition</b> · All learning features, unlimited books, chapters, flashcards, 5-Min Cram, Fire Drill, and AI Smart Packs are completely unlocked and 100% free forever for all students. No subscription, card, or payment required.</p>" +
+      "<div class='row' style='gap:8px;flex-wrap:wrap'><button type='button' data-act='feedback'>💡 Share Feedback / Wishlist</button><button type='button' data-act='plmail'>Contact Organiser</button></div>" +
     "</div>" +
   "</div>";
 }
@@ -11221,6 +11167,12 @@ RENDER.tools = function(){
       "<div class='settingsRowRight'><span class='settingsStatusPill'>Profile</span><span class='settingsChevron'>›</span></div>" +
     "</div>" +
   "</div>";
+  h += "<div class='settingsRow' data-act='feedback'>" +
+    "<div class='settingsRowSummary'>" +
+      "<div class='settingsRowLeft'><div class='settingsRowIcon'>💡</div><div class='settingsRowText'><div class='settingsRowTitle'>Feedback &amp; Feature Wishlist</div><div class='settingsRowSub'>Send ideas, new feature requests, or study requirements</div></div></div>" +
+      "<div class='settingsRowRight'><span class='settingsStatusPill on'>Wishlist</span><span class='settingsChevron'>›</span></div>" +
+    "</div>" +
+  "</div>";
   h += teacherToolsRowHtml();
   h += "<div class='settingsRow' data-act='check_update'>" +
     "<div class='settingsRowSummary'>" +
@@ -11231,7 +11183,10 @@ RENDER.tools = function(){
   h += "</div>";
 
   h += "<p class='status' style='text-align:center;font-size:.78rem;margin:20px 0 0'>ENGRAMOS runs privately on your device · Data stays in your browser</p>";
-  h += "<div style='text-align:center;margin-top:8px'><button type='button' class='pill' data-act='check_update' style='font-size:11px;padding:5px 12px;opacity:.9'>🔄 Check for updates / refresh app</button></div>";
+  h += "<div style='text-align:center;margin-top:8px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap'>" +
+    "<button type='button' class='pill' data-act='check_update' style='font-size:11px;padding:5px 12px;opacity:.9'>🔄 Check for updates / refresh app</button>" +
+    "<button type='button' class='pill' data-act='feedback' style='font-size:11px;padding:5px 12px;opacity:.9'>💡 Send feedback / wish</button>" +
+  "</div>";
   h += "</div>";
 
   $("tlIn").innerHTML = h;
@@ -12441,29 +12396,94 @@ function refreshPilotBar(){
   bar.textContent = txt;
 }
 function pilotCardHtml(){
-  var p = DB.pilot || {}, d = pilotDaysLeft(), h = "<div class='card'><strong>My access</strong>";
+  var p = DB.pilot || {}, h = "<div class='card'><strong>Student Edition</strong>";
   var repBtn = OWNER_COPY ? "<button data-act='plexp'>Download my report</button>" : "";
-  if(!PILOT_GATE){
-    if(PAYWALL_ACTIVE){
-      var hasLic = !!(p.code && p.code !== "DEV-LOCAL" && p.code.indexOf("ENGM-") === 0);
-      h += "<p class='status'>" + (hasLic ? ("License key <b>" + esc(p.code) + "</b>" + (p.validUntil ? " · valid until <b>" + fmtD(p.validUntil) + "</b>" : "") + ".") : ("Account ID: <code>" + esc(p.code || "FREEMIUM") + "</code>. Upgrade above or enter a school license key.")) + "</p>";
-      h += "<div class='row' style='margin:8px 0 0'><button data-act='subcode'>Enter license key</button>" + repBtn + "<button data-act='plmail'>Email organiser</button></div>";
-    } else {
-      h += "<p class='status'>Development mode — the Step 2 invite-code gate is currently held so all sections, engines and reports can be tested locally." + (p.code && p.code !== "DEV-LOCAL" ? " Current code: <b>" + esc(p.code) + "</b>." : "") + "</p>";
-      h += "<div class='row' style='margin:8px 0 0'><button data-act='pltestreq'>Test access request</button><button data-act='plrenew'>Test invite code</button>" + repBtn + "<button data-act='plmail'>Email organiser</button></div>";
-    }
-  } else if(!p.registered){
-    h += "<p class='status'>This account is not linked to an access code. If you are joining a class, ask your organiser for an invite code.</p><div class='row' style='margin:8px 0 0'><button data-act='plrenew'>Enter a code</button></div>";
-  } else {
-    h += "<p class='status'>Code <b>" + esc(p.code) + "</b>" + (p.board ? " · " + esc(p.board) : "") + " · valid until <b>" + (p.validUntil ? fmtD(p.validUntil) : "—") + "</b>" + (d !== null && d >= 0 ? " (" + d + " day" + (d === 1 ? "" : "s") + " left)" : "") + ".</p>";
-    h += "<div class='row' style='margin:8px 0 0'><button data-act='plrenew'>Enter a new code</button>" + repBtn + "<button data-act='plmail'>Email organiser</button></div>";
-  }
+  h += "<p class='status'>ENGRAMOS is 100% free forever for all students. Unlimited books, flashcards, drills, and AI smart packs are available with zero restrictions.</p>";
+  h += "<div class='row' style='margin:8px 0 0'>" + repBtn + "<button data-act='plmail'>Email organiser</button></div>";
   h += "</div>";
   return h;
 }
 function mailOrganiser(){
   var p = DB.pilot || {}, sub = "ENGRAMOS pilot — " + ((DB.profile && DB.profile.name) || "student") + (p.code ? " (" + p.code + ")" : "");
   location.href = "mailto:" + PILOT.organiser + "?subject=" + encodeURIComponent(sub) + "&body=" + encodeURIComponent("Hello, I need help with my ENGRAMOS access." + (p.code ? "\nMy code: " + p.code : ""));
+}
+function openFeedbackModal(){
+  var p = (DB && DB.profile) || {};
+  var sName = p.name || "Student";
+  var sGrade = (p.cls || "") + (p.board ? " · " + p.board : "");
+  var targetEmail = "engramosfeedback@gmail.com";
+
+  var m = popup("<div style='max-width:520px'>" +
+    "<h3 style='margin-top:0;display:flex;align-items:center;gap:8px'><span>💡</span> Feedback &amp; Feature Wishlist</h3>" +
+    "<p class='status' style='margin:4px 0 12px'>Have an idea, wish for a new function, or need another subject or textbook added? Let us know — ENGRAMOS is built for you!</p>" +
+    "<label style='font-size:.82rem;font-weight:600;color:var(--mute);display:block;margin-bottom:4px'>Feedback Category</label>" +
+    "<select id='fbType' style='width:100%;margin-bottom:12px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit'>" +
+      "<option value='Feature Wish'>🌟 Feature Wish / New Function Idea</option>" +
+      "<option value='Subject Request'>📚 New Subject, Board or Textbook Request</option>" +
+      "<option value='Bug or Issue'>🐛 Something isn’t working (Bug / Issue)</option>" +
+      "<option value='General Feedback'>💬 General Feedback &amp; Ideas</option>" +
+    "</select>" +
+    "<label style='font-size:.82rem;font-weight:600;color:var(--mute);display:block;margin-bottom:4px'>Your Wish / Requirements</label>" +
+    "<textarea id='fbTxt' rows='5' placeholder='Tell us what features or study tools you would love to have in ENGRAMOS…' style='width:100%;box-sizing:border-box;margin-bottom:12px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;resize:vertical'></textarea>" +
+    "<div class='card' style='padding:10px 12px;margin-bottom:12px;background:var(--accbg);border:1px solid var(--line);border-radius:8px'>" +
+      "<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px'>" +
+        "<span style='font-size:.86rem;color:var(--ink)'>Destination: <b>" + targetEmail + "</b></span>" +
+        "<button type='button' id='fbCopyEmail' class='pill' style='font-size:.76rem;padding:3px 10px'>Copy Email</button>" +
+      "</div>" +
+    "</div>" +
+    "<div id='fbMsg' class='status' style='min-height:1.2em;margin-bottom:8px'></div>" +
+    "<div class='row' style='justify-content:flex-end;gap:8px;flex-wrap:wrap'>" +
+      "<button type='button' data-close>Close</button>" +
+      "<button type='button' id='fbCopyAll'>📋 Copy Feedback</button>" +
+      "<button type='button' class='primary' id='fbSendMail'>🚀 Send via Email</button>" +
+    "</div>" +
+  "</div>");
+
+  m.el.querySelector("#fbCopyEmail").onclick = function(){
+    copyText(targetEmail, "Email address copied: " + targetEmail);
+  };
+
+  function buildDraft(){
+    var category = m.el.querySelector("#fbType").value;
+    var userText = m.el.querySelector("#fbTxt").value.trim();
+    var subj = "ENGRAMOS Feedback [" + category + "] - " + sName;
+    var dev = typeof anaDevice === "function" ? anaDevice() : null;
+    var devInfo = dev ? (dev.os + " / " + dev.browser) : "Web";
+    var body = "Hi ENGRAMOS Team,\n\n" +
+      (userText ? userText : "[My feedback / feature wish]") + "\n\n" +
+      "---------------------------\n" +
+      "Student: " + sName + (sGrade ? " · " + sGrade : "") + "\n" +
+      "Device: " + devInfo + "\n" +
+      "Edition: ENGRAMOS Free Student Edition";
+    return { subject: subj, body: body, text: userText };
+  }
+
+  m.el.querySelector("#fbCopyAll").onclick = function(){
+    var draft = buildDraft();
+    if(!draft.text){
+      var el = m.el.querySelector("#fbMsg");
+      if(el) el.innerHTML = "<span class='err'>Please enter your feedback or wish first.</span>";
+      return;
+    }
+    var fullCopy = "To: " + targetEmail + "\nSubject: " + draft.subject + "\n\n" + draft.body;
+    copyText(fullCopy, "Feedback copied to clipboard! Paste into your email to send.");
+    var msgEl = m.el.querySelector("#fbMsg");
+    if(msgEl) msgEl.innerHTML = "<span style='color:var(--ok)'>✓ Feedback copied! Open your email app and send to " + targetEmail + "</span>";
+  };
+
+  m.el.querySelector("#fbSendMail").onclick = function(){
+    var draft = buildDraft();
+    if(!draft.text){
+      var el = m.el.querySelector("#fbMsg");
+      if(el) el.innerHTML = "<span class='err'>Please enter your feedback or wish first.</span>";
+      return;
+    }
+    var mailtoUrl = "mailto:" + targetEmail +
+      "?subject=" + encodeURIComponent(draft.subject) +
+      "&body=" + encodeURIComponent(draft.body);
+    location.href = mailtoUrl;
+    toast("Opening email app…");
+  };
 }
 /* ---- usage analytics: local first, sent in the background ---- */
 function anaKey(){ return PILOT.anaPrefix + (AUTH.session || "anon"); }
@@ -12750,39 +12770,28 @@ function planDays(pl){ return (pl === "monthly") ? SUB_PLAN.monthDays : SUB_PLAN
 function planName(pl){ return (pl === "monthly") ? "ENGRAMOS Pro · Monthly" : "ENGRAMOS Pro · Yearly"; }
 function planPeriod(pl){ return (pl === "monthly") ? "month" : "year"; }
 function subStatus(){
-  var sub = (DB && DB.sub) || {}, p = (DB && DB.pilot) || {};
-  var now = Date.now(), chCount = (DB && DB.chapters ? DB.chapters.length : 0);
-  var subActive = sub.tier === "pro" && !!sub.validUntil && sub.validUntil > now;
-  var pilotActive = !!(p.registered && p.code && p.code !== "DEV-LOCAL" && !/^STU-/.test(p.code) && !p.revoked && (!p.validUntil || p.validUntil > now));
-  var paidActive = subActive;
-  var until = subActive ? sub.validUntil : (pilotActive ? p.validUntil : 0);
-  var daysLeft = until ? Math.max(0, Math.ceil((until - now) / 86400000)) : null;
-  var previewFree = !!sub.devPreviewFree;
-  var pro = DEV_UNLOCKED || paidActive || pilotActive || (!PAYWALL_ACTIVE && !previewFree);
-  var devBypass = !paidActive && !pilotActive && !PAYWALL_ACTIVE && !previewFree;
-  var unlocked = DEV_UNLOCKED || devBypass;
+  var chCount = (DB && DB.chapters ? DB.chapters.length : 0);
   return {
-    pro: pro,
-    plan: sub.plan || (paidActive ? "yearly" : "free"),
-    paidActive: paidActive,
-    pilotActive: pilotActive,
-    devBypass: devBypass,
-    unlocked: unlocked,
-    previewFree: previewFree,
-    daysLeft: daysLeft,
-    validUntil: until,
+    pro: true,
+    freeForever: true,
+    unlocked: true,
+    plan: "freeForever",
+    paidActive: false,
+    pilotActive: false,
+    devBypass: true,
+    previewFree: false,
+    daysLeft: null,
+    validUntil: null,
     chaptersUsed: chCount,
-    chaptersLeft: Math.max(0, FREE_CHAPTER_LIMIT - chCount),
-    method: sub.method || (pilotActive ? "license" : ""),
-    paymentId: sub.paymentId || (pilotActive ? p.code : ""),
-    pendingPayment: (!paidActive && sub.pendingPayment) ? sub.pendingPayment : null
+    chaptersLeft: 999999,
+    method: "free_educational",
+    paymentId: "",
+    pendingPayment: null
   };
 }
 function requirePro(featureName, cb){
-  /* Gate helper. While DEV_UNLOCKED is true, subStatus().pro is always true so this never blocks (dev builds). */
-  if(subStatus().pro){ if(cb) cb(); return true; }
-  upgradeModal(featureName);
-  return false;
+  if(cb) cb();
+  return true;
 }
 function loadRazorpay(){
   if(window.Razorpay) return Promise.resolve(window.Razorpay);
@@ -12950,249 +12959,19 @@ function activateProPass(opts){
   else if(curView === "study") RENDER.study();
 }
 function downloadSubReceipt(){
-  if(!subStatus().paidActive){ toast("Receipt is available after activating ENGRAMOS Pro."); return; }
-  var s = subStatus(), sub = DB.sub || {}, p = DB.profile || {};
-  var id = sub.paymentId || (DB.pilot && DB.pilot.code) || "ENGRAMOS-PASS";
-  var paidDt = sub.paidAt ? fmtD(sub.paidAt) : fmtD(Date.now());
-  var expDt = s.validUntil ? fmtD(s.validUntil) : "—";
-  var html = "<!doctype html><html><head><meta charset='utf-8'><title>ENGRAMOS Receipt - " + esc(id) + "</title>" +
-    "<style>body{font:15px/1.55 system-ui,sans-serif;max-width:620px;margin:28px auto;padding:0 18px;color:#172033}" +
-    ".box{border:1px solid #d5dce9;border-radius:14px;padding:22px}.h{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #d5dce9;padding-bottom:12px;margin-bottom:14px}" +
-    "table{width:100%;border-collapse:collapse}td{padding:7px 0;border-bottom:1px solid #eef2f8}td:last-child{text-align:right;font-weight:600}" +
-    ".tot td{font-size:1.1rem;border-top:2px solid #172033;border-bottom:none;padding-top:12px}</style></head><body>" +
-    "<div class='box'><div class='h'><div><h2 style='margin:0'>ENGRAMOS</h2><small>Digital Learning Companion</small></div><div style='text-align:right'><b>Payment Receipt</b><br><small>" + esc(paidDt) + "</small></div></div>" +
-    "<table><tr><td>Student Name</td><td>" + esc(p.name || "Student") + "</td></tr>" +
-    "<tr><td>City</td><td>" + esc(p.from || "—") + "</td></tr>" +
-    (p.school ? "<tr><td>School</td><td>" + esc(p.school) + "</td></tr>" : "") +
-    "<tr><td>Plan</td><td>" + esc(planName(sub.plan || "yearly")) + "</td></tr>" +
-    "<tr><td>Payment Method</td><td>" + esc(String(sub.method || "License").toUpperCase()) + "</td></tr>" +
-    "<tr><td>Reference / Code</td><td>" + esc(id) + "</td></tr>" +
-    "<tr><td>Valid Until</td><td>" + esc(expDt) + "</td></tr>" +
-    "<tr class='tot'><td>Total Paid</td><td>INR ₹" + esc(String(sub.amountInr || planAmount(sub.plan || "yearly"))) + ".00</td></tr></table>" +
-    "<p style='color:#5b6478;font-size:.86rem;margin:16px 0 0'>All study material and progress stay stored offline on this device. Thank you for learning with ENGRAMOS.</p></div></body></html>";
-  saveFile("ENGRAMOS-Receipt-" + ((p.name || "Student").replace(/\W+/g, "_")) + "-" + pilotToday() + ".html", html);
-  toast("Receipt downloaded");
+  toast("ENGRAMOS is 100% free forever for all students. No receipt needed!");
 }
 function subCardHtml(){
-  var s = subStatus(), h = "<div class='card'><strong>Subscription &amp; Pro</strong>";
-  if(s.paidActive){
-    h += "<p style='margin:6px 0'><span class='proBadge'>✓ Pro active</span></p>" +
-      "<p class='status'>Plan: <b>" + esc(planName(s.plan)) + "</b>" +
-      (s.validUntil ? " · valid until <b>" + fmtD(s.validUntil) + "</b> (" + s.daysLeft + " days left)" : "") +
-      (s.paymentId ? "<br>Ref: <code>" + esc(s.paymentId) + "</code>" : "") + ".</p>" +
-      "<div class='row' style='margin:8px 0 0'><button data-act='subrec'>⬇ Parent receipt</button><button data-act='subup'>Extend 1 year</button></div>";
-  } else if(s.unlocked){
-    h += "<p style='margin:6px 0'><span class='proBadge free'>Development build · every feature unlocked</span></p>" +
-      "<p class='status'>This developer version keeps the paywall off (<code>DEV_UNLOCKED = true</code>, <code>PAYWALL_ACTIVE = false</code>), so nothing is locked: unlimited books &amp; chapters, 5-Min Cram, Fire Drill, AI Smart Packs and the bulk tools are all open on every screen." +
-      (s.previewFree ? " Free-limit preview is currently toggled on, but it will not lock anything while the developer build is on." : "") + "</p>" +
-      "<div class='row' style='margin:8px 0 0'><button data-act='subprev'>" + (s.previewFree ? "Exit Free preview" : "Preview Free limits") + "</button></div>";
-  } else {
-    h += "<p style='margin:6px 0'><span class='proBadge free'>" + (s.pilotActive ? "Pilot Pass · " + s.daysLeft + "d left" : "Free Plan · " + s.chaptersUsed + "/" + FREE_CHAPTER_LIMIT + " chapters") + "</span></p>" +
-      "<p class='status'>Go <b>Pro</b> (₹" + SUB_PLAN.priceInr + "/yr or ₹" + SUB_PLAN.monthlyInr + "/mo) for unlimited books &amp; chapters, 5-Min Cram, Exam Mode &amp; AI Smart Packs.</p>";
-    if(s.pendingPayment){
-      h += "<p class='status' style='margin:6px 0;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(82,101,218,.08)'><b>UTR submitted:</b> <code>" + esc(s.pendingPayment.paymentId) + "</code> — awaiting organiser confirmation. Pro unlocks automatically once verified.</p>";
-    }
-    h += "<div class='row' style='margin:8px 0 0'><button class='primary' data-act='subup'>Go Pro (₹" + SUB_PLAN.priceInr + "/yr or ₹" + SUB_PLAN.monthlyInr + "/mo)</button><button data-act='subcode'>Enter license key</button>" +
-      (s.pendingPayment ? "<button data-act='subchk'>Check payment status</button>" : "") +
-      (!PAYWALL_ACTIVE ? "<button data-act='subprev'>" + (s.previewFree ? "Exit Free preview" : "Preview Free limits") + "</button>" : "") + "</div>";
-  }
-  return h + "</div>";
+  return "<div class='card'><strong>Free Educational Edition</strong>" +
+    "<p style='margin:6px 0'><span class='proBadge free'>✓ 100% Free Forever for Students</span></p>" +
+    "<p class='status'>All learning features, unlimited books, chapters, 5-Min Cram, Fire Drill, and AI Smart Packs are completely unlocked and free for every student with no subscription or payment required.</p>" +
+    "</div>";
 }
 function upgradeModal(reason, startTab, plan){
-  var p = DB.profile || {}, ss = subStatus();
-  plan = plan || UP_PLAN; UP_PLAN = plan;
-  var amt = planAmount(plan), per = planPeriod(plan);
-  var tab = startTab || (SUB_PLAN.razorpayKey ? "rzp" : (!PAYWALL_ACTIVE ? "rzp" : "upi"));
-  var refNote = "ENGRAMOS-" + ((p.name || "Student").replace(/\W+/g, "").slice(0, 12)) + "-" + pilotToday();
-  var upiHref = SUB_PLAN.upiId ? ("upi://pay?pa=" + encodeURIComponent(SUB_PLAN.upiId) + "&pn=" + encodeURIComponent(SUB_PLAN.upiName) + "&am=" + amt + "&cu=INR&tn=" + encodeURIComponent(refNote)) : "";
-  var priceBlock = (plan === "monthly")
-    ? "<div class='subPrice'><b>₹" + SUB_PLAN.monthlyInr + "</b><span class='status'>/ month · cancel anytime</span></div>"
-    : "<div class='subPrice'><b>₹" + SUB_PLAN.priceInr + "</b><s>₹" + SUB_PLAN.mrpInr + "</s><span class='status'>/ year · ~₹" + Math.max(1, Math.round(SUB_PLAN.priceInr / 12)) + "/mo · one-time payment</span></div>";
-  var m = popup("<div style='max-width:520px'>" +
-    "<span class='proBadge'>ENGRAMOS Pro</span>" +
-    "<h3 style='margin:8px 0 4px'>" + (reason ? "Unlock: " + esc(reason) : "Go Pro. Study smarter, remember longer.") + "</h3>" +
-    "<div class='subTabs' id='upPlanTabs'><button data-uplan='yearly' class='" + (plan === "yearly" ? "primary" : "") + "'>Yearly · ₹" + SUB_PLAN.priceInr + "</button><button data-uplan='monthly' class='" + (plan === "monthly" ? "primary" : "") + "'>Monthly · ₹" + SUB_PLAN.monthlyInr + "</button></div>" +
-    priceBlock +
-    (ss.pendingPayment ? "<div class='card' style='margin:6px 0;padding:10px;border-color:var(--acc);background:var(--accbg)'><p class='status' style='margin:0 0 6px'><b>UTR awaiting check:</b> <code>" + esc(ss.pendingPayment.paymentId) + "</code></p><button type='button' id='upPendChk'>Check payment status</button></div>" : "") +
-    "<ul class='subPerk'>" +
-    "<li><b>Unlimited books &amp; chapters</b> across every subject and semester</li>" +
-    "<li><b>⚡ 5-Min Cram</b> 1-page pre-exam sheets + error trap review</li>" +
-    "<li><b>Fire Drill</b> timed tests that feel like the real thing</li>" +
-    "<li><b>AI Smart Packs &amp; Syllabus Planner</b> (connect your own optional free Gemini / Groq / Puter key)</li></ul>" +
-    "<div class='subTabs'><button data-stab='rzp'>UPI / Card (Razorpay)</button><button data-stab='upi'>Direct UPI / UTR</button><button data-stab='code'>License Key</button></div>" +
-    "<div id='subTabBody'></div><div id='subMsg' class='status' style='min-height:1.2em;margin-top:6px'></div>" +
-    "<div class='row' style='margin-top:10px;justify-content:flex-end'><button data-close>Maybe later</button></div></div>");
-
-  if(m.el.querySelector("#upPendChk")) m.el.querySelector("#upPendChk").onclick = function(){ subCheckStatus(false).then(function(res){ if(res && res.paymentStatus === "paid" && m.el && m.el.parentNode) m.close(); }); };
-  m.el.querySelectorAll("[data-uplan]").forEach(function(b){ b.onclick = function(){ var pl = b.getAttribute("data-uplan"); if(pl !== plan){ m.close(); upgradeModal(reason, tab, pl); } }; });
-  function setMsgSub(txt, isErr){ var el = m.el.querySelector("#subMsg"); if(el) el.innerHTML = txt ? ("<span class='" + (isErr ? "err" : "") + "'>" + esc(txt) + "</span>") : ""; }
-  function drawTab(){
-    m.el.querySelectorAll("[data-stab]").forEach(function(b){ b.classList.toggle("primary", b.getAttribute("data-stab") === tab); });
-    var box = m.el.querySelector("#subTabBody"); setMsgSub("");
-    if(tab === "rzp"){
-      var hasKey = !!SUB_PLAN.razorpayKey;
-      box.innerHTML = "<div class='card' style='margin:6px 0'>" +
-        (hasKey
-          ? "<p class='status' style='margin:0 0 10px'>Instant activation via Razorpay — accepts Google Pay, PhonePe, Paytm, UPI, Debit/Credit Card &amp; Netbanking.</p><button class='primary' id='rzpPayBtn' style='width:100%'>Pay ₹" + amt + " securely now</button>"
-          : (!PAYWALL_ACTIVE
-              ? "<p class='status' style='margin:0 0 8px'><b>Online card checkout not configured</b> (development mode).</p>" +
-                "<p class='status' style='margin:0 0 10px'>Simulate a local test payment to preview ENGRAMOS Pro and the receipt:</p>" +
-                "<button class='primary' id='rzpTestBtn' style='width:100%'>Simulate ₹" + amt + " Test Payment &amp; Unlock</button>"
-              : "<p class='status' style='margin:0'>Card/UPI gateway checkout is currently offline. Please use <b>Direct UPI / UTR</b> or enter a <b>License Key</b> from your school/organiser.</p>")) +
-        "</div>";
-      if(m.el.querySelector("#rzpPayBtn")) m.el.querySelector("#rzpPayBtn").onclick = function(){ startRazorpayCheckout(m, setMsgSub, plan); };
-      if(!PAYWALL_ACTIVE && m.el.querySelector("#rzpTestBtn")) m.el.querySelector("#rzpTestBtn").onclick = function(){
-        var pid = "pay_test_" + Date.now().toString(36).toUpperCase();
-        activateProPass({method: "razorpay-test", paymentId: pid, amountInr: amt, plan: plan, days: planDays(plan), status: "paid", note: "Local test checkout"});
-        m.close(); toast("ENGRAMOS Pro activated (Test Mode)!");
-      };
-    } else if(tab === "upi"){
-      var qrHtml = upiHref ? qrSvg(upiHref) : "";
-      box.innerHTML = "<div class='card' style='margin:6px 0'>" +
-        (SUB_PLAN.upiId
-          ? "<div style='display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:10px'>" +
-            (qrHtml ? "<div style='flex:0 0 auto'>" + qrHtml + "</div>" : "<p class='status' style='margin:0;flex-basis:100%'>UPI link is too long for a QR code — tap <b>Open UPI app</b> or <b>Copy UPI ID</b> below.</p>") +
-            "<div style='flex:1;min-width:190px'><p class='status' style='margin:0 0 8px'>Scan QR or send <b>₹" + amt + "</b> via GPay / PhonePe / Paytm to <code>" + esc(SUB_PLAN.upiId) + "</code></p>" +
-            "<div class='row' style='margin:0'><a href='" + esc(upiHref) + "' style='text-decoration:none'><button type='button' class='primary'>Open UPI app (₹" + amt + ")</button></a><button type='button' id='upiCopyId'>Copy UPI ID</button></div></div></div>"
-          : "<p class='status' style='margin:0 0 8px'>Enter the 12-digit UTR / UPI Transaction ID after paying <b>₹" + amt + "</b> to your organiser's UPI ID. Your ENGRAMOS Pro access unlocks as soon as the organiser confirms the payment.</p>") +
-        "<label style='margin-top:4px'>12-digit UTR / Transaction ID</label><input id='upiUtr' inputmode='numeric' pattern='[0-9]*' placeholder='e.g. 431612345678'>" +
-        "<label style='margin-top:6px'>Parent email (for receipt &amp; license key)</label><input id='upiMail' type='email' placeholder='parent@example.com' value='" + esc((DB.pilot && DB.pilot.guardian && DB.pilot.guardian.email) || "") + "'>" +
-        "<div class='row' style='margin-top:10px'><button class='primary' id='upiSubBtn'>Submit UTR for verification</button></div></div>";
-      if(m.el.querySelector("#upiCopyId")) m.el.querySelector("#upiCopyId").onclick = function(){ copyText(SUB_PLAN.upiId, "UPI ID copied"); };
-      m.el.querySelector("#upiSubBtn").onclick = function(){
-        var utr = m.el.querySelector("#upiUtr").value.trim().replace(/\s+/g, ""), em = m.el.querySelector("#upiMail").value.trim();
-        if(!/^[A-Za-z0-9]{10,35}$/.test(utr)){ setMsgSub("Enter a valid 12-digit UTR / UPI reference (10–35 letters or numbers).", true); return; }
-        if(!PILOT.uploadUrl || !PILOT.uploadToken){
-          setMsgSub("Online organiser verification is not configured in this copy — email UTR " + utr + " to " + PILOT.organiser + " or use a license key.", true);
-          return;
-        }
-        var pid = "UTR-" + utr, pr = DB.profile || {}, g = (DB.pilot && DB.pilot.guardian) || {};
-        var btnU = m.el.querySelector("#upiSubBtn");
-        btnU.disabled = true; btnU.textContent = "Submitting…";
-        DB.sub = DB.sub || blankDB().sub;
-        DB.sub.pendingPayment = {paymentId: pid, amountInr: amt, at: Date.now(), email: em};
-        save();
-        recordPayment({
-          kind: "payment",
-          studentId: AUTH.session || "",
-          paymentId: pid,
-          orderId: "",
-          at: Date.now(),
-          name: pr.name || "Student",
-          email: em || g.email || "",
-          cls: pr.cls || "",
-          school: pr.school || "",
-          method: "upi",
-          amountInr: amt,
-          plan: planName(plan),
-          days: planDays(plan),
-          code: (DB.pilot && DB.pilot.code) || pid,
-          status: "pending-review",
-          validUntil: 0,
-          note: "UPI UTR submitted by student"
-        }).then(function(r){
-          btnU.disabled = false; btnU.textContent = "Submit UTR for verification";
-          var prInfo = r && r.res && Array.isArray(r.res.payments) ? r.res.payments.filter(function(x){ return x && x.paymentId === pid; })[0] : null;
-          if(prInfo && prInfo.status === "rejected"){
-            DB.sub.pendingPayment = null; save();
-            setMsgSub("That UTR was rejected (duplicate or mismatched account). Contact your organiser.", true);
-            return;
-          }
-          if(curView === "tools") RENDER.tools(); else if(curView === "home") RENDER.home();
-          m.close();
-          toast(r && r.ok
-            ? ("UTR submitted (" + pid + "). Pro unlocks once organiser verifies your payment.")
-            : ("Saved locally (" + pid + "). Will send to organiser once back online."));
-        });
-      };
-    } else {
-      box.innerHTML = "<div class='card' style='margin:6px 0'><p class='status' style='margin:0 0 8px'>Already paid, or received a license key from ENGRAMOS / your school or organiser?</p>" +
-        "<input id='subKeyIn' autocapitalize='characters' spellcheck='false' placeholder='ENGM-271231-7F2B'>" +
-        "<div class='row' style='margin-top:10px'><button class='primary' id='subKeyGo'>Activate license key</button></div></div>";
-      m.el.querySelector("#subKeyGo").onclick = function(){
-        var btn = m.el.querySelector("#subKeyGo");
-        var c = parseInvite(m.el.querySelector("#subKeyIn").value);
-        if(!c){ setMsgSub("That license code does not look right.", true); return; }
-        if(c.until < Date.now()){ setMsgSub("That license code has expired.", true); return; }
-        btn.disabled = true; btn.textContent = "Checking…";
-        subVerifyCode(c.code).then(function(res){
-          btn.disabled = false; btn.textContent = "Activate license key";
-          if(!res || res.ok === false){ setMsgSub((res && res.error) || "This license key is invalid or revoked.", true); return; }
-          var validUntil = (res && res.validUntil) ? res.validUntil : c.until;
-          activateProPass({method: "license", code: c.code, paymentId: c.code, validUntil: validUntil, plan: plan, days: planDays(plan), status: "paid", note: "Activated via license key"});
-          m.close(); toast("ENGRAMOS Pro activated!");
-        });
-      };
-    }
-  }
-  m.el.querySelectorAll("[data-stab]").forEach(function(b){ b.onclick = function(){ tab = b.getAttribute("data-stab"); drawTab(); }; });
-  drawTab();
+  toast("ENGRAMOS is 100% free forever for all students! All features are unlocked.");
 }
-function startRazorpayCheckout(m, setMsgSub, plan){
-  plan = plan || UP_PLAN;
-  var amt = planAmount(plan);
-  if(!navigator.onLine){ setMsgSub("Go online to open Razorpay checkout, or activate an offline license key.", true); return; }
-  var btn = m.el.querySelector("#rzpPayBtn"); if(btn){ btn.disabled = true; btn.textContent = "Opening Razorpay…"; }
-  loadRazorpay().then(function(Rzp){
-    var p = DB.profile || {}, g = (DB.pilot && DB.pilot.guardian) || {};
-    var opts = {
-      key: SUB_PLAN.razorpayKey,
-      amount: amt * 100,
-      currency: "INR",
-      name: "ENGRAMOS",
-      description: planName(plan) + " (" + planDays(plan) + " days)",
-      prefill: { name: p.name || "", email: g.email || "", contact: g.phone || "" },
-      notes: { student: p.name || "", city: p.from || "" },
-      theme: { color: "#5265da" },
-      handler: function(resp){
-        var pid = (resp && resp.razorpay_payment_id) || ("RZP-" + Date.now());
-        var oid = (resp && resp.razorpay_order_id) || "";
-        if(!PILOT.uploadUrl || !PILOT.uploadToken){
-          activateProPass({ method: "razorpay", paymentId: pid, orderId: oid, amountInr: amt, plan: plan, days: planDays(plan), status: "paid", note: "Razorpay checkout (local)", skipUpload: true });
-          if(m && m.el && m.el.parentNode) m.close();
-          toast("Payment successful — ENGRAMOS Pro activated!");
-          return;
-        }
-        setMsgSub("Verifying payment with server…");
-        var rec = {
-          kind: "payment", studentId: AUTH.session || "", paymentId: pid, orderId: oid, at: Date.now(),
-          name: p.name || "Student", email: g.email || "", cls: p.cls || "", school: p.school || "",
-          method: "razorpay", amountInr: amt, plan: planName(plan), days: planDays(plan),
-          code: (DB.pilot && DB.pilot.code) || pid, status: "paid", validUntil: 0, note: "Razorpay checkout"
-        };
-        recordPayment(rec).then(function(r){
-          var prInfo = r && r.res && Array.isArray(r.res.payments) ? r.res.payments.filter(function(x){ return x && x.paymentId === pid; })[0] : null;
-          if(prInfo && prInfo.status === "rejected"){
-            setMsgSub("Payment " + pid + " could not be verified with Razorpay.", true);
-            if(btn){ btn.disabled = false; btn.textContent = "Pay ₹" + amt + " securely now"; }
-            return;
-          }
-          if(r && r.ok && prInfo && prInfo.status === "paid"){
-            activateProPass({ method: "razorpay", paymentId: pid, orderId: oid, code: prInfo.code || "", validUntil: prInfo.validUntil || 0, amountInr: amt, plan: plan, days: planDays(plan), status: "paid", note: "Razorpay verified", skipUpload: true });
-            if(m && m.el && m.el.parentNode) m.close();
-            toast("Payment verified — ENGRAMOS Pro activated!");
-          } else {
-            DB.sub = DB.sub || blankDB().sub;
-            DB.sub.pendingPayment = {paymentId: pid, amountInr: amt, at: Date.now(), email: g.email || ""};
-            save();
-            if(curView === "tools") RENDER.tools(); else if(curView === "home") RENDER.home();
-            if(m && m.el && m.el.parentNode) m.close();
-            toast("Payment received (" + pid + "). Pro unlocks once your connection verifies it.");
-          }
-        });
-      },
-      modal: { ondismiss: function(){ if(btn){ btn.disabled = false; btn.textContent = "Pay ₹" + amt + " securely now"; } } }
-    };
-    var rzp = new Rzp(opts);
-    rzp.on("payment.failed", function(r){
-      setMsgSub((r && r.error && r.error.description) || "Payment failed. Please try again.", true);
-      if(btn){ btn.disabled = false; btn.textContent = "Pay ₹" + amt + " securely now"; }
-    });
-    rzp.open();
-  }).catch(function(e){
-    setMsgSub(e.message || "Could not open Razorpay.", true);
-    if(btn){ btn.disabled = false; btn.textContent = "Pay ₹" + amt + " securely now"; }
-  });
+function startRazorpayCheckout(){
+  toast("ENGRAMOS is 100% free forever. No payment required.");
 }
 
 /* ---------- notebook: keep the explanations that matter ---------- */
@@ -13562,6 +13341,7 @@ function speechSettings(){
     });
   }
   else if(a === "check_update") forceAppUpdate();
+  else if(a === "feedback") openFeedbackModal();
 });
   document.addEventListener("change", function(e){ var t = e.target; if(t.id === "fRs" && t.files[0]) restoreData(t.files[0]); if(t.id === "fCls" && t.files.length) classView(t.files);
     
@@ -13812,7 +13592,6 @@ function arrangePrompt(){
   return "You organise a student's study material.\n\nSYLLABUS:\n" + JSON.stringify(syllabus) + "\n\nUPLOADED CHAPTERS:\n" + JSON.stringify(chs) + "\n\nTASK: Match each uploaded chapter to one subject and one semester from the syllabus where possible, and a sensible book name. Return ONLY a JSON array [{\"id\": the chapter id exactly as given, \"subject\": \"...\", \"sem\": \"...\", \"book\": \"...\", \"chapter\": \"cleaned chapter name\"}]. Keep subject names consistent with the syllabus. If a chapter cannot be matched, keep its current subject and semester. Do not invent chapter ids.";
 }
 async function aiArrange(){
-  if(!subStatus().pro){ upgradeModal("AI Syllabus verification & auto-arrange"); return; }
   if(!isOnline()){ setMsg("Verifying and arranging needs the internet. Please go online and try again.", true); return; }
   if(!aiCfg()){ await connectModal(); if(!aiCfg()){ toast("Connect AI first, then verify"); return; } }
   var s = await getSample(); if(!s) return;
@@ -13837,7 +13616,6 @@ async function aiArrange(){
   finally { if(btn){ btn.disabled = false; btn.textContent = old; } }
 }
 async function prepareAllPacks(){
-  if(!subStatus().pro){ upgradeModal("Bulk Smart Pack builder"); return; }
   if(!isOnline()){ setMsg("You are offline. Preparing study packs needs the internet.", true); return; }
   var todo = DB.chapters.filter(function(c){ return !(c.pack && c.pack.concepts && c.pack.concepts.length); });
   if(!todo.length){ toast("Every chapter already has a saved study pack"); return; }
