@@ -11527,18 +11527,28 @@ var EngramosSync = {
     res.cache = Object.assign({}, incoming.cache || {}, local.cache || {});
     res.qaMarks = Object.assign({}, incoming.qaMarks || {}, local.qaMarks || {});
 
-    var mistMap = {};
-    (local.mist || []).forEach(function(m){ mistMap[m.id || m.q] = m; });
-    (incoming.mist || []).forEach(function(m){
-      var k = m.id || m.q;
-      if(!mistMap[k]) mistMap[k] = m;
-      else {
-        var baseM = mistMap[k];
-        if(m.fixed) baseM.fixed = true;
-        mistMap[k] = Object.assign({}, baseM, m);
+    res.mist = {};
+    if(local.mist && typeof local.mist === "object"){
+      if(Array.isArray(local.mist)){
+        local.mist.forEach(function(m){ if(m) res.mist[m.h || m.id || m.q || hash(m.q)] = m.count || 1; });
+      } else {
+        Object.assign(res.mist, local.mist);
       }
-    });
-    res.mist = Object.keys(mistMap).map(function(k){ return mistMap[k]; });
+    }
+    if(incoming.mist && typeof incoming.mist === "object"){
+      if(Array.isArray(incoming.mist)){
+        incoming.mist.forEach(function(m){
+          if(m){
+            var k = m.h || m.id || m.q || hash(m.q);
+            res.mist[k] = Math.max(res.mist[k] || 0, m.count || 1);
+          }
+        });
+      } else {
+        Object.keys(incoming.mist).forEach(function(k){
+          res.mist[k] = Math.max(res.mist[k] || 0, incoming.mist[k] || 0);
+        });
+      }
+    }
 
     res.badges = Object.assign({}, incoming.badges || {}, local.badges || {});
     res.freeze = Object.assign({}, incoming.freeze || {}, local.freeze || {});
@@ -11652,7 +11662,27 @@ var EngramosSync = {
         var file = input.files[0];
         file.text().then(function(txt){
           var incoming = JSON.parse(txt);
-          if(!incoming || !incoming.chapters) throw new Error("Invalid ENGRAMOS file");
+          if(!incoming) throw new Error("Empty or invalid JSON file");
+
+          if((incoming.pack || incoming.concepts) && !incoming.chapters){
+            // Imported an individual Smart Pack file from iCloud Drive
+            var pk = incoming.pack || incoming;
+            var targetCh = null;
+            if(incoming.chapter){
+              targetCh = DB.chapters.find(function(c){ return c.name.toLowerCase() === incoming.chapter.toLowerCase(); });
+            }
+            if(!targetCh) targetCh = cur() || DB.chapters[0];
+            if(!targetCh){ toast("No chapter available to attach this pack to."); return; }
+            targetCh.pack = pk;
+            if(PREP[targetCh.id]) delete PREP[targetCh.id];
+            save(); fillSel();
+            toast("✓ Imported Smart Pack for “" + targetCh.name + "” from iCloud Drive!");
+            refreshFolderChip();
+            if(curView === "tools") RENDER.tools();
+            return;
+          }
+
+          if(!incoming.chapters) throw new Error("Invalid ENGRAMOS study file: no chapters found");
           localStorage.setItem("engramos_safari_cloud_file_name", file.name);
           DB.save = DB.save || {};
           DB.save.asked = true;
