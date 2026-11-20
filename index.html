@@ -196,15 +196,14 @@ body.method-open #v-study>h1{display:none}
   #v-study .mth.tile{flex-direction:row;align-items:center;justify-content:flex-start;text-align:left;min-height:0;padding:8px;gap:8px}
   #v-study .mth.tile .ic{width:24px;height:24px;padding:2px}
   #v-study .mth.tile b{font-size:.84rem;line-height:1.2}
-}
- #v-study .mth.tile .badge{position:static;margin:0}
- #v-study #chCard button{padding:6px 8px;font-size:.82rem}
- #v-study #chCard #engRow{flex-wrap:wrap;gap:6px}
- #v-study #chCard #info,#v-study #chCard #packInfo{font-size:.8rem}
- #rcIn h1{margin:0 0 2px}
- #rcIn .sub{display:none}
- #rcIn .planRow .status{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
- .planRow{padding:6px 0}
+  #v-study .mth.tile .badge{position:static;margin:0}
+  #v-study #chCard button{padding:6px 8px;font-size:.82rem}
+  #v-study #chCard #engRow{flex-wrap:wrap;gap:6px}
+  #v-study #chCard #info,#v-study #chCard #packInfo{font-size:.8rem}
+  #rcIn h1{margin:0 0 2px}
+  #rcIn .sub{display:none}
+  #rcIn .planRow .status{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .planRow{padding:6px 0}
 }
 /* ---- home: milky-way map ---- */
 .homeWish{padding:12px 16px}
@@ -262,20 +261,30 @@ body.method-open #v-study>h1{display:none}
 .mmTools button{padding:6px 10px;font-size:.85rem;background:var(--card)}
 #mmDetail,#mapDetail{margin-top:8px;padding:10px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:.86rem;line-height:1.4}
 /* ---- one screen per section ---- */
-#v-study,#v-progress,#v-perf,#v-hist,#v-rep,#v-rec,#v-fun,#v-note,#v-mist,#v-tools,#v-play,#v-tips,#v-plan{
+#v-study,#v-progress,#v-perf,#v-hist,#v-rep,#v-rec,#v-fun,#v-note,#v-mist,#v-play,#v-tips,#v-plan,#v-home{
   display:flex;flex-direction:column;min-height:0;
-  height:var(--viewH,calc(100dvh - var(--bottom-dock-total) - 60px));
+  height:auto !important;
+  min-height:100% !important;
+}
+#v-study.hidden,#v-progress.hidden,#v-perf.hidden,#v-hist.hidden,#v-rep.hidden,#v-rec.hidden,#v-fun.hidden,#v-note.hidden,#v-mist.hidden,#v-play.hidden,#v-tips.hidden,#v-plan.hidden,#v-home.hidden,#v-tools.hidden{
+  display:none !important;
+}
+#v-tools:not(.hidden){
+  display:block;
+  height:auto;
+  min-height:100%;
 }
 #v-study:has(#split:not(.hidden)),
 #v-study:has(#upl:not(.hidden)),
 #v-study.split-mode {
   height: auto !important;
-  min-height: var(--viewH, calc(100dvh - var(--bottom-dock-total) - 60px));
+  min-height: 100% !important;
 }
-#pgIn,#pfIn,#hsIn,#rpIn,#rcIn,#fnIn,#nbIn,#miIn,#tlIn,#plIn,#tpIn,#spIn,#v-study>#stBody,#homeIn{
-  flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;
-  padding-bottom: 32px !important;
-  box-sizing: border-box;
+#pgIn,#pfIn,#hsIn,#rpIn,#rcIn,#fnIn,#nbIn,#miIn,#plIn,#tpIn,#spIn,#v-study>#stBody,#homeIn,#tlIn{
+  overflow:visible !important;
+  padding-bottom:0 !important;
+  flex:none !important;
+  box-sizing:border-box;
 }
 #v-study>#stBody{display:flex;flex-direction:column}
 #v-study>#stBody>#mp{flex:1;min-height:0;overflow:auto;padding-bottom:32px!important;box-sizing:border-box}
@@ -323,7 +332,7 @@ body:not(.method-open) #v-study>#stBody>#mp{flex:0 0 auto;padding:8px 12px}
 .mistList .mist .q{font-weight:600;line-height:1.4}
 
 /* ---- Redesigned More Hub & Settings ---- */
-.moreHub{max-width:860px;margin:0 auto;padding-bottom:20px}
+.moreHub{max-width:860px;margin:0 auto;padding-bottom:calc(var(--bottom-dock-total) + 40px)}
 .moreProfileCard{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:16px 18px;margin-bottom:18px;box-shadow:var(--shadow-sm);flex-wrap:wrap}
 .moreProfileMain{display:flex;align-items:center;gap:14px;min-width:0;flex:1 1 240px}
 .moreAvatar{width:52px;height:52px;min-width:52px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.4rem;box-shadow:0 4px 12px var(--glow1);text-transform:uppercase}
@@ -633,9 +642,10 @@ h1, h2, h3, h4 {
   color: var(--ink);
 }
 
-/* Ensure #main always has bottom scroll padding so bottom menu never obscures anything */
+/* Ensure #main always has clean bottom scroll padding so bottom menu never obscures anything */
 #main, main, body.fit main {
-  padding-bottom: calc(var(--bottom-dock-total) + 48px) !important;
+  padding-bottom: calc(var(--bottom-dock-total, 76px) + 24px) !important;
+  scroll-padding-bottom: calc(var(--bottom-dock-total, 76px) + 24px) !important;
   box-sizing: border-box;
 }
 
@@ -714,6 +724,27 @@ h1, h2, h3, h4 {
 #bottomNav .navTab.active {
   color: var(--acc);
   font-weight: 700;
+}
+
+#bottomNav .navTab {
+  position: relative;
+}
+
+#tabMore.hasPendingSync::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: calc(50% - 15px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold, #f59e0b);
+  box-shadow: 0 0 0 2px var(--card);
+  animation: syncPulse 1.8s infinite ease-in-out;
+}
+@keyframes syncPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.75; }
 }
 
 #bottomNav .navTab.active svg {
@@ -1585,6 +1616,7 @@ body.auth-screen #main {
     padding-left: 14px !important;
     padding-right: 14px !important;
     padding-bottom: 24px !important;
+    scroll-padding-bottom: 24px !important;
   }
   #bottomNav {
     position: fixed;
@@ -1653,7 +1685,8 @@ body.auth-screen #main {
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 12px 16px calc(var(--bottom-dock-total) + 40px) !important;
+    padding: 12px 16px calc(var(--bottom-dock-total, 76px) + 24px) !important;
+    scroll-padding-bottom: calc(var(--bottom-dock-total, 76px) + 24px) !important;
     box-sizing: border-box;
   }
   #bottomNav {
@@ -3844,7 +3877,7 @@ function showView(v){
 
   if(typeof anaView === "function") anaView(v);
   if(typeof refreshPilotBar === "function") refreshPilotBar();
-  document.body.classList.toggle("fit", ["study","progress","plan","perf","hist","rep","rec","fun","note","mist","tools","play","tips"].indexOf(v) >= 0);
+  document.body.classList.toggle("fit", ["study","progress","plan","perf","hist","rep","rec","fun","note","mist","play","tips"].indexOf(v) >= 0);
   refreshBanner(); updateBackBtn();
   muteObs = true; if(RENDER[v]) RENDER[v](); if(["progress","perf","hist","rep","fun","note"].indexOf(v) >= 0) addCta(v); if(v === "home") newQuote(); setViewH(); window.scrollTo(0, 0); var mEl = $("main"); if(mEl) mEl.scrollTop = 0; replay($("v-" + v)); setTimeout(function(){ muteObs = false; }, 0);
 }
@@ -5020,6 +5053,10 @@ async function runPack(cid){
     var srcTxt = pk.source === "local-device" ? " (on-device engine)" : "";
     setMsg("Smart pack ready — " + pk.concepts.length + " concepts, " + pk.qa.length + " Q&As and " + pk.facts.length + " facts saved on this device" + srcTxt + ".");
     toast("Smart pack saved" + srcTxt);
+    if(DB.save && DB.save.enabled && !FOLDER.handle && typeof notifyCloudSyncNeeded === "function"){
+      DB.save.pendingSync = true;
+      notifyCloudSyncNeeded("Smart Pack saved for “" + c.name + "”");
+    }
   } catch(e){
     $("packInfo").innerHTML = "";
     aiErr(e);
@@ -5448,6 +5485,10 @@ async function buildBookPacks(b, btn, statEl, modal){
     toast(lastErrReason ? ("Could not build packs — " + lastErrReason) : "Could not build packs — please check AI key or connection");
   } else {
     toast("Finished building " + done + " smart pack" + (done > 1 ? "s" : "") + " for “" + b.book + "”!" + (errCount > 0 ? " (" + errCount + " failed)" : ""));
+    if(done > 0 && DB.save && DB.save.enabled && !FOLDER.handle && typeof notifyCloudSyncNeeded === "function"){
+      DB.save.pendingSync = true;
+      notifyCloudSyncNeeded("Finished building " + done + " smart pack" + (done > 1 ? "s" : "") + " for “" + b.book + "”");
+    }
   }
   if(modal && modal.el && modal.el.parentNode){
     modal.el.remove();
@@ -8152,7 +8193,7 @@ function plantSvg(st, size){
 function pracOf(id){ return (DB.progress[id] || {}).prac || []; }
 function chScore(id){ var P = pracOf(id); if(!P.length) return null; var l = P.slice(-5); return Math.round(l.reduce(function(a, x){return a + x.pct}, 0) / l.length); }
 function chStage(id){ var P = pracOf(id), sc = chScore(id); if(sc === null || sc <= 0) return 0; var st = sc < 40 ? 1 : sc < 60 ? 2 : sc < 80 ? 3 : 4; return Math.min(st, P.length >= 3 ? 4 : 3); }
-function xpOf(id){ var P = pracOf(id), d = (DB.progress[id] || {done: {}}).done; return P.reduce(function(a, x){ return a + Math.round(x.pct / 5); }, 0) + 2 * ((d.notes || 0) + (d.explain || 0) + (d.doubt || 0)); }
+function xpOf(id){ var P = pracOf(id), pr = DB.progress[id] || {}, d = pr.done || {}; return P.reduce(function(a, x){ return a + Math.round(x.pct / 5); }, 0) + 2 * ((d.notes || 0) + (d.explain || 0) + (d.doubt || 0)); }
 function totalXp(){ var t = 0; DB.chapters.forEach(function(c){ t += xpOf(c.id); }); return t; }
 function ovStage(xp){ var s = 0; TH.forEach(function(t, i){ if(xp >= t) s = i; }); return s; }
 function trendOf(id){ var P = pracOf(id); if(P.length < 2) return null; var n = Math.min(3, Math.floor(P.length / 2)), f = function(a){ return a.reduce(function(x, y){return x + y.pct}, 0) / a.length; }; return Math.round(f(P.slice(-n)) - f(P.slice(-2 * n, -n))); }
@@ -11211,6 +11252,22 @@ RENDER.tools = function(){
       summary.onclick = function(e){
         if(e.target.closest("button") || e.target.closest("select") || e.target.closest("input")) return;
         row.classList.toggle("open");
+        if(row.classList.contains("open")){
+          setTimeout(function(){
+            var bn = $("bottomNav");
+            var bnTop = bn ? bn.getBoundingClientRect().top : window.innerHeight;
+            var drawer = row.querySelector(".settingsDrawer");
+            if(drawer){
+              var r = drawer.getBoundingClientRect();
+              if(r.bottom > bnTop - 16){
+                var sc = $("main") || document.scrollingElement || window;
+                var delta = Math.round(r.bottom - (bnTop - 24));
+                if(sc.scrollBy) sc.scrollBy({ top: delta, behavior: "smooth" });
+                else if(sc.scrollTop !== undefined) sc.scrollTop += delta;
+              }
+            }
+          }, 120);
+        }
       };
     }
   });
@@ -11532,7 +11589,7 @@ RENDER.tips = function(){
 };
 function backupData(){
   var n = (DB.profile ? DB.profile.name : "student").replace(/\W+/g, "_"), c = Object.assign({}, DB, {ai: null, key: "", sess: null});
-  saveFile("StudyBuddy_" + n + "_" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(c)); DB.lastBackup = Date.now(); save(); toast("Backup saved");
+  saveFile("StudyBuddy_" + n + "_" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(c, null, 1)); DB.lastBackup = Date.now(); save(); toast("Backup saved");
 }
 function restoreData(f){
   f.text().then(function(t){ var d = JSON.parse(t); if(!d || !d.chapters) throw 0;
@@ -11842,6 +11899,7 @@ var EngramosSync = {
           DB.save.name = file.name;
           DB.save.type = "cloud_file";
           DB.save.at = Date.now();
+          DB.save.pendingSync = false;
 
           if(self.detectConflict(DB, incoming)){
             self.presentMergeConflict(DB, incoming, function(resolved, action){
@@ -12138,6 +12196,55 @@ function folderTurnOff(){
     save(); refreshFolderChip(); toast("Folder saving turned off");
   });
 }
+function saveCloudFileNow(){
+  var s = DB.save || {};
+  var safariFileName = localStorage.getItem("engramos_safari_cloud_file_name");
+  var fn = s.name || safariFileName || folderFileName();
+  var snap = folderSnapshot();
+  var text = JSON.stringify(snap, null, 1) + "\n";
+  saveFile(fn, text);
+  DB.save = DB.save || {};
+  DB.save.at = Date.now();
+  DB.save.pendingSync = false;
+  DB.save.name = fn;
+  DB.save.type = "cloud_file";
+  DB.save.enabled = true;
+  save();
+  refreshFolderChip();
+  toast("✓ Saved “" + fn + "” to iCloud Drive! (Timestamp & Smart Packs updated)");
+  if(curView === "tools") RENDER.tools();
+}
+
+function notifyCloudSyncNeeded(reason){
+  var s = DB.save || {};
+  if(!s.enabled) return;
+  var safariFileName = localStorage.getItem("engramos_safari_cloud_file_name");
+  var fn = s.name || safariFileName || folderFileName();
+  var pId = localStorage.getItem("engramos_cloud_provider") || "icloud";
+  var prov = getEngramosCloudProvider(pId);
+  
+  var m = popup("<div style='text-align:center;padding:4px'>" +
+    "<div style='font-size:2.2rem;margin-bottom:8px'>" + prov.icon + "</div>" +
+    "<h3 style='margin:0 0 6px;font-size:1.15rem'>Update " + esc(prov.name) + " File?</h3>" +
+    "<p class='status' style='margin:0 0 14px;font-size:0.86rem;line-height:1.45'>" +
+      (reason ? "<b style='color:var(--ink)'>" + esc(reason) + "</b><br>" : "") +
+      "Your new Smart Packs and study progress are saved on this device. Tap below to update <b>“" + esc(fn) + "”</b> in " + esc(prov.name) + "." +
+    "</p>" +
+    "<div class='row' style='justify-content:center;gap:10px'>" +
+      "<button data-close>Later</button>" +
+      "<button class='primary' id='btnCloudQuickSave' style='background:linear-gradient(135deg,var(--ok),#059669);border-color:var(--ok);font-weight:700'>☁️ Save to " + esc(prov.name) + "</button>" +
+    "</div>" +
+  "</div>");
+  
+  var btn = m.el.querySelector("#btnCloudQuickSave");
+  if(btn){
+    btn.onclick = function(){
+      m.close();
+      saveCloudFileNow();
+    };
+  }
+}
+
 function cloudSyncCardHtml(){
   var s = DB.save || {asked: false, enabled: false, name: "", at: 0};
   var sup = folderSupported();
@@ -12147,13 +12254,18 @@ function cloudSyncCardHtml(){
   var provId = localStorage.getItem("engramos_cloud_provider") || (isCloudFile ? "icloud" : (isFolder ? "local" : ""));
   var curProv = getEngramosCloudProvider(provId);
   var state, btns, pillTxt = "Local Storage", pillCls = "", subTxt = "";
+  var isPendingSync = !!s.pendingSync || (DB.updatedAt && s.at && DB.updatedAt > s.at);
 
   if(isCloudFile){
-    pillTxt = curProv.brand + " Active"; pillCls = "on";
     var fn = s.name || safariFileName || folderFileName();
-    subTxt = curProv.icon + " " + curProv.name + " · " + esc(fn) + " (300ms auto-save)";
-    state = "Connected to " + curProv.name + " file \u201C<b>" + esc(fn) + "</b>\u201D. Your notes, flashcards, error ledger, and chapter progress are automatically synced across devices.";
-    btns = "<button class='primary' data-act='sync_check'>⚡ Check Updates / Reconcile</button> " +
+    pillTxt = curProv.brand + (isPendingSync ? " · Sync Needed" : " Active");
+    pillCls = isPendingSync ? "warn" : "on";
+    subTxt = curProv.icon + " " + curProv.name + " · " + esc(fn) + (isPendingSync ? " (Sync needed)" : " (In sync)");
+    state = "Connected to " + curProv.name + " file \u201C<b>" + esc(fn) + "</b>\u201D" +
+      (isPendingSync ? " — <b style='color:var(--gold)'>Smart Packs / study updates ready to sync</b>." : " · In sync.") +
+      "<br><span style='font-size:0.82rem;color:var(--mute)'>On iPhone / iPad, tap <b>Save &amp; Update</b> to write your latest Smart Packs and progress directly to iCloud Drive.</span>";
+    btns = "<button class='primary' data-act='cloud_save_now' style='font-weight:700;background:linear-gradient(135deg,var(--ok),#059669);border-color:var(--ok);display:inline-flex;align-items:center;gap:6px'>☁️ Save &amp; Update " + curProv.name + " File</button> " +
+           "<button data-act='sync_check'>⚡ Check Updates / Reconcile</button> " +
            "<button data-act='cloud_pick'>Choose Another File</button> " +
            "<button data-act='cloud_disconnect' style='color:var(--crit);'>Disconnect</button>";
   } else if(isFolder){
@@ -12168,7 +12280,8 @@ function cloudSyncCardHtml(){
       pillTxt = curProv.brand + " Active"; pillCls = "on";
       subTxt = curProv.icon + " " + curProv.name + " · " + esc(s.name) + " (300ms auto-save)";
       state = "Auto-saving to " + curProv.name + " folder \u201C<b>" + esc(s.name) + "</b>\u201D" + (s.at ? " · last save " + fmtT(s.at) : "") + ". All changes sync automatically in the background.";
-      btns = "<button class='primary' data-act='sync_check'>⚡ Check Updates / Reconcile</button> " +
+      btns = "<button class='primary' data-act='cloud_save_now' style='font-weight:700;background:linear-gradient(135deg,var(--ok),#059669);border-color:var(--ok);'>☁️ Save Snapshot Now</button> " +
+             "<button data-act='sync_check'>⚡ Check Updates / Reconcile</button> " +
              "<button data-act='foldchg'>Change Folder</button> " +
              "<button data-act='cloud_disconnect' style='color:var(--crit);'>Disconnect</button>";
     }
@@ -12215,7 +12328,14 @@ function cloudSyncCardHtml(){
   "</div>";
 }
 var folderCardHtml = cloudSyncCardHtml;
-function refreshFolderChip(){ if(curView === "tools" && RENDER.tools) RENDER.tools(); }
+function refreshFolderChip(){
+  var tm = $("tabMore");
+  if(tm){
+    var pending = DB && DB.save && DB.save.enabled && !FOLDER.handle && (DB.save.pendingSync || (DB.updatedAt && DB.save.at && DB.updatedAt > DB.save.at));
+    tm.classList.toggle("hasPendingSync", !!pending);
+  }
+  if(curView === "tools" && RENDER.tools) RENDER.tools();
+}
 function folderWelcomeModal(){
   DB.save = DB.save || {asked: false, enabled: false, name: "", file: "", at: 0};
   var ok = folderSupported();
@@ -13338,6 +13458,7 @@ function speechSettings(){
   else if(a === "foldpick" || a === "foldchg") chooseFolder().then(function(){ if(curView === "tools") RENDER.tools(); });
   else if(a === "foldrec") folderReconnect();
   else if(a === "foldoff") folderTurnOff();
+  else if(a === "cloud_save_now") saveCloudFileNow();
   else if(a === "cloud_pick") EngramosSync.pickCloudFile();
   else if(a === "sync_check") EngramosSync.checkCloudConflict();
   else if(a === "cloud_disconnect" || a === "cloud_off"){
@@ -13395,7 +13516,7 @@ function pickHtml(id){
 }
 function noData(msg){ return "<div class='card hero' style='text-align:center'>" + plantSvg(1, 72) + "<p>" + msg + "</p><button class='primary' id='gStudy'>Go to Study</button></div>"; }
 function bindNo(){ var b = $("gStudy"); if(b) b.onclick = function(){ show("study"); }; }
-function allAttempts(id){ return (DB.progress[id] || {attempts: []}).attempts; }
+function allAttempts(id){ var p = DB.progress[id]; return (p && Array.isArray(p.attempts)) ? p.attempts : []; }
 
 /* ---------- Study plan: syllabus, plan, timetable ---------- */
 var DAYNAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -13890,6 +14011,9 @@ function setViewH(){
   var containerH = isFramed ? shell.clientHeight : window.innerHeight;
   var av = Math.max(300, Math.round(containerH - h - bh));
   document.documentElement.style.setProperty("--viewH", av + "px");
+  if(bh > 0){
+    document.documentElement.style.setProperty("--bottom-dock-total", Math.round(bh) + "px");
+  }
 }
 window.addEventListener("resize", function(){
   setViewH();
